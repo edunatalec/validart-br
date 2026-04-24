@@ -1,0 +1,23 @@
+name: validart_br
+description: Validadores brasileiros (CPF, CNPJ, telefone, PIX e mais) e locale pt-BR para o validart.
+version: 0.1.0
+homepage: https://github.com/edunatalec/validart-br
+repository: https://github.com/edunatalec/validart-br
+issue_tracker: https://github.com/edunatalec/validart-br/issues
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  validart: ^1.3.0
+
+dev_dependencies:
+  lints: ^6.1.0
+  test: ^1.31.0
+
+topics:
+  - validation
+  - schema
+  - brazil
+  - i18n
+  - forms
