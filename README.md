@@ -26,8 +26,12 @@ em código BR-only.
   - [Telefone brasileiro](#telefone-brasileiro)
   - [Placa](#placa)
   - [Chave PIX](#chave-pix)
+  - [UF (estado)](#uf-estado)
+  - [Código de banco (COMPE)](#código-de-banco-compe)
+  - [DDD](#ddd)
+  - [Boleto](#boleto)
 - [Duas formas equivalentes](#duas-formas-equivalentes)
-- [`ValidationMode`](#validationmode)
+- [`ModoValidacao`](#modovalidacao)
 - [Locale pt-BR](#locale-pt-br)
   - [Override de mensagens](#override-de-mensagens)
   - [Códigos de erro](#códigos-de-erro)
@@ -74,16 +78,20 @@ if (result case VFailure(:final errors)) {
 
 | Método                                | Descrição                                                                             |
 | ------------------------------------- | ------------------------------------------------------------------------------------- |
-| `cpf({mode, message})`                | CPF (11 dígitos). `mode` controla se aceita máscara.                                  |
-| `cnpj({mode, alphanumeric, message})` | CNPJ. Default aceita o novo formato alfanumérico da Receita.                          |
-| `cep({mode, message})`                | CEP (8 dígitos).                                                                      |
-| `pis({mode, message})`                | PIS/PASEP/NIS (11 dígitos).                                                           |
-| `tituloEleitor({message})`            | Título de eleitor (12 dígitos, UF `01–28`).                                           |
-| `cnh({message})`                      | CNH (11 dígitos).                                                                     |
-| `renavam({message})`                  | Renavam (11 dígitos).                                                                 |
-| `phoneBr({…})`                        | Telefone BR com flags de DDD, DDI, `mobileOnly` e `mode`.                             |
-| `plate({mode, message})`              | Placa — formato antigo (`AAA-9999`) ou Mercosul (`AAA9A99`).                          |
-| `pixKey({allow, message})`            | Identificador PIX — chaves do DICT e/ou BR Code. `allow` restringe os tipos aceitos.  |
+| `cpf({modo, mensagem})`                | CPF (11 dígitos). `modo` controla se aceita máscara.                                  |
+| `cnpj({modo, alfanumerico, mensagem})` | CNPJ. Default aceita o novo formato alfanumérico da Receita.                          |
+| `cep({modo, mensagem})`                | CEP (8 dígitos).                                                                      |
+| `pis({modo, mensagem})`                | PIS/PASEP/NIS (11 dígitos).                                                           |
+| `tituloEleitor({mensagem})`            | Título de eleitor (12 dígitos, UF `01–28`).                                           |
+| `cnh({mensagem})`                      | CNH (11 dígitos).                                                                     |
+| `renavam({mensagem})`                  | Renavam (11 dígitos).                                                                 |
+| `telefone({…})`                       | Telefone BR com flags de `ddd`, `pais`, `apenasCelular` e `modo`.                     |
+| `placa({modo, mensagem})`              | Placa — formato antigo (`AAA-9999`) ou Mercosul (`AAA9A99`).                          |
+| `chavePix({tipos, mensagem})`          | Identificador PIX — chaves do DICT e/ou BR Code. `tipos` restringe os tipos aceitos.  |
+| `uf({mensagem})`                       | UF brasileira (sigla de 2 letras em caixa alta, dentre as 27 unidades federativas).   |
+| `codigoBanco({mensagem})`              | Código de banco brasileiro (COMPE — 3 dígitos da tabela do Bacen).                    |
+| `ddd({mensagem})`                      | DDD brasileiro (2 dígitos da lista oficial Anatel).                                   |
+| `boleto({formato, mensagem})`          | Boleto — bancário ou arrecadação, linha digitável (47/48) ou código de barras (44).   |
 
 ### CPF
 
@@ -91,7 +99,7 @@ if (result case VFailure(:final errors)) {
 V.string().cpf().validate('123.456.789-09'); // true
 V.string().cpf().validate('11111111111');    // false (repetido)
 
-V.string().cpf(mode: ValidationMode.unformatted)
+V.string().cpf(modo: ModoValidacao.semMascara)
   .validate('12345678909'); // true
 ```
 
@@ -107,7 +115,7 @@ subconjunto do alfanumérico.
 V.string().cnpj().validate('12.345.678/0001-95'); // true (numérico)
 V.string().cnpj().validate('12.ABC.345/01DE-35'); // true (alfanumérico)
 
-V.string().cnpj(alphanumeric: false)
+V.string().cnpj(alfanumerico: false)
   .validate('12.ABC.345/01DE-35'); // false — só dígitos
 ```
 
@@ -116,7 +124,7 @@ encadeie `.toUpperCase()` antes (mesma regra para `plate()`):
 
 ```dart
 V.string().toUpperCase().cnpj();
-V.string().toUpperCase().plate();
+V.string().toUpperCase().placa();
 ```
 
 ### CEP
@@ -160,15 +168,15 @@ Aceita celular (9 dígitos iniciando com `9`) e fixo (8 dígitos), com ou
 sem DDD e DDI. Use os parâmetros para restringir a forma.
 
 ```dart
-V.string().phoneBr().validate('(11) 98765-4321'); // true
-V.string().phoneBr().validate('11987654321');     // true
-V.string().phoneBr().validate('+55 11 98765-4321'); // true
+V.string().telefone().validate('(11) 98765-4321'); // true
+V.string().telefone().validate('11987654321');     // true
+V.string().telefone().validate('+55 11 98765-4321'); // true
 
-V.string().phoneBr(
-  countryCode: CountryCodeFormat.required, // exige +55
-  areaCode: AreaCodeFormat.required,       // exige DDD
-  mobileOnly: true,                        // só celular
-  mode: ValidationMode.formatted,          // exige separadores
+V.string().telefone(
+  pais: FormatoPais.obrigatorio,       // exige +55
+  ddd: FormatoDdd.obrigatorio,         // exige DDD
+  apenasCelular: true,                 // só celular
+  modo: ModoValidacao.comMascara,      // exige separadores
 ).validate('+55 (11) 98765-4321'); // true
 ```
 
@@ -179,15 +187,15 @@ Letras devem estar em caixa alta — encadeie `.toUpperCase()` quando o
 input pode vir minúsculo.
 
 ```dart
-V.string().plate().validate('ABC-1234'); // true (antiga)
-V.string().plate().validate('ABC1D23');  // true (Mercosul)
+V.string().placa().validate('ABC-1234'); // true (antiga)
+V.string().placa().validate('ABC1D23');  // true (Mercosul)
 
-V.string().toUpperCase().plate().validate('abc-1234'); // true
+V.string().toUpperCase().placa().validate('abc-1234'); // true
 ```
 
 ### Chave PIX
 
-`pixKey()` aceita por padrão as cinco chaves do DICT:
+`chavePix()` aceita por padrão as cinco chaves do DICT:
 
 - **CPF** (11 dígitos, sem máscara)
 - **CNPJ** (14 dígitos, só numérico, sem máscara)
@@ -198,31 +206,99 @@ V.string().toUpperCase().plate().validate('abc-1234'); // true
 Cada formato é checado no modo estrito exigido pelo PIX.
 
 ```dart
-V.string().pixKey().validate('12345678909');                        // true (CPF)
-V.string().pixKey().validate('user@example.com');                   // true (e-mail)
-V.string().pixKey().validate('+5511987654321');                     // true (telefone)
-V.string().pixKey().validate('123e4567-e89b-12d3-a456-426614174000'); // true (UUID)
+V.string().chavePix().validate('12345678909');                        // true (CPF)
+V.string().chavePix().validate('user@example.com');                   // true (e-mail)
+V.string().chavePix().validate('+5511987654321');                     // true (telefone)
+V.string().chavePix().validate('123e4567-e89b-12d3-a456-426614174000'); // true (UUID)
 ```
 
-Restrinja os tipos aceitos com `allow`:
+Restrinja os tipos aceitos com `tipos`:
 
 ```dart
-V.string().pixKey(allow: const [PixKeyType.email, PixKeyType.phone]);
+V.string().chavePix(tipos: const [TipoChavePix.email, TipoChavePix.telefone]);
 // rejeita CPF, CNPJ e UUID
 ```
 
-Inclua `PixKeyType.brCode` para também aceitar o **BR Code** — payload
+Inclua `TipoChavePix.brCode` para também aceitar o **BR Code** — payload
 EMVCo do QR Code PIX ("copia e cola"). A validação segue o padrão de
 mercado (estrito): estrutura TLV, CRC16-CCITT-FALSE batendo e campos
 obrigatórios do Bacen (moeda `986`, país `BR`, GUID `br.gov.bcb.pix`).
 
 ```dart
 // Aceita os 5 tipos de chave + BR Code:
-V.string().pixKey(allow: PixKeyType.values);
+V.string().chavePix(tipos: TipoChavePix.values);
 
 // Só BR Code:
-V.string().pixKey(allow: const [PixKeyType.brCode]);
+V.string().chavePix(tipos: const [TipoChavePix.brCode]);
 ```
+
+### UF (estado)
+
+Aceita apenas as 27 siglas oficiais em caixa alta (`AC`, `AL`, …,
+`TO`). Encadeie `.toUpperCase()` para aceitar input em minúsculas.
+
+```dart
+V.string().uf().validate('SP'); // true
+V.string().uf().validate('XY'); // false
+
+V.string().toUpperCase().uf().validate('rj'); // true
+```
+
+### Código de banco (COMPE)
+
+Aceita os 3 dígitos da tabela COMPE do Banco Central (497 instituições
+ativas hoje). Não aceita formato com DV (`'001-9'`); extraia os 3
+primeiros se vier no formato com check digit.
+
+```dart
+V.string().codigoBanco().validate('001'); // true (Banco do Brasil)
+V.string().codigoBanco().validate('033'); // true (Santander)
+V.string().codigoBanco().validate('260'); // true (Nubank)
+V.string().codigoBanco().validate('999'); // false
+```
+
+### DDD
+
+2 dígitos da lista oficial da Anatel (67 códigos). Para validar o
+telefone completo (DDD + número), use `telefone()` que já cobre o DDD
+internamente.
+
+```dart
+V.string().ddd().validate('11'); // true (São Paulo)
+V.string().ddd().validate('21'); // true (Rio de Janeiro)
+V.string().ddd().validate('20'); // false (não atribuído)
+```
+
+### Boleto
+
+Aceita boleto bancário (cobrança) ou de arrecadação (concessionárias e
+tributos), em qualquer das quatro formas — linha digitável (47/48
+dígitos) ou código de barras (44). Caracteres não numéricos são
+descartados antes da validação, então máscaras (`.`, ` `, `-`) são
+toleradas.
+
+```dart
+V.string().boleto().validate(
+  '23793381286000782713695000063305975520000370000',
+); // true (linha digitável bancária)
+
+V.string().boleto().validate(
+  '836200000005667800481000180975657313001589636081',
+); // true (linha digitável arrecadação mod-10)
+
+V.string().boleto().validate(
+  '23793.38128 60007.827136 95000.063305 9 75520000370000',
+); // true (com máscara)
+
+// Restrinja a um formato específico:
+V.string().boleto(formato: FormatoBoleto.bancario);
+V.string().boleto(formato: FormatoBoleto.arrecadacao);
+```
+
+DVs verificados: mod-10 nos campos 1, 2 e 3 da linha digitável
+bancária + mod-11 do DV geral; nos boletos de arrecadação, mod-10 ou
+mod-11 conforme o terceiro dígito do código de barras (`6`/`7` →
+mod-10, `8`/`9` → mod-11).
 
 ## Duas formas equivalentes
 
@@ -237,8 +313,12 @@ Cada validador BR tem duas formas de uso, ambas sempre equivalentes:
 | `V.string().cnh()`           | `V.string().taxId(patterns: [const CnhPattern()])`               |
 | `V.string().renavam()`       | `V.string().taxId(patterns: [const RenavamPattern()])`           |
 | `V.string().cep()`           | `V.string().postalCode(patterns: [const CepPattern()])`          |
-| `V.string().plate()`         | `V.string().licensePlate(patterns: [const BrPlatePattern()])`    |
-| `V.string().phoneBr()`       | `V.string().phone(patterns: [const BrPhonePattern()])`           |
+| `V.string().placa()`         | `V.string().licensePlate(patterns: [const PlacaPattern()])`    |
+| `V.string().telefone()`       | `V.string().phone(patterns: [const TelefonePattern()])`           |
+| `V.string().uf()`         | `V.string().add(const UfValidator())`                         |
+| `V.string().codigoBanco()`      | `V.string().add(const CodigoBancoValidator())`                      |
+| `V.string().ddd()`           | `V.string().add(const DddValidator())`                           |
+| `V.string().boleto()`        | `V.string().add(const BoletoValidator())`                        |
 
 Use os atalhos em código BR-only (mais legível). Use os patterns
 explícitos quando precisar compor múltiplos países na mesma validação:
@@ -248,17 +328,22 @@ V.string().taxId(patterns: [const CpfPattern(), const UsSsnPattern()]);
 // aceita CPF brasileiro OU Social Security Number americano
 ```
 
-## `ValidationMode`
+## `ModoValidacao`
 
-Validadores com máscara aceitam `ValidationMode` para controlar a forma:
+Validadores com máscara aceitam `ModoValidacao` para controlar a forma:
 
 ```dart
-V.string().cpf(mode: ValidationMode.any);         // default: com ou sem máscara
-V.string().cpf(mode: ValidationMode.formatted);   // só com máscara
-V.string().cpf(mode: ValidationMode.unformatted); // só dígitos
+V.string().cpf(modo: ModoValidacao.qualquer);    // default: com ou sem máscara
+V.string().cpf(modo: ModoValidacao.comMascara);  // só com máscara
+V.string().cpf(modo: ModoValidacao.semMascara);  // só dígitos
 ```
 
-Aplica-se a `cpf`, `cnpj`, `cep`, `pis`, `plate` e `phoneBr`.
+Aplica-se a `cpf`, `cnpj`, `cep`, `pis`, `placa` e `telefone`.
+
+Equivalente em pt-BR do `ValidationMode` do core — os atalhos fazem
+o depara internamente. Quem usa a forma explícita
+(`V.string().taxId(patterns: [const CpfPattern(mode: ValidationMode.formatted)])`)
+continua usando `ValidationMode` direto.
 
 ## Locale pt-BR
 
@@ -309,8 +394,8 @@ Override por chamada (via parâmetro `message`) sobrescreve só aquela
 instância — útil quando o gênero gramatical da mensagem importa:
 
 ```dart
-V.string().cnh(message: 'CNH inválida');   // força feminino só aqui
-V.string().plate(message: 'Placa não reconhecida');
+V.string().cnh(mensagem: 'CNH inválida');   // força feminino só aqui
+V.string().placa(mensagem: 'Placa não reconhecida');
 ```
 
 ### Códigos de erro
@@ -328,11 +413,15 @@ de `{name}`:
 O `{name}` vem da propriedade `name` de cada pattern — `CpfPattern`
 declara `'CPF'`, `CnpjPattern` declara `'CNPJ'`, e assim por diante.
 
-Único código específico do `validart_br`:
+Códigos específicos do `validart_br`:
 
-| Constante                     | Código            | Mensagem pt-BR     |
-| ----------------------------- | ----------------- | ------------------ |
-| `VStringCodeBr.invalidPixKey` | `invalid_pix_key` | Chave PIX inválida |
+| Constante                           | Código                  | Mensagem pt-BR           |
+| ----------------------------------- | ----------------------- | ------------------------ |
+| `VStringCodeBr.chavePixInvalida`    | `chave_pix_invalida`    | Chave PIX inválida       |
+| `VStringCodeBr.ufInvalida`          | `uf_invalida`           | UF inválida              |
+| `VStringCodeBr.codigoBancoInvalido` | `codigo_banco_invalido` | Código de banco inválido |
+| `VStringCodeBr.dddInvalido`         | `ddd_invalido`          | DDD inválido             |
+| `VStringCodeBr.boletoInvalido`      | `boleto_invalido`       | Boleto inválido          |
 
 ## Extensibilidade
 
@@ -349,12 +438,18 @@ do validart:
 | `CnhPattern`           | `TaxIdPattern`        |
 | `RenavamPattern`       | `TaxIdPattern`        |
 | `CepPattern`           | `PostalCodePattern`   |
-| `BrPlatePattern`       | `LicensePlatePattern` |
-| `BrPhonePattern`       | `PhonePattern`        |
+| `PlacaPattern`       | `LicensePlatePattern` |
+| `TelefonePattern`       | `PhonePattern`        |
 
-O único validador standalone é `PixKeyValidator` — é uma união de
-formatos heterogêneos (chaves do DICT + BR Code), então não cabe num
-único pattern.
+Validadores standalone (não estendem nenhum abstract do core):
+
+| Validator           | Por quê standalone                                                |
+| ------------------- | ----------------------------------------------------------------- |
+| `ChavePixValidator`   | União heterogênea (CPF/CNPJ/e-mail/telefone/UUID/BR Code).        |
+| `UfValidator`    | Lookup contra lista finita (27 UFs); não é tax-id/CEP/placa.      |
+| `CodigoBancoValidator` | Lookup contra lista oficial (COMPE).                              |
+| `DddValidator`      | Lookup contra lista Anatel; não cabe em `PhonePattern` (parcial). |
+| `BoletoValidator`   | Agrega múltiplos checksums (mod-10/mod-11) sobre 2 layouts.       |
 
 ### Escrevendo um pattern novo
 
