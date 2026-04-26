@@ -11,7 +11,7 @@ void runCompositionExamples() {
 
   section('V.map — cadastro com múltiplos validadores BR');
 
-  final usuario = V.map({
+  final VMap usuario = V.map({
     'nome': V.string().min(3).max(120),
     'cpf': V.string().cpf(),
     'email': V.string().email(),
@@ -21,7 +21,7 @@ void runCompositionExamples() {
     'banco': V.string().codigoBanco(),
   });
 
-  final result = usuario.safeParse({
+  final VResult<Map<String, dynamic>?> result = usuario.safeParse({
     'nome': 'Maria',
     'cpf': '123.456.789-09',
     'email': 'maria@example.com',
@@ -43,7 +43,7 @@ void runCompositionExamples() {
 
   section('V.map — erros agregados por campo');
 
-  final ruim = usuario.safeParse({
+  final VResult<Map<String, dynamic>?> ruim = usuario.safeParse({
     'nome': 'A',
     'cpf': '000.000.000-00',
     'email': 'invalido',
@@ -54,10 +54,12 @@ void runCompositionExamples() {
   });
 
   if (ruim case VFailure(:final errors)) {
-    final map = (ruim).toMap();
-    for (final entry in map.entries) {
+    final Map<String, String> map = (ruim).toMap();
+
+    for (final MapEntry<String, String> entry in map.entries) {
       print('  ${entry.key}: ${entry.value}');
     }
+
     print('total de erros: ${errors.length}');
   }
 

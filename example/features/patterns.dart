@@ -36,7 +36,7 @@ void runPatternsExamples() {
   section('Multi-país — composição BR + outros via patterns: [...]');
 
   // Aceita CPF brasileiro OU SSN americano.
-  final taxIdMulti = V.string().taxId(
+  final VString taxIdMulti = V.string().taxId(
     patterns: [const CpfPattern(), const UsSsnPattern()],
   );
   print(taxIdMulti.validate('123.456.789-09')); // true (CPF)
@@ -44,7 +44,7 @@ void runPatternsExamples() {
   print(taxIdMulti.validate('xxx')); // false
 
   // Aceita CEP brasileiro OU ZIP americano.
-  final cepOuZip = V.string().postalCode(
+  final VString cepOuZip = V.string().postalCode(
     patterns: [const CepPattern(), const UsZipPattern()],
   );
   print(cepOuZip.validate('01001-000')); // true (CEP)

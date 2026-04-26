@@ -36,7 +36,8 @@ class CpfPattern extends TaxIdPattern {
   bool matches(String value) {
     if (!_matchesMode(value)) return false;
 
-    final digits = value.onlyDigits;
+    final String digits = value.onlyDigits;
+
     if (digits.length != 11) return false;
     if (digits.isRepeatedCharacters) return false;
 
@@ -60,14 +61,14 @@ class CpfPattern extends TaxIdPattern {
     int sum2 = 0;
 
     for (int i = 0; i < 9; i++) {
-      final d = int.parse(digits[i]);
+      final int d = int.parse(digits[i]);
       sum1 += d * (10 - i);
       sum2 += d * (11 - i);
     }
 
-    final dv1 = (sum1 * 10) % 11 % 10;
+    final int dv1 = (sum1 * 10) % 11 % 10;
     sum2 += dv1 * 2;
-    final dv2 = (sum2 * 10) % 11 % 10;
+    final int dv2 = (sum2 * 10) % 11 % 10;
 
     return digits[9] == dv1.toString() && digits[10] == dv2.toString();
   }

@@ -71,25 +71,25 @@ void main() {
 
   group('DddValidator — integração via V.string().ddd()', () {
     test('aceita DDD válido', () {
-      final schema = V.string().ddd();
+      final VString schema = V.string().ddd();
       expect(schema.validate('11'), isTrue);
       expect(schema.validate('99'), isTrue);
     });
 
     test('rejeita DDD inválido', () {
-      final schema = V.string().ddd();
+      final VString schema = V.string().ddd();
       expect(schema.validate('00'), isFalse);
       expect(schema.validate('20'), isFalse);
     });
 
     test('código de erro é invalid_ddd', () {
-      final schema = V.string().ddd();
-      final errors = schema.errors('00');
+      final VString schema = V.string().ddd();
+      final List<VError>? errors = schema.errors('00');
       expect(errors!.first.code, VStringCodeBr.dddInvalido);
     });
 
     test('respeita message customizada', () {
-      final schema = V.string().ddd(message: 'DDD fora da Anatel');
+      final VString schema = V.string().ddd(message: 'DDD fora da Anatel');
       expect(schema.errors('00')!.first.message, 'DDD fora da Anatel');
     });
   });
@@ -99,8 +99,8 @@ void main() {
     tearDown(() => V.setLocale(const VLocale()));
 
     test('mensagem em pt-BR é "DDD inválido"', () {
-      final schema = V.string().ddd();
-      final errors = schema.errors('00');
+      final VString schema = V.string().ddd();
+      final List<VError>? errors = schema.errors('00');
       expect(errors!.first.message, 'DDD inválido');
     });
   });

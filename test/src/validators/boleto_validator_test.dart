@@ -132,7 +132,7 @@ void main() {
 
   group('BoletoValidator — integração via V.string().boleto()', () {
     test('aceita qualquer formato sem restrição', () {
-      final schema = V.string().boleto();
+      final VString schema = V.string().boleto();
       expect(schema.validate(_bancarioLinhaSemMascara), isTrue);
       expect(schema.validate(_bancarioLinhaComMascara), isTrue);
       expect(schema.validate(_bancarioBarras), isTrue);
@@ -143,19 +143,21 @@ void main() {
     });
 
     test('respeita format', () {
-      final schema = V.string().boleto(formato: FormatoBoleto.bancario);
+      final VString schema = V.string().boleto(formato: FormatoBoleto.bancario);
       expect(schema.validate(_bancarioLinhaSemMascara), isTrue);
       expect(schema.validate(_arrecadacaoLinhaMod10), isFalse);
     });
 
     test('código de erro é invalid_boleto', () {
-      final schema = V.string().boleto();
-      final errors = schema.errors('00000');
+      final VString schema = V.string().boleto();
+      final List<VError>? errors = schema.errors('00000');
       expect(errors!.first.code, VStringCodeBr.boletoInvalido);
     });
 
     test('respeita message customizada', () {
-      final schema = V.string().boleto(message: 'Boleto fora do padrão');
+      final VString schema = V.string().boleto(
+        message: 'Boleto fora do padrão',
+      );
       expect(schema.errors('xxx')!.first.message, 'Boleto fora do padrão');
     });
   });
@@ -165,8 +167,8 @@ void main() {
     tearDown(() => V.setLocale(const VLocale()));
 
     test('mensagem em pt-BR é "Boleto inválido"', () {
-      final schema = V.string().boleto();
-      final errors = schema.errors('xxx');
+      final VString schema = V.string().boleto();
+      final List<VError>? errors = schema.errors('xxx');
       expect(errors!.first.message, 'Boleto inválido');
     });
   });

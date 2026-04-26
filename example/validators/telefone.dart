@@ -16,7 +16,7 @@ void runTelefoneExamples() {
 
   section('Telefone BR — restrito');
 
-  final schema = V.string().telefone(
+  final VString schema = V.string().telefone(
     pais: CountryCodeFormat.required,
     ddd: FormatoDdd.required,
     apenasCelular: true,

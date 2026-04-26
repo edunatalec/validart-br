@@ -26,8 +26,9 @@ class TituloEleitorPattern extends TaxIdPattern {
   bool matches(String value) {
     if (!_regex.hasMatch(value)) return false;
 
-    final digits = value.onlyDigits;
-    final uf = int.parse(digits.substring(8, 10));
+    final String digits = value.onlyDigits;
+    final int uf = int.parse(digits.substring(8, 10));
+
     if (uf < 1 || uf > 28) return false;
 
     return _checksumIsValid(digits, uf);
@@ -39,10 +40,11 @@ class TituloEleitorPattern extends TaxIdPattern {
       sum1 += int.parse(digits[i]) * (i + 2);
     }
 
-    final dv1 = _reduceDigit(sum1 % 11, uf);
+    final int dv1 = _reduceDigit(sum1 % 11, uf);
 
-    final sum2 = int.parse(digits[8]) * 7 + int.parse(digits[9]) * 8 + dv1 * 9;
-    final dv2 = _reduceDigit(sum2 % 11, uf);
+    final int sum2 =
+        int.parse(digits[8]) * 7 + int.parse(digits[9]) * 8 + dv1 * 9;
+    final int dv2 = _reduceDigit(sum2 % 11, uf);
 
     return digits[10] == dv1.toString() && digits[11] == dv2.toString();
   }

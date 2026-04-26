@@ -42,29 +42,29 @@ void main() {
 
     group('integração', () {
       test('V.string().licensePlate(patterns:) valida', () {
-        final schema = V.string().licensePlate(
+        final VString schema = V.string().licensePlate(
           patterns: [const PlacaPattern()],
         );
         expect(schema.validate('ABC-1234'), isTrue);
       });
 
       test('error code é license_plate', () {
-        final schema = V.string().licensePlate(
+        final VString schema = V.string().licensePlate(
           patterns: [const PlacaPattern()],
         );
-        final errors = schema.errors('invalid');
+        final List<VError>? errors = schema.errors('invalid');
         expect(errors!.first.code, VStringCode.licensePlate);
       });
 
       test('mensagem em pt-BR interpola {name} como "Placa" (feminino)', () {
         V.setLocale(VLocaleBr.ptBr);
-        final schema = V.string().placa();
-        final errors = schema.errors('invalid');
+        final VString schema = V.string().placa();
+        final List<VError>? errors = schema.errors('invalid');
         expect(errors!.first.message, 'Placa inválida');
       });
 
       test('atalho V.string().placa() encadeia com toUpperCase', () {
-        final schema = V.string().toUpperCase().placa();
+        final VString schema = V.string().toUpperCase().placa();
         expect(schema.validate('abc-1234'), isTrue);
         expect(schema.validate('abc1d23'), isTrue);
       });

@@ -25,7 +25,8 @@ class CnhPattern extends TaxIdPattern {
   bool matches(String value) {
     if (!_regex.hasMatch(value)) return false;
 
-    final digits = value.onlyDigits;
+    final String digits = value.onlyDigits;
+
     if (digits.isRepeatedCharacters) return false;
 
     return _checksumIsValid(digits);
@@ -39,6 +40,7 @@ class CnhPattern extends TaxIdPattern {
 
     int dv1 = sum1 % 11;
     int dsc = 0;
+
     if (dv1 >= 10) {
       dv1 = 0;
       dsc = 2;
@@ -49,7 +51,7 @@ class CnhPattern extends TaxIdPattern {
       sum2 += int.parse(digits[i]) * (1 + i);
     }
 
-    final x = sum2 % 11;
+    final int x = sum2 % 11;
     int dv2 = x >= 10 ? 0 : x - dsc;
     if (dv2 < 0) dv2 += 11;
 

@@ -42,7 +42,7 @@ const List<String> kAdversarialChars = [
 
 /// String ASCII-imprimível aleatória com [len] caracteres.
 String randomAscii(Random rng, int len) {
-  final buf = StringBuffer();
+  final StringBuffer buf = StringBuffer();
 
   for (int i = 0; i < len; i++) {
     buf.write(kAsciiPrintable[rng.nextInt(kAsciiPrintable.length)]);
@@ -55,7 +55,7 @@ String randomAscii(Random rng, int len) {
 /// adversariais. Bom para testar que validadores nem crasham nem
 /// aceitam lixo.
 String randomAdversarial(Random rng, int len) {
-  final buf = StringBuffer();
+  final StringBuffer buf = StringBuffer();
 
   for (int i = 0; i < len; i++) {
     if (rng.nextInt(10) < 3) {
@@ -70,7 +70,7 @@ String randomAdversarial(Random rng, int len) {
 
 /// String só de dígitos com tamanho [len].
 String randomDigits(Random rng, int len) {
-  final buf = StringBuffer();
+  final StringBuffer buf = StringBuffer();
 
   for (int i = 0; i < len; i++) {
     buf.write(rng.nextInt(10));
@@ -88,9 +88,9 @@ void fuzz(
   int? iterations,
   int? seed,
 }) {
-  final actualSeed = seed ?? envSeed();
-  final rng = Random(actualSeed);
-  final count = iterations ?? kFuzzIterations;
+  final int actualSeed = seed ?? envSeed();
+  final Random rng = Random(actualSeed);
+  final int count = iterations ?? kFuzzIterations;
 
   for (int i = 0; i < count; i++) {
     try {

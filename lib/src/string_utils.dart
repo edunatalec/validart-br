@@ -7,10 +7,12 @@ extension StringUtils on String {
   /// Retorna `false` para string vazia.
   bool get isRepeatedCharacters {
     if (isEmpty) return false;
-    final first = this[0];
+
+    final String first = this[0];
     for (int i = 1; i < length; i++) {
       if (this[i] != first) return false;
     }
+
     return true;
   }
 }

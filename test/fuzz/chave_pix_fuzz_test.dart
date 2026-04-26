@@ -9,12 +9,12 @@ import 'fuzz_helpers.dart';
 
 void main() {
   group('ChavePixValidator fuzz', () {
-    final schemaDict = V.string().chavePix();
-    final schemaAll = V.string().chavePix(allow: TipoChavePix.values);
+    final VString schemaDict = V.string().chavePix();
+    final VString schemaAll = V.string().chavePix(allow: TipoChavePix.values);
 
     test('nunca lança com input adversarial (default)', () {
       fuzz('bool out on adversarial', (rng, _) {
-        final input = randomAdversarial(rng, rng.nextInt(80) + 1);
+        final String input = randomAdversarial(rng, rng.nextInt(80) + 1);
 
         expect(schemaDict.validate(input), isA<bool>());
       });
@@ -22,7 +22,7 @@ void main() {
 
     test('nunca lança com input adversarial (all, incluindo brCode)', () {
       fuzz('bool out on adversarial (all)', (rng, _) {
-        final input = randomAdversarial(rng, rng.nextInt(300) + 1);
+        final String input = randomAdversarial(rng, rng.nextInt(300) + 1);
 
         expect(schemaAll.validate(input), isA<bool>());
       });
@@ -30,8 +30,8 @@ void main() {
 
     test('adversarial puro nunca é aceito como chave', () {
       fuzz('pure adversarial rejects', (rng, _) {
-        final len = rng.nextInt(30) + 1;
-        final buf = StringBuffer();
+        final int len = rng.nextInt(30) + 1;
+        final StringBuffer buf = StringBuffer();
 
         for (int i = 0; i < len; i++) {
           buf.write(kAdversarialChars[rng.nextInt(kAdversarialChars.length)]);
@@ -41,9 +41,10 @@ void main() {
     });
 
     test('allow vazio rejeita qualquer input', () {
-      final schemaNone = V.string()..add(const ChavePixValidator(allow: []));
+      final VString schemaNone = V.string()
+        ..add(const ChavePixValidator(allow: []));
       fuzz('empty allow rejects all', (rng, _) {
-        final choice = rng.nextInt(5);
+        final int choice = rng.nextInt(5);
         final String input = switch (choice) {
           0 => '12345678909', // CPF válido
           1 => 'user@example.com', // email válido
@@ -56,7 +57,9 @@ void main() {
     });
 
     test('allow: [email] nunca aceita CPF/CNPJ/UUID válidos', () {
-      final emailOnly = V.string().chavePix(allow: const [TipoChavePix.email]);
+      final VString emailOnly = V.string().chavePix(
+        allow: const [TipoChavePix.email],
+      );
       const validos = [
         '12345678909', // CPF
         '12345678000195', // CNPJ
@@ -64,7 +67,7 @@ void main() {
         '+5511987654321', // phone
       ];
       fuzz('email-only rejects non-email', (rng, _) {
-        final input = validos[rng.nextInt(validos.length)];
+        final String input = validos[rng.nextInt(validos.length)];
         expect(emailOnly.validate(input), isFalse);
       });
     });

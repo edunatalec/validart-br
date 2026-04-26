@@ -9,12 +9,12 @@ import 'fuzz_helpers.dart';
 
 void main() {
   group('CodigoBancoValidator fuzz', () {
-    final schema = V.string().codigoBanco();
+    final VString schema = V.string().codigoBanco();
     const validator = CodigoBancoValidator();
 
     test('nunca lança com input adversarial', () {
       fuzz('bool out on adversarial', (rng, _) {
-        final input = randomAdversarial(rng, rng.nextInt(20) + 1);
+        final String input = randomAdversarial(rng, rng.nextInt(20) + 1);
 
         expect(schema.validate(input), isA<bool>());
       });
@@ -22,9 +22,9 @@ void main() {
 
     test('strings com tamanho != 3 nunca passam', () {
       fuzz('wrong length rejects', (rng, _) {
-        final len = rng.nextInt(15);
+        final int len = rng.nextInt(15);
         if (len == 3) return;
-        final input = randomDigits(rng, len);
+        final String input = randomDigits(rng, len);
 
         expect(validator.validate(input), isNotNull, reason: 'len=$len');
       });
@@ -32,10 +32,10 @@ void main() {
 
     test('formato com DV (4 dígitos com hífen) nunca passa', () {
       fuzz('with check digit format rejects', (rng, _) {
-        final code = CodigoBancoValidator.codigos.elementAt(
+        final String code = CodigoBancoValidator.codigos.elementAt(
           rng.nextInt(CodigoBancoValidator.codigos.length),
         );
-        final dv = rng.nextInt(10);
+        final int dv = rng.nextInt(10);
 
         expect(validator.validate('$code-$dv'), isNotNull);
       });
@@ -43,7 +43,7 @@ void main() {
 
     test('todos os 497 códigos da lista são aceitos', () {
       fuzz('every listed code accepted', (rng, _) {
-        final code = CodigoBancoValidator.codigos.elementAt(
+        final String code = CodigoBancoValidator.codigos.elementAt(
           rng.nextInt(CodigoBancoValidator.codigos.length),
         );
 
@@ -53,8 +53,8 @@ void main() {
 
     test('strings adversariais puras nunca passam', () {
       fuzz('pure adversarial rejects', (rng, _) {
-        final len = rng.nextInt(10) + 1;
-        final buf = StringBuffer();
+        final int len = rng.nextInt(10) + 1;
+        final StringBuffer buf = StringBuffer();
 
         for (int i = 0; i < len; i++) {
           buf.write(kAdversarialChars[rng.nextInt(kAdversarialChars.length)]);
@@ -66,8 +66,8 @@ void main() {
     test('3 dígitos aleatórios — quem passa está na lista oficial', () {
       // Espaço 1000, ~497 válidos (~50%). Property: validar input ⇔ contains.
       fuzz('membership matches list', (rng, _) {
-        final input = randomDigits(rng, 3);
-        final ok = validator.validate(input) == null;
+        final String input = randomDigits(rng, 3);
+        final bool ok = validator.validate(input) == null;
 
         expect(ok, CodigoBancoValidator.codigos.contains(input), reason: input);
       });

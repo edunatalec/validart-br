@@ -78,8 +78,8 @@ class ChavePixValidator extends Validator<String> {
 
   @override
   Map<String, dynamic>? validate(String value) {
-    for (final type in allow) {
-      final matched = switch (type) {
+    for (final TipoChavePix type in allow) {
+      final bool matched = switch (type) {
         TipoChavePix.cpf => _cpf.matches(value),
         TipoChavePix.cnpj => _cnpj.matches(value),
         TipoChavePix.email => _emailRegex.hasMatch(value),
@@ -87,8 +87,10 @@ class ChavePixValidator extends Validator<String> {
         TipoChavePix.aleatoria => _uuidRegex.hasMatch(value),
         TipoChavePix.brCode => PixBrCode.isValid(value),
       };
+
       if (matched) return null;
     }
+
     return {};
   }
 }

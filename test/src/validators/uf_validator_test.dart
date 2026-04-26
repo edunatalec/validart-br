@@ -47,32 +47,32 @@ void main() {
 
   group('UfValidator — integração via V.string().uf()', () {
     test('aceita UF válida', () {
-      final schema = V.string().uf();
+      final VString schema = V.string().uf();
       expect(schema.validate('SP'), isTrue);
       expect(schema.validate('TO'), isTrue);
       expect(schema.validate('DF'), isTrue);
     });
 
     test('rejeita UF inválida', () {
-      final schema = V.string().uf();
+      final VString schema = V.string().uf();
       expect(schema.validate('XY'), isFalse);
       expect(schema.validate('sp'), isFalse);
     });
 
     test('encadeia com toUpperCase para aceitar lowercase', () {
-      final schema = V.string().toUpperCase().uf();
+      final VString schema = V.string().toUpperCase().uf();
       expect(schema.validate('sp'), isTrue);
       expect(schema.validate('rj'), isTrue);
     });
 
     test('código de erro é invalid_state', () {
-      final schema = V.string().uf();
-      final errors = schema.errors('XX');
+      final VString schema = V.string().uf();
+      final List<VError>? errors = schema.errors('XX');
       expect(errors!.first.code, VStringCodeBr.ufInvalida);
     });
 
     test('respeita message customizada', () {
-      final schema = V.string().uf(message: 'Estado fora da Federação');
+      final VString schema = V.string().uf(message: 'Estado fora da Federação');
       expect(schema.errors('XX')!.first.message, 'Estado fora da Federação');
     });
   });
@@ -82,8 +82,8 @@ void main() {
     tearDown(() => V.setLocale(const VLocale()));
 
     test('mensagem em pt-BR é "UF inválida"', () {
-      final schema = V.string().uf();
-      final errors = schema.errors('ZZ');
+      final VString schema = V.string().uf();
+      final List<VError>? errors = schema.errors('ZZ');
       expect(errors!.first.message, 'UF inválida');
     });
   });

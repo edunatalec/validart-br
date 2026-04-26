@@ -59,25 +59,25 @@ void main() {
     });
 
     test('mensagens de erro aparecem em português no schema', () {
-      final schema = V.string().cpf();
-      final errors = schema.errors('111.111.111-11');
+      final VString schema = V.string().cpf();
+      final List<VError>? errors = schema.errors('111.111.111-11');
       expect(errors!.first.message, 'CPF inválido');
     });
 
     test('placa usa feminino (inválida)', () {
-      final schema = V.string().placa();
-      final errors = schema.errors('xxx');
+      final VString schema = V.string().placa();
+      final List<VError>? errors = schema.errors('xxx');
       expect(errors!.first.message, 'Placa inválida');
     });
 
     test('V.object<T>().equalFields() emite mensagem em pt-BR (pin do gap '
         'do validart 2.0.0 — VObjectCode.fieldsNotEqual)', () {
-      final schema = V
+      final VObject<_Pwd> schema = V
           .object<_Pwd>()
           .field('p1', (x) => x.p1, V.string())
           .field('p2', (x) => x.p2, V.string())
           .equalFields('p1', 'p2');
-      final errors = schema.errors(_Pwd('a', 'b'));
+      final List<VError>? errors = schema.errors(_Pwd('a', 'b'));
       expect(errors!.first.message, 'p1 deve ser igual a p2');
     });
   });
@@ -139,7 +139,7 @@ void main() {
       V.setLocale(
         VLocaleBr.ptBrWith({VStringCode.taxId: '{name} fora do padrão'}),
       );
-      final errors = V.string().cpf().errors('111.111.111-11');
+      final List<VError>? errors = V.string().cpf().errors('111.111.111-11');
       expect(errors!.first.message, 'CPF fora do padrão');
     });
   });

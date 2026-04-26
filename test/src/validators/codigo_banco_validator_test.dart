@@ -60,24 +60,26 @@ void main() {
 
   group('CodigoBancoValidator — integração via V.string().codigoBanco()', () {
     test('aceita código válido', () {
-      final schema = V.string().codigoBanco();
+      final VString schema = V.string().codigoBanco();
       expect(schema.validate('001'), isTrue);
       expect(schema.validate('260'), isTrue);
     });
 
     test('rejeita código inválido', () {
-      final schema = V.string().codigoBanco();
+      final VString schema = V.string().codigoBanco();
       expect(schema.validate('999'), isFalse);
     });
 
     test('código de erro é invalid_bank_code', () {
-      final schema = V.string().codigoBanco();
-      final errors = schema.errors('999');
+      final VString schema = V.string().codigoBanco();
+      final List<VError>? errors = schema.errors('999');
       expect(errors!.first.code, VStringCodeBr.codigoBancoInvalido);
     });
 
     test('respeita message customizada', () {
-      final schema = V.string().codigoBanco(message: 'Banco não autorizado');
+      final VString schema = V.string().codigoBanco(
+        message: 'Banco não autorizado',
+      );
       expect(schema.errors('999')!.first.message, 'Banco não autorizado');
     });
   });
@@ -87,8 +89,8 @@ void main() {
     tearDown(() => V.setLocale(const VLocale()));
 
     test('mensagem em pt-BR é "Código de banco inválido"', () {
-      final schema = V.string().codigoBanco();
-      final errors = schema.errors('999');
+      final VString schema = V.string().codigoBanco();
+      final List<VError>? errors = schema.errors('999');
       expect(errors!.first.message, 'Código de banco inválido');
     });
   });

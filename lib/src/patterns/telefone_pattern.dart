@@ -132,19 +132,16 @@ class TelefonePattern extends PhonePattern {
 
   @override
   Map<String, dynamic>? validate(String value) {
-    final match = _regex.firstMatch(value);
+    final RegExpMatch? match = _regex.firstMatch(value);
     if (match == null) return {};
 
-    final hasCountryCode = match.group(1) != null;
-    final dddRaw = match.group(2);
-    final first = match.group(3)!;
-
-    final hasAreaCode = dddRaw != null;
+    final bool hasCountryCode = match.group(1) != null;
+    final String? dddRaw = match.group(2);
+    final String first = match.group(3)!;
+    final bool hasAreaCode = dddRaw != null;
 
     if (hasCountryCode && pais == CountryCodeFormat.none) return {};
-    if (!hasCountryCode && pais == CountryCodeFormat.required) {
-      return {};
-    }
+    if (!hasCountryCode && pais == CountryCodeFormat.required) return {};
 
     if (hasAreaCode && ddd == FormatoDdd.none) return {};
     if (!hasAreaCode && ddd == FormatoDdd.required) return {};
@@ -152,17 +149,20 @@ class TelefonePattern extends PhonePattern {
     if (hasCountryCode && !hasAreaCode) return {};
 
     if (hasAreaCode) {
-      final dddDigits = dddRaw.replaceAll(RegExp(r'[^\d]'), '');
-      final dddInt = int.parse(dddDigits);
+      final String dddDigits = dddRaw.replaceAll(RegExp(r'[^\d]'), '');
+      final int dddInt = int.parse(dddDigits);
+
       if (!_validDdds.contains(dddInt)) return {};
     }
 
-    final isMobile = first.length == 5 && first.startsWith('9');
-    final isLandline = first.length == 4;
+    final bool isMobile = first.length == 5 && first.startsWith('9');
+    final bool isLandline = first.length == 4;
+
     if (!isMobile && !isLandline) return {};
     if (apenasCelular && !isMobile) return {};
 
-    final hasSeparators = _containsSeparator(value);
+    final bool hasSeparators = _containsSeparator(value);
+
     if (mode == ValidationMode.unformatted && hasSeparators) return {};
     if (mode == ValidationMode.formatted && !hasSeparators) return {};
 

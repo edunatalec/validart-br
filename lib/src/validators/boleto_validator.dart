@@ -104,6 +104,7 @@ class BoletoValidator extends Validator<String> {
 
     // DV geral em 32 — calculado sobre o código de barras reconstituído.
     final String barcode = _linhaToBarcodeBancario(linha);
+
     return _validateBancarioBarcode(barcode);
   }
 
@@ -111,12 +112,14 @@ class BoletoValidator extends Validator<String> {
   /// digitável bancária (47 dígitos).
   static String _linhaToBarcodeBancario(String linha) {
     final StringBuffer b = StringBuffer();
+
     b.write(linha.substring(0, 4)); // banco + moeda
     b.write(linha[32]); // DV geral
     b.write(linha.substring(33, 47)); // fator (4) + valor (10)
     b.write(linha.substring(4, 9)); // 5 do campo livre
     b.write(linha.substring(10, 20)); // 10 do campo livre
     b.write(linha.substring(21, 31)); // 10 do campo livre
+
     return b.toString();
   }
 
@@ -138,6 +141,7 @@ class BoletoValidator extends Validator<String> {
 
     final int dv = int.parse(barcode[3]);
     final String rest = barcode.substring(0, 3) + barcode.substring(4);
+
     return algoritmo(rest) == dv;
   }
 
@@ -156,8 +160,10 @@ class BoletoValidator extends Validator<String> {
       final int start = bloco * 12;
       final String dados = linha.substring(start, start + 11);
       final int dv = int.parse(linha[start + 11]);
+
       if (algoritmo(dados) != dv) return false;
     }
+
     return true;
   }
 
@@ -179,13 +185,16 @@ class BoletoValidator extends Validator<String> {
   static int _mod10(String digits) {
     int sum = 0;
     int weight = 2;
+
     for (int i = digits.length - 1; i >= 0; i--) {
       int product = int.parse(digits[i]) * weight;
       if (product > 9) product = (product ~/ 10) + (product % 10);
       sum += product;
       weight = weight == 2 ? 1 : 2;
     }
+
     final int rem = sum % 10;
+
     return rem == 0 ? 0 : 10 - rem;
   }
 
@@ -194,13 +203,17 @@ class BoletoValidator extends Validator<String> {
   static int _mod11Bancario(String digits) {
     int sum = 0;
     int weight = 2;
+
     for (int i = digits.length - 1; i >= 0; i--) {
       sum += int.parse(digits[i]) * weight;
       weight = weight == 9 ? 2 : weight + 1;
     }
+
     final int rem = sum % 11;
     final int dv = 11 - rem;
+
     if (dv == 0 || dv == 10 || dv == 11) return 1;
+
     return dv;
   }
 
@@ -209,13 +222,17 @@ class BoletoValidator extends Validator<String> {
   static int _mod11Arrecadacao(String digits) {
     int sum = 0;
     int weight = 2;
+
     for (int i = digits.length - 1; i >= 0; i--) {
       sum += int.parse(digits[i]) * weight;
       weight = weight == 9 ? 2 : weight + 1;
     }
+
     final int rem = sum % 11;
     final int dv = 11 - rem;
+
     if (dv == 0 || dv == 10 || dv == 11) return 0;
+
     return dv;
   }
 }

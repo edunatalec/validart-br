@@ -72,20 +72,24 @@ void main() {
 
     group('integração', () {
       test('V.string().taxId(patterns:) valida', () {
-        final schema = V.string().taxId(patterns: [const CnpjPattern()]);
+        final VString schema = V.string().taxId(
+          patterns: [const CnpjPattern()],
+        );
         expect(schema.validate('12ABC34501DE35'), isTrue);
       });
 
       test('error code é tax_id', () {
-        final schema = V.string().taxId(patterns: [const CnpjPattern()]);
-        final errors = schema.errors('00.000.000/0000-00');
+        final VString schema = V.string().taxId(
+          patterns: [const CnpjPattern()],
+        );
+        final List<VError>? errors = schema.errors('00.000.000/0000-00');
         expect(errors!.first.code, VStringCode.taxId);
       });
 
       test('mensagem em pt-BR interpola {name} como "CNPJ"', () {
         V.setLocale(VLocaleBr.ptBr);
-        final schema = V.string().cnpj();
-        final errors = schema.errors('00.000.000/0000-00');
+        final VString schema = V.string().cnpj();
+        final List<VError>? errors = schema.errors('00.000.000/0000-00');
         expect(errors!.first.message, 'CNPJ inválido');
       });
 
@@ -94,14 +98,14 @@ void main() {
       });
 
       test('atalho V.string().cnpj(alphanumeric: false)', () {
-        final schema = V.string().cnpj(alphanumeric: false);
+        final VString schema = V.string().cnpj(alphanumeric: false);
         expect(schema.validate('12345678000195'), isTrue);
         expect(schema.validate('12ABC34501DE35'), isFalse);
       });
 
       test('message customizada', () {
-        final schema = V.string().cnpj(message: 'CNPJ incorreto');
-        final errors = schema.errors('00.000.000/0000-00');
+        final VString schema = V.string().cnpj(message: 'CNPJ incorreto');
+        final List<VError>? errors = schema.errors('00.000.000/0000-00');
         expect(errors!.first.message, 'CNPJ incorreto');
       });
     });

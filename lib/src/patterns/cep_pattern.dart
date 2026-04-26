@@ -35,7 +35,8 @@ class CepPattern extends PostalCodePattern {
   bool matches(String value) {
     if (!_matchesMode(value)) return false;
 
-    final digits = value.onlyDigits;
+    final String digits = value.onlyDigits;
+
     if (digits.length != 8) return false;
     if (digits.isRepeatedCharacters) return false;
 

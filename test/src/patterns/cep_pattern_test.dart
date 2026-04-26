@@ -43,20 +43,24 @@ void main() {
 
     group('integração', () {
       test('V.string().postalCode(patterns:) valida', () {
-        final schema = V.string().postalCode(patterns: [const CepPattern()]);
+        final VString schema = V.string().postalCode(
+          patterns: [const CepPattern()],
+        );
         expect(schema.validate('01001-000'), isTrue);
       });
 
       test('error code é postal_code', () {
-        final schema = V.string().postalCode(patterns: [const CepPattern()]);
-        final errors = schema.errors('00000-000');
+        final VString schema = V.string().postalCode(
+          patterns: [const CepPattern()],
+        );
+        final List<VError>? errors = schema.errors('00000-000');
         expect(errors!.first.code, VStringCode.postalCode);
       });
 
       test('mensagem em pt-BR interpola {name} como "CEP"', () {
         V.setLocale(VLocaleBr.ptBr);
-        final schema = V.string().cep();
-        final errors = schema.errors('00000-000');
+        final VString schema = V.string().cep();
+        final List<VError>? errors = schema.errors('00000-000');
         expect(errors!.first.message, 'CEP inválido');
       });
 

@@ -22,11 +22,13 @@ void runBoletoExamples() {
   section('Boleto — restrição via [format]');
 
   // format pin'a o tipo aceito.
-  final soBancario = V.string().boleto(formato: FormatoBoleto.bancario);
+  final VString soBancario = V.string().boleto(formato: FormatoBoleto.bancario);
   print(soBancario.validate(kBoletoBancarioLinha)); // true
   print(soBancario.validate(kBoletoArrecadacaoLinhaMod10)); // false
 
-  final soArrecadacao = V.string().boleto(formato: FormatoBoleto.arrecadacao);
+  final VString soArrecadacao = V.string().boleto(
+    formato: FormatoBoleto.arrecadacao,
+  );
   print(soArrecadacao.validate(kBoletoArrecadacaoLinhaMod11)); // true
   print(soArrecadacao.validate(kBoletoBancarioLinha)); // false
 }

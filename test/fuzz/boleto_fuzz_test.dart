@@ -29,12 +29,12 @@ const _validBoletos = <String>[
 
 void main() {
   group('BoletoValidator fuzz', () {
-    final schema = V.string().boleto();
+    final VString schema = V.string().boleto();
     const validator = BoletoValidator();
 
     test('nunca lança com input adversarial', () {
       fuzz('bool out on adversarial', (rng, _) {
-        final input = randomAdversarial(rng, rng.nextInt(60) + 1);
+        final String input = randomAdversarial(rng, rng.nextInt(60) + 1);
 
         expect(schema.validate(input), isA<bool>());
       });
@@ -42,9 +42,9 @@ void main() {
 
     test('dígitos puros com tamanho ∉ {44,47,48} nunca passam', () {
       fuzz('wrong length rejects', (rng, _) {
-        final len = rng.nextInt(60);
+        final int len = rng.nextInt(60);
         if (len == 44 || len == 47 || len == 48) return;
-        final input = randomDigits(rng, len);
+        final String input = randomDigits(rng, len);
 
         expect(validator.validate(input), isNotNull, reason: 'len=$len');
       });
@@ -52,8 +52,8 @@ void main() {
 
     test('strings adversariais puras nunca passam', () {
       fuzz('pure adversarial rejects', (rng, _) {
-        final len = rng.nextInt(50) + 1;
-        final buf = StringBuffer();
+        final int len = rng.nextInt(50) + 1;
+        final StringBuffer buf = StringBuffer();
 
         for (int i = 0; i < len; i++) {
           buf.write(kAdversarialChars[rng.nextInt(kAdversarialChars.length)]);
@@ -66,8 +66,8 @@ void main() {
       // Inserir caracteres não-numéricos quaisquer não pode invalidar
       // — o validator faz strip antes da validação.
       fuzz('mask noise preserves validity', (rng, _) {
-        final boleto = _validBoletos[rng.nextInt(_validBoletos.length)];
-        final masked = _injectMask(rng, boleto);
+        final String boleto = _validBoletos[rng.nextInt(_validBoletos.length)];
+        final String masked = _injectMask(rng, boleto);
 
         expect(validator.validate(masked), isNull, reason: masked);
       });
@@ -77,10 +77,10 @@ void main() {
       // O DV geral está na posição 32 da linha digitável bancária.
       const valid = '23793381286000782713695000063305975520000370000';
       fuzz('flip general DV invalidates', (rng, _) {
-        final delta = 1 + rng.nextInt(9);
-        final original = int.parse(valid[32]);
-        final novo = ((original + delta) % 10).toString();
-        final tampered = valid.replaceRange(32, 33, novo);
+        final int delta = 1 + rng.nextInt(9);
+        final int original = int.parse(valid[32]);
+        final String novo = ((original + delta) % 10).toString();
+        final String tampered = valid.replaceRange(32, 33, novo);
 
         expect(validator.validate(tampered), isNotNull, reason: tampered);
       });
@@ -91,11 +91,11 @@ void main() {
       fuzz('flip field DV invalidates', (rng, _) {
         // DVs de campo nas posições 9, 20, 31 da linha digitável.
         const dvPositions = [9, 20, 31];
-        final pos = dvPositions[rng.nextInt(dvPositions.length)];
-        final delta = 1 + rng.nextInt(9);
-        final original = int.parse(valid[pos]);
-        final novo = ((original + delta) % 10).toString();
-        final tampered = valid.replaceRange(pos, pos + 1, novo);
+        final int pos = dvPositions[rng.nextInt(dvPositions.length)];
+        final int delta = 1 + rng.nextInt(9);
+        final int original = int.parse(valid[pos]);
+        final String novo = ((original + delta) % 10).toString();
+        final String tampered = valid.replaceRange(pos, pos + 1, novo);
 
         expect(
           validator.validate(tampered),
@@ -114,7 +114,7 @@ void main() {
         '84890000000404201622018060519042958603411122',
       ];
       fuzz('bancario format rejects arrecadacao', (rng, _) {
-        final input = arrecadacoes[rng.nextInt(arrecadacoes.length)];
+        final String input = arrecadacoes[rng.nextInt(arrecadacoes.length)];
         expect(validator.validate(input), isNotNull);
       });
     });
@@ -123,7 +123,7 @@ void main() {
 
 String _injectMask(Random rng, String digits) {
   const mask = ' .-/';
-  final buf = StringBuffer();
+  final StringBuffer buf = StringBuffer();
   for (int i = 0; i < digits.length; i++) {
     buf.write(digits[i]);
     if (rng.nextInt(5) == 0) {

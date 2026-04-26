@@ -29,7 +29,7 @@ void main() {
 
     group('integração', () {
       test('V.string().taxId(patterns:) valida', () {
-        final schema = V.string().taxId(
+        final VString schema = V.string().taxId(
           patterns: [const TituloEleitorPattern()],
         );
         expect(schema.validate('876543210329'), isTrue);
@@ -40,15 +40,15 @@ void main() {
       });
 
       test('error code é tax_id', () {
-        final schema = V.string().tituloEleitor();
-        final errors = schema.errors('000000000000');
+        final VString schema = V.string().tituloEleitor();
+        final List<VError>? errors = schema.errors('000000000000');
         expect(errors!.first.code, VStringCode.taxId);
       });
 
       test('mensagem em pt-BR interpola {name} como "Título de eleitor"', () {
         V.setLocale(VLocaleBr.ptBr);
-        final schema = V.string().tituloEleitor();
-        final errors = schema.errors('000000000000');
+        final VString schema = V.string().tituloEleitor();
+        final List<VError>? errors = schema.errors('000000000000');
         expect(errors!.first.message, 'Título de eleitor inválido');
       });
     });

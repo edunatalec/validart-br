@@ -7,25 +7,25 @@ void main() {
 
   group('VStringBr — fluent API', () {
     test('cpf encadeia com trim', () {
-      final schema = V.string().trim().cpf();
+      final VString schema = V.string().trim().cpf();
       expect(schema.validate('  123.456.789-09  '), isTrue);
       expect(schema.validate('000.000.000-00'), isFalse);
     });
 
     test('cnpj respeita mode', () {
-      final schema = V.string().cnpj(mode: ValidationMode.unformatted);
+      final VString schema = V.string().cnpj(mode: ValidationMode.unformatted);
       expect(schema.validate('12345678000195'), isTrue);
       expect(schema.validate('12.345.678/0001-95'), isFalse);
     });
 
     test('cep aceita ambos por default', () {
-      final schema = V.string().cep();
+      final VString schema = V.string().cep();
       expect(schema.validate('01001-000'), isTrue);
       expect(schema.validate('01001000'), isTrue);
     });
 
     test('phoneBr com flags combinadas', () {
-      final schema = V.string().telefone(
+      final VString schema = V.string().telefone(
         ddd: FormatoDdd.required,
         pais: CountryCodeFormat.required,
         apenasCelular: true,
@@ -42,7 +42,7 @@ void main() {
     });
 
     test('pixKey aceita CPF, e-mail, telefone ou UUID', () {
-      final schema = V.string().chavePix();
+      final VString schema = V.string().chavePix();
       expect(schema.validate('12345678909'), isTrue);
       expect(schema.validate('user@example.com'), isTrue);
       expect(schema.validate('+5511987654321'), isTrue);
@@ -50,7 +50,7 @@ void main() {
     });
 
     test('plate encadeia com toUpperCase', () {
-      final schema = V.string().toUpperCase().placa();
+      final VString schema = V.string().toUpperCase().placa();
       expect(schema.validate('abc-1234'), isTrue);
       expect(schema.validate('abc1d23'), isTrue);
     });
@@ -65,7 +65,7 @@ void main() {
     });
 
     test('boleto bancário e arrecadação', () {
-      final schema = V.string().boleto();
+      final VString schema = V.string().boleto();
       expect(
         schema.validate('23793381286000782713695000063305975520000370000'),
         isTrue,
@@ -78,7 +78,7 @@ void main() {
     });
 
     test('boleto restringido por format', () {
-      final schema = V.string().boleto(formato: FormatoBoleto.bancario);
+      final VString schema = V.string().boleto(formato: FormatoBoleto.bancario);
       expect(
         schema.validate('23793381286000782713695000063305975520000370000'),
         isTrue,
@@ -92,59 +92,65 @@ void main() {
 
   group('VStringBr — mensagem customizada', () {
     test('cpf', () {
-      final schema = V.string().cpf(message: 'CPF obrigatório!');
+      final VString schema = V.string().cpf(message: 'CPF obrigatório!');
       expect(schema.errors('xxxx')!.first.message, 'CPF obrigatório!');
     });
 
     test('cnpj', () {
-      final schema = V.string().cnpj(message: 'CNPJ incorreto');
+      final VString schema = V.string().cnpj(message: 'CNPJ incorreto');
       expect(schema.errors('xx')!.first.message, 'CNPJ incorreto');
     });
 
     test('cnh usa feminino explícito', () {
-      final schema = V.string().cnh(message: 'CNH inválida');
+      final VString schema = V.string().cnh(message: 'CNH inválida');
       expect(schema.errors('00000000000')!.first.message, 'CNH inválida');
     });
 
     test('plate', () {
-      final schema = V.string().placa(message: 'Placa fora do padrão');
+      final VString schema = V.string().placa(message: 'Placa fora do padrão');
       expect(schema.errors('xyz')!.first.message, 'Placa fora do padrão');
     });
 
     test('phoneBr', () {
-      final schema = V.string().telefone(message: 'Telefone BR inválido');
+      final VString schema = V.string().telefone(
+        message: 'Telefone BR inválido',
+      );
       expect(schema.errors('abc')!.first.message, 'Telefone BR inválido');
     });
 
     test('pixKey', () {
-      final schema = V.string().chavePix(message: 'Chave PIX ruim');
+      final VString schema = V.string().chavePix(message: 'Chave PIX ruim');
       expect(schema.errors('nope')!.first.message, 'Chave PIX ruim');
     });
 
     test('state', () {
-      final schema = V.string().uf(message: 'UF não reconhecida');
+      final VString schema = V.string().uf(message: 'UF não reconhecida');
       expect(schema.errors('XY')!.first.message, 'UF não reconhecida');
     });
 
     test('bankCode', () {
-      final schema = V.string().codigoBanco(message: 'Banco não autorizado');
+      final VString schema = V.string().codigoBanco(
+        message: 'Banco não autorizado',
+      );
       expect(schema.errors('999')!.first.message, 'Banco não autorizado');
     });
 
     test('ddd', () {
-      final schema = V.string().ddd(message: 'DDD fora da Anatel');
+      final VString schema = V.string().ddd(message: 'DDD fora da Anatel');
       expect(schema.errors('00')!.first.message, 'DDD fora da Anatel');
     });
 
     test('boleto', () {
-      final schema = V.string().boleto(message: 'Boleto fora do padrão');
+      final VString schema = V.string().boleto(
+        message: 'Boleto fora do padrão',
+      );
       expect(schema.errors('xxx')!.first.message, 'Boleto fora do padrão');
     });
   });
 
   group('VStringBr — integração com o core', () {
     test('nullable aceita null e valida quando tem valor', () {
-      final schemas = <VString>[
+      final List<VString> schemas = <VString>[
         V.string().cpf().nullable(),
         V.string().cnpj().nullable(),
         V.string().cep().nullable(),
@@ -164,17 +170,17 @@ void main() {
     });
 
     test('defaultValue passa pela validação do core', () {
-      final schema = V.string().defaultValue('123.456.789-09').cpf();
+      final VString schema = V.string().defaultValue('123.456.789-09').cpf();
       expect(schema.parse(null), '123.456.789-09');
 
       // Default inválido é rejeitado (comportamento do core 1.1.0)
-      final bad = V.string().defaultValue('xxxx').cpf();
+      final VString bad = V.string().defaultValue('xxxx').cpf();
       expect(bad.validate(null), isFalse);
     });
 
     test('schema composto retorna erros por campo', () {
       V.setLocale(VLocaleBr.ptBr);
-      final schema = V.map({
+      final VMap schema = V.map({
         'cpf': V.string().cpf(),
         'cnpj': V.string().cnpj(),
         'cep': V.string().cep(),
@@ -185,7 +191,7 @@ void main() {
         'boleto': V.string().boleto(),
       });
 
-      final result = schema.safeParse({
+      final VResult<Map<String, dynamic>?> result = schema.safeParse({
         'cpf': '000.000.000-00',
         'cnpj': '00.000.000/0000-00',
         'cep': '00000-000',
@@ -197,7 +203,7 @@ void main() {
       });
 
       expect(result, isA<VFailure>());
-      final map = (result as VFailure).toMap();
+      final Map<String, String> map = (result as VFailure).toMap();
       expect(map['cpf'], 'CPF inválido');
       expect(map['cnpj'], 'CNPJ inválido');
       expect(map['cep'], 'CEP inválido');

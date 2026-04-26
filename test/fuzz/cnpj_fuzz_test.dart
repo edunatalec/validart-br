@@ -9,7 +9,7 @@ import 'fuzz_helpers.dart';
 
 void main() {
   group('CnpjPattern fuzz', () {
-    final schema = V.string().cnpj();
+    final VString schema = V.string().cnpj();
     const numericPattern = CnpjPattern(
       mode: ValidationMode.unformatted,
       alphanumeric: false,
@@ -17,7 +17,7 @@ void main() {
 
     test('nunca lança com input adversarial', () {
       fuzz('bool out on adversarial', (rng, _) {
-        final input = randomAdversarial(rng, rng.nextInt(60) + 1);
+        final String input = randomAdversarial(rng, rng.nextInt(60) + 1);
 
         expect(schema.validate(input), isA<bool>());
       });
@@ -25,8 +25,8 @@ void main() {
 
     test('dígitos repetidos (14) são sempre rejeitados', () {
       fuzz('repeated rejects', (rng, _) {
-        final d = rng.nextInt(10);
-        final input = List.filled(14, d).join();
+        final int d = rng.nextInt(10);
+        final String input = List.filled(14, d).join();
 
         expect(numericPattern.matches(input), isFalse, reason: input);
       });
@@ -34,9 +34,9 @@ void main() {
 
     test('dígitos puros fora de 14 de tamanho nunca passam', () {
       fuzz('wrong length rejects', (rng, _) {
-        final len = rng.nextInt(20);
+        final int len = rng.nextInt(20);
         if (len == 14) return;
-        final input = randomDigits(rng, len);
+        final String input = randomDigits(rng, len);
 
         expect(numericPattern.matches(input), isFalse);
       });
@@ -45,7 +45,7 @@ void main() {
     test('lowercase no formato alfanumérico é rejeitado', () {
       const pattern = CnpjPattern();
       fuzz('lowercase rejects', (rng, _) {
-        final buf = StringBuffer();
+        final StringBuffer buf = StringBuffer();
         const letters = 'abcdefghijklmnopqrstuvwxyz';
 
         for (int i = 0; i < 12; i++) {
@@ -62,9 +62,9 @@ void main() {
       // dígitos do meio).
       const valid = '12345678000195';
       fuzz('flip DV invalidates', (rng, _) {
-        final delta = 1 + rng.nextInt(9);
-        final bumped = ((int.parse(valid[13]) + delta) % 10).toString();
-        final tampered = valid.replaceRange(13, 14, bumped);
+        final int delta = 1 + rng.nextInt(9);
+        final String bumped = ((int.parse(valid[13]) + delta) % 10).toString();
+        final String tampered = valid.replaceRange(13, 14, bumped);
 
         expect(numericPattern.matches(tampered), isFalse, reason: tampered);
       });

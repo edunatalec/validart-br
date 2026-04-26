@@ -21,7 +21,7 @@ void runChavePixExamples() {
 
   section('PIX — restringindo tipos com [allow]');
 
-  final emailOuTelefone = V.string().chavePix(
+  final VString emailOuTelefone = V.string().chavePix(
     allow: const [TipoChavePix.email, TipoChavePix.telefone],
   );
   print(emailOuTelefone.validate('user@example.com')); // true
@@ -32,12 +32,14 @@ void runChavePixExamples() {
 
   // Adicione TipoChavePix.brCode em allow para aceitar o payload do
   // QR Code ("copia e cola"), validado com CRC16 e campos do Bacen.
-  final completo = V.string().chavePix(allow: TipoChavePix.values);
+  final VString completo = V.string().chavePix(allow: TipoChavePix.values);
   print(completo.validate(kPixBrCodeUuid)); // true
   print(completo.validate(kPixBrCodeEmail)); // true
 
   // Só BR Code:
-  final soBrCode = V.string().chavePix(allow: const [TipoChavePix.brCode]);
+  final VString soBrCode = V.string().chavePix(
+    allow: const [TipoChavePix.brCode],
+  );
   print(soBrCode.validate(kPixBrCodeUuid)); // true
   print(soBrCode.validate('12345678909')); // false (CPF não está em allow)
 }

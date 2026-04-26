@@ -42,20 +42,20 @@ void main() {
 
     group('integração', () {
       test('V.string().taxId(patterns:) valida', () {
-        final schema = V.string().taxId(patterns: [const PisPattern()]);
+        final VString schema = V.string().taxId(patterns: [const PisPattern()]);
         expect(schema.validate('12054789013'), isTrue);
       });
 
       test('error code é tax_id', () {
-        final schema = V.string().taxId(patterns: [const PisPattern()]);
-        final errors = schema.errors('00000000000');
+        final VString schema = V.string().taxId(patterns: [const PisPattern()]);
+        final List<VError>? errors = schema.errors('00000000000');
         expect(errors!.first.code, VStringCode.taxId);
       });
 
       test('mensagem em pt-BR interpola {name} como "PIS/PASEP"', () {
         V.setLocale(VLocaleBr.ptBr);
-        final schema = V.string().pis();
-        final errors = schema.errors('00000000000');
+        final VString schema = V.string().pis();
+        final List<VError>? errors = schema.errors('00000000000');
         expect(errors!.first.message, 'PIS/PASEP inválido');
       });
 

@@ -62,21 +62,21 @@ void main() {
 
     group('integração — V.string().taxId(patterns: …)', () {
       test('valida via método genérico do core', () {
-        final schema = V.string().taxId(patterns: [const CpfPattern()]);
+        final VString schema = V.string().taxId(patterns: [const CpfPattern()]);
         expect(schema.validate('123.456.789-09'), isTrue);
         expect(schema.validate('111.111.111-11'), isFalse);
       });
 
       test('error code é tax_id (genérico do core)', () {
-        final schema = V.string().taxId(patterns: [const CpfPattern()]);
-        final errors = schema.errors('000.000.000-00');
+        final VString schema = V.string().taxId(patterns: [const CpfPattern()]);
+        final List<VError>? errors = schema.errors('000.000.000-00');
         expect(errors!.first.code, VStringCode.taxId);
       });
 
       test('mensagem com VLocaleBr.ptBr interpola {name}', () {
         V.setLocale(VLocaleBr.ptBr);
-        final schema = V.string().taxId(patterns: [const CpfPattern()]);
-        final errors = schema.errors('000.000.000-00');
+        final VString schema = V.string().taxId(patterns: [const CpfPattern()]);
+        final List<VError>? errors = schema.errors('000.000.000-00');
         expect(errors!.first.message, 'CPF inválido');
       });
     });
@@ -88,14 +88,16 @@ void main() {
       });
 
       test('respeita mode', () {
-        final schema = V.string().cpf(mode: ValidationMode.unformatted);
+        final VString schema = V.string().cpf(mode: ValidationMode.unformatted);
         expect(schema.validate('12345678909'), isTrue);
         expect(schema.validate('123.456.789-09'), isFalse);
       });
 
       test('respeita message customizada', () {
-        final schema = V.string().cpf(message: 'CPF inválido, meu caro');
-        final errors = schema.errors('000.000.000-00');
+        final VString schema = V.string().cpf(
+          message: 'CPF inválido, meu caro',
+        );
+        final List<VError>? errors = schema.errors('000.000.000-00');
         expect(errors!.first.message, 'CPF inválido, meu caro');
       });
     });

@@ -55,7 +55,8 @@ class CnpjPattern extends TaxIdPattern {
   bool matches(String value) {
     if (!_matchesMode(value)) return false;
 
-    final chars = value.replaceAll(RegExp(r'[^0-9A-Z]'), '');
+    final String chars = value.replaceAll(RegExp(r'[^0-9A-Z]'), '');
+
     if (chars.length != 14) return false;
     if (chars.isRepeatedCharacters) return false;
 
@@ -63,12 +64,13 @@ class CnpjPattern extends TaxIdPattern {
   }
 
   bool _matchesMode(String value) {
-    final formattedRegex = alphanumeric
+    final RegExp formattedRegex = alphanumeric
         ? _formattedAlphaRegex
         : _formattedNumericRegex;
-    final unformattedRegex = alphanumeric
+    final RegExp unformattedRegex = alphanumeric
         ? _unformattedAlphaRegex
         : _unformattedNumericRegex;
+
     switch (mode) {
       case ValidationMode.formatted:
         return formattedRegex.hasMatch(value);
@@ -81,10 +83,11 @@ class CnpjPattern extends TaxIdPattern {
   }
 
   static bool _checksumIsValid(String chars) {
-    final dv1 = _checkDigit(chars, 12, _weights1);
+    final int dv1 = _checkDigit(chars, 12, _weights1);
     if (chars[12] != dv1.toString()) return false;
 
-    final dv2 = _checkDigit(chars, 13, _weights2);
+    final int dv2 = _checkDigit(chars, 13, _weights2);
+
     return chars[13] == dv2.toString();
   }
 
@@ -93,10 +96,13 @@ class CnpjPattern extends TaxIdPattern {
   /// da Receita).
   static int _checkDigit(String chars, int length, List<int> weights) {
     int sum = 0;
+
     for (int i = 0; i < length; i++) {
       sum += (chars.codeUnitAt(i) - 48) * weights[i];
     }
-    final mod = sum % 11;
+
+    final int mod = sum % 11;
+
     return mod < 2 ? 0 : 11 - mod;
   }
 }

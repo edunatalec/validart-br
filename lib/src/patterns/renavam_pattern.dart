@@ -23,7 +23,8 @@ class RenavamPattern extends TaxIdPattern {
   bool matches(String value) {
     if (!_regex.hasMatch(value)) return false;
 
-    final digits = value.onlyDigits;
+    final String digits = value.onlyDigits;
+
     if (digits.isRepeatedCharacters) return false;
 
     return _checksumIsValid(digits);
@@ -34,8 +35,10 @@ class RenavamPattern extends TaxIdPattern {
     for (int i = 0; i < 10; i++) {
       sum += int.parse(digits[i]) * _weights[i];
     }
-    final mod = sum % 11;
-    final dv = mod < 2 ? 0 : 11 - mod;
+
+    final int mod = sum % 11;
+    final int dv = mod < 2 ? 0 : 11 - mod;
+
     return digits[10] == dv.toString();
   }
 }

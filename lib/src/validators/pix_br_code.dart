@@ -13,22 +13,22 @@ sealed class PixBrCode {
 
     // CRC fica sempre nos últimos 8 chars no formato "6304XXXX".
     if (value.length < 8) return false;
-    final crcTagStart = value.length - 8;
+    final int crcTagStart = value.length - 8;
     if (value.substring(crcTagStart, crcTagStart + 4) != '6304') return false;
 
-    final declared = value.substring(crcTagStart + 4).toUpperCase();
+    final String declared = value.substring(crcTagStart + 4).toUpperCase();
     if (!_hex4Regex.hasMatch(declared)) return false;
 
-    final expected = _crc16CcittFalse(
+    final String expected = _crc16CcittFalse(
       value.substring(0, crcTagStart + 4),
     ).toRadixString(16).toUpperCase().padLeft(4, '0');
     if (declared != expected) return false;
 
-    final fields = _parseTlv(value);
+    final List<(String, String)>? fields = _parseTlv(value);
     if (fields == null) return false;
 
-    final byId = <String, String>{};
-    for (final f in fields) {
+    final Map<String, String> byId = <String, String>{};
+    for (final (String, String) f in fields) {
       byId[f.$1] = f.$2;
     }
 
@@ -42,12 +42,14 @@ sealed class PixBrCode {
 
     // Pelo menos um Merchant Account Info (26..51) com GUID do PIX.
     bool hasPixMerchant = false;
-    for (final (id, val) in fields) {
-      final idInt = int.tryParse(id);
+    for (final (String id, String val) in fields) {
+      final int? idInt = int.tryParse(id);
       if (idInt == null || idInt < 26 || idInt > 51) continue;
-      final sub = _parseTlv(val);
+
+      final List<(String, String)>? sub = _parseTlv(val);
       if (sub == null) continue;
-      for (final s in sub) {
+
+      for (final (String, String) s in sub) {
         if (s.$1 == '00' && s.$2.toLowerCase() == 'br.gov.bcb.pix') {
           hasPixMerchant = true;
           break;
@@ -65,18 +67,21 @@ sealed class PixBrCode {
   /// Parse TLV (Tag-Length-Value) EMVCo: `IIll<value>` repetido.
   /// Retorna `null` se a estrutura estiver corrompida.
   static List<(String, String)>? _parseTlv(String s) {
-    final out = <(String, String)>[];
+    final List<(String, String)> out = <(String, String)>[];
 
     int i = 0;
     while (i < s.length) {
       if (i + 4 > s.length) return null;
-      final id = s.substring(i, i + 2);
-      final lenStr = s.substring(i + 2, i + 4);
-      final len = int.tryParse(lenStr);
+
+      final String id = s.substring(i, i + 2);
+      final String lenStr = s.substring(i + 2, i + 4);
+      final int? len = int.tryParse(lenStr);
       if (len == null || len < 0) return null;
-      final valueStart = i + 4;
-      final valueEnd = valueStart + len;
+
+      final int valueStart = i + 4;
+      final int valueEnd = valueStart + len;
       if (valueEnd > s.length) return null;
+
       out.add((id, s.substring(valueStart, valueEnd)));
       i = valueEnd;
     }
@@ -88,7 +93,7 @@ sealed class PixBrCode {
   /// algoritmo exigido pelo EMVCo/Bacen para o campo 63 do BR Code.
   static int _crc16CcittFalse(String data) {
     int crc = 0xFFFF;
-    for (final byte in data.codeUnits) {
+    for (final int byte in data.codeUnits) {
       crc ^= (byte & 0xFF) << 8;
       for (int i = 0; i < 8; i++) {
         if ((crc & 0x8000) != 0) {

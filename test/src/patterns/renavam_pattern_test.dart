@@ -27,16 +27,16 @@ void main() {
 
     group('integração', () {
       test('V.string().renavam() valida e retorna code tax_id', () {
-        final schema = V.string().renavam();
+        final VString schema = V.string().renavam();
         expect(schema.validate('12345678900'), isTrue);
-        final errors = schema.errors('00000000000');
+        final List<VError>? errors = schema.errors('00000000000');
         expect(errors!.first.code, VStringCode.taxId);
       });
 
       test('mensagem em pt-BR interpola {name} como "Renavam"', () {
         V.setLocale(VLocaleBr.ptBr);
-        final schema = V.string().renavam();
-        final errors = schema.errors('00000000000');
+        final VString schema = V.string().renavam();
+        final List<VError>? errors = schema.errors('00000000000');
         expect(errors!.first.message, 'Renavam inválido');
       });
     });
