@@ -8,8 +8,8 @@ import 'package:validart_br/validart_br.dart';
 import 'fuzz_helpers.dart';
 
 void main() {
-  group('BrPhonePattern fuzz', () {
-    final schema = V.string().phoneBr();
+  group('TelefonePattern fuzz', () {
+    final schema = V.string().telefone();
 
     test('nunca lança com input adversarial', () {
       fuzz('bool out on adversarial', (rng, _) {
@@ -32,13 +32,13 @@ void main() {
     });
 
     test('DDDs inexistentes (00, 10, 20, 23, etc.) são sempre rejeitados', () {
-      final mobileSchema = V.string().phoneBr(
-        areaCode: AreaCodeFormat.required,
-        mobileOnly: true,
+      final mobileSchema = V.string().telefone(
+        ddd: FormatoDdd.required,
+        apenasCelular: true,
       );
-      const invalidDdds = [0, 10, 20, 23, 25, 26, 29, 30, 36, 39, 40, 50, 52];
+      const dddInvalidos = [0, 10, 20, 23, 25, 26, 29, 30, 36, 39, 40, 50, 52];
       fuzz('invalid ddd rejects', (rng, _) {
-        final ddd = invalidDdds[rng.nextInt(invalidDdds.length)];
+        final ddd = dddInvalidos[rng.nextInt(dddInvalidos.length)];
         final input = '${ddd.toString().padLeft(2, '0')}987654321';
 
         expect(mobileSchema.validate(input), isFalse, reason: input);
@@ -46,9 +46,9 @@ void main() {
     });
 
     test('celular sem dígito "9" inicial é rejeitado em mobileOnly', () {
-      final mobileSchema = V.string().phoneBr(
-        areaCode: AreaCodeFormat.required,
-        mobileOnly: true,
+      final mobileSchema = V.string().telefone(
+        ddd: FormatoDdd.required,
+        apenasCelular: true,
       );
       fuzz('no leading 9 rejects', (rng, _) {
         final leading = rng.nextInt(9); // 0..8 (qualquer coisa != 9)

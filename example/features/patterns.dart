@@ -4,7 +4,7 @@ import 'package:validart_br/validart_br.dart';
 import '../shared/fixtures.dart';
 
 /// Exemplos da forma explícita via patterns plugáveis do core. Cada
-/// atalho de extension (`.cpf()`, `.cep()`, `.plate()`, `.phoneBr()`)
+/// atalho de extension (`.cpf()`, `.cep()`, `.placa()`, `.telefone()`)
 /// tem uma forma equivalente que passa o pattern direto pra
 /// `V.string().taxId(patterns: [...])` (ou `postalCode`,
 /// `licensePlate`, `phone`).
@@ -25,11 +25,11 @@ void runPatternsExamples() {
     V.string().postalCode(patterns: [const CepPattern()]).validate('01001-000'),
   ); // true
 
-  print(V.string().plate().validate('ABC-1234')); // true
+  print(V.string().placa().validate('ABC-1234')); // true
   print(
     V
         .string()
-        .licensePlate(patterns: [const BrPlatePattern()])
+        .licensePlate(patterns: [const PlacaPattern()])
         .validate('ABC-1234'),
   ); // true
 

@@ -6,22 +6,22 @@ import '../enums.dart';
 ///
 /// Aceita celular (9 dígitos iniciando com `9`) e fixo (8 dígitos).
 /// O DDI (`+55`), o DDD e a presença de separadores (parênteses,
-/// traços, espaços) são controlados por [countryCode], [areaCode] e
-/// [mode]. Quando [mobileOnly] é `true`, só celular é aceito.
+/// traços, espaços) são controlados por [pais], [ddd] e [mode].
+/// Quando [apenasCelular] é `true`, só celular é aceito.
 ///
 /// ```dart
-/// V.string().phone(patterns: [const BrPhonePattern()]);
-/// V.string().phoneBr(); // atalho
+/// V.string().phone(patterns: [const TelefonePattern()]);
+/// V.string().telefone(); // atalho
 ///
 /// V.string().phone(patterns: [
-///   const BrPhonePattern(
-///     countryCode: CountryCodeFormat.required,
-///     areaCode: AreaCodeFormat.required,
-///     mobileOnly: true,
+///   const TelefonePattern(
+///     pais: CountryCodeFormat.required,
+///     ddd: FormatoDdd.required,
+///     apenasCelular: true,
 ///   ),
 /// ]);
 /// ```
-class BrPhonePattern extends PhonePattern {
+class TelefonePattern extends PhonePattern {
   static final _regex = RegExp(
     r'^'
     r'(\+55\s?)?'
@@ -103,27 +103,27 @@ class BrPhonePattern extends PhonePattern {
   };
 
   /// Controla se o DDD é obrigatório, proibido ou opcional.
-  /// Padrão: [AreaCodeFormat.optional].
-  final AreaCodeFormat areaCode;
+  /// Padrão: [FormatoDdd.optional].
+  final FormatoDdd ddd;
 
   /// Controla se o DDI (`+55`) é obrigatório, proibido ou opcional.
   /// Padrão: [CountryCodeFormat.optional].
-  final CountryCodeFormat countryCode;
+  final CountryCodeFormat pais;
 
   /// Quando `true`, só aceita celular (9 dígitos iniciando com `9`).
   /// Padrão: `false`.
-  final bool mobileOnly;
+  final bool apenasCelular;
 
   /// Controla se separadores (espaços, traços, parênteses) são
   /// obrigatórios, proibidos ou opcionais.
   /// Padrão: [ValidationMode.any].
   final ValidationMode mode;
 
-  /// Cria um [BrPhonePattern].
-  const BrPhonePattern({
-    this.areaCode = AreaCodeFormat.optional,
-    this.countryCode = CountryCodeFormat.optional,
-    this.mobileOnly = false,
+  /// Cria um [TelefonePattern].
+  const TelefonePattern({
+    this.ddd = FormatoDdd.optional,
+    this.pais = CountryCodeFormat.optional,
+    this.apenasCelular = false,
     this.mode = ValidationMode.any,
   });
 
@@ -141,26 +141,26 @@ class BrPhonePattern extends PhonePattern {
 
     final hasAreaCode = dddRaw != null;
 
-    if (hasCountryCode && countryCode == CountryCodeFormat.none) return {};
-    if (!hasCountryCode && countryCode == CountryCodeFormat.required) {
+    if (hasCountryCode && pais == CountryCodeFormat.none) return {};
+    if (!hasCountryCode && pais == CountryCodeFormat.required) {
       return {};
     }
 
-    if (hasAreaCode && areaCode == AreaCodeFormat.none) return {};
-    if (!hasAreaCode && areaCode == AreaCodeFormat.required) return {};
+    if (hasAreaCode && ddd == FormatoDdd.none) return {};
+    if (!hasAreaCode && ddd == FormatoDdd.required) return {};
 
     if (hasCountryCode && !hasAreaCode) return {};
 
     if (hasAreaCode) {
       final dddDigits = dddRaw.replaceAll(RegExp(r'[^\d]'), '');
-      final ddd = int.parse(dddDigits);
-      if (!_validDdds.contains(ddd)) return {};
+      final dddInt = int.parse(dddDigits);
+      if (!_validDdds.contains(dddInt)) return {};
     }
 
     final isMobile = first.length == 5 && first.startsWith('9');
     final isLandline = first.length == 4;
     if (!isMobile && !isLandline) return {};
-    if (mobileOnly && !isMobile) return {};
+    if (apenasCelular && !isMobile) return {};
 
     final hasSeparators = _containsSeparator(value);
     if (mode == ValidationMode.unformatted && hasSeparators) return {};

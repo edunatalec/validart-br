@@ -1,10 +1,10 @@
-/// Controla se o DDD é obrigatório, opcional ou proibido num telefone
-/// brasileiro.
+/// Controla se o DDD é obrigatório, opcional ou proibido num
+/// telefone brasileiro.
 ///
 /// ```dart
-/// V.string().phoneBr(areaCode: AreaCodeFormat.required);
+/// V.string().telefone(ddd: FormatoDdd.required);
 /// ```
-enum AreaCodeFormat {
+enum FormatoDdd {
   /// DDD deve estar presente — ex.: `(11) 98765-4321`.
   required,
 
@@ -15,16 +15,16 @@ enum AreaCodeFormat {
   none,
 }
 
-/// Tipos de identificador aceitos por `V.string().pixKey(...)`.
+/// Tipos de identificador aceitos por `V.string().chavePix(...)`.
 ///
-/// Os cinco primeiros são as chaves PIX do DICT; [brCode] é o payload
-/// EMVCo do QR Code ("copia e cola").
+/// Os cinco primeiros são as chaves PIX do DICT; [brCode] é o
+/// payload EMVCo do QR Code ("copia e cola").
 ///
 /// ```dart
-/// V.string().pixKey(allow: const [PixKeyType.email, PixKeyType.phone]);
-/// V.string().pixKey(allow: PixKeyType.values); // aceita tudo, inclusive BR Code
+/// V.string().chavePix(allow: const [TipoChavePix.email, TipoChavePix.telefone]);
+/// V.string().chavePix(allow: TipoChavePix.values); // tudo, inclusive BR Code
 /// ```
-enum PixKeyType {
+enum TipoChavePix {
   /// CPF em 11 dígitos sem máscara.
   cpf,
 
@@ -35,13 +35,13 @@ enum PixKeyType {
   email,
 
   /// Telefone E.164 brasileiro, celular (`+55DDDNNNNNNNNN`).
-  phone,
+  telefone,
 
   /// Chave aleatória — UUID v4 (36 caracteres).
-  random,
+  aleatoria,
 
-  /// BR Code — payload EMVCo do QR Code PIX ("copia e cola"), validado
-  /// com CRC16 e campos obrigatórios do padrão Bacen.
+  /// BR Code — payload EMVCo do QR Code PIX ("copia e cola"),
+  /// validado com CRC16 e campos obrigatórios do padrão Bacen.
   brCode,
 }
 
@@ -62,10 +62,10 @@ enum PixKeyType {
 ///
 /// ```dart
 /// V.string().boleto(); // qualquer formato
-/// V.string().boleto(format: BoletoFormat.bancario); // só bancário
-/// V.string().boleto(format: BoletoFormat.arrecadacao); // só arrecadação
+/// V.string().boleto(formato: FormatoBoleto.bancario); // só bancário
+/// V.string().boleto(formato: FormatoBoleto.arrecadacao); // só arrecadação
 /// ```
-enum BoletoFormat {
+enum FormatoBoleto {
   /// Boleto de cobrança bancária — linha digitável 47 ou código de
   /// barras 44, primeiro dígito ≠ `8`.
   bancario,

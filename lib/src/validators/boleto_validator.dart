@@ -27,10 +27,10 @@ import '../v_code_br.dart';
 /// mod-10, `8`/`9` → mod-11. O DV geral está na posição 4 do código
 /// de barras.
 ///
-/// Use [format] para restringir a um único tipo. `null` (default)
+/// Use [formato] para restringir a um único tipo. `null` (default)
 /// aceita qualquer um.
 ///
-/// Emite [VStringCodeBr.invalidBoleto] em caso de falha.
+/// Emite [VStringCodeBr.boletoInvalido] em caso de falha.
 ///
 /// Executa na fase de validação.
 ///
@@ -39,18 +39,18 @@ import '../v_code_br.dart';
 ///   '34191790010104351004791020150008291070026000',
 /// ); // true (linha digitável bancária)
 ///
-/// V.string().boleto(format: BoletoFormat.bancario)
+/// V.string().boleto(formato: FormatoBoleto.bancario)
 ///   .validate('xx'); // false
 /// ```
 class BoletoValidator extends Validator<String> {
   /// Restringe o formato aceito. `null` aceita os 4 layouts.
-  final BoletoFormat? format;
+  final FormatoBoleto? formato;
 
   /// Cria um [BoletoValidator].
-  const BoletoValidator({this.format});
+  const BoletoValidator({this.formato});
 
   @override
-  String get code => VStringCodeBr.invalidBoleto;
+  String get code => VStringCodeBr.boletoInvalido;
 
   @override
   Map<String, dynamic>? validate(String value) {
@@ -59,8 +59,8 @@ class BoletoValidator extends Validator<String> {
 
     final bool isArrecadacao = digits.startsWith('8');
 
-    if (format == BoletoFormat.bancario && isArrecadacao) return {};
-    if (format == BoletoFormat.arrecadacao && !isArrecadacao) return {};
+    if (formato == FormatoBoleto.bancario && isArrecadacao) return {};
+    if (formato == FormatoBoleto.arrecadacao && !isArrecadacao) return {};
 
     final bool valid = isArrecadacao
         ? _validateArrecadacao(digits)

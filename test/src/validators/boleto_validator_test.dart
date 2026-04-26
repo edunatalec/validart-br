@@ -116,14 +116,14 @@ void main() {
 
   group('BoletoValidator — restrição via [format]', () {
     test('format: bancario rejeita arrecadação', () {
-      const validator = BoletoValidator(format: BoletoFormat.bancario);
+      const validator = BoletoValidator(formato: FormatoBoleto.bancario);
       expect(validator.validate(_bancarioLinhaSemMascara), isNull);
       expect(validator.validate(_arrecadacaoLinhaMod10), isNotNull);
       expect(validator.validate(_arrecadacaoBarrasMod11), isNotNull);
     });
 
     test('format: arrecadacao rejeita bancário', () {
-      const validator = BoletoValidator(format: BoletoFormat.arrecadacao);
+      const validator = BoletoValidator(formato: FormatoBoleto.arrecadacao);
       expect(validator.validate(_arrecadacaoLinhaMod10), isNull);
       expect(validator.validate(_bancarioLinhaSemMascara), isNotNull);
       expect(validator.validate(_bancarioBarras), isNotNull);
@@ -143,7 +143,7 @@ void main() {
     });
 
     test('respeita format', () {
-      final schema = V.string().boleto(format: BoletoFormat.bancario);
+      final schema = V.string().boleto(formato: FormatoBoleto.bancario);
       expect(schema.validate(_bancarioLinhaSemMascara), isTrue);
       expect(schema.validate(_arrecadacaoLinhaMod10), isFalse);
     });
@@ -151,7 +151,7 @@ void main() {
     test('código de erro é invalid_boleto', () {
       final schema = V.string().boleto();
       final errors = schema.errors('00000');
-      expect(errors!.first.code, VStringCodeBr.invalidBoleto);
+      expect(errors!.first.code, VStringCodeBr.boletoInvalido);
     });
 
     test('respeita message customizada', () {

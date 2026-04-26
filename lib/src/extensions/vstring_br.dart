@@ -1,20 +1,20 @@
 import 'package:validart/validart.dart';
 
 import '../enums.dart';
-import '../patterns/br_phone_pattern.dart';
-import '../patterns/br_plate_pattern.dart';
 import '../patterns/cep_pattern.dart';
 import '../patterns/cnh_pattern.dart';
 import '../patterns/cnpj_pattern.dart';
 import '../patterns/cpf_pattern.dart';
 import '../patterns/pis_pattern.dart';
+import '../patterns/placa_pattern.dart';
 import '../patterns/renavam_pattern.dart';
+import '../patterns/telefone_pattern.dart';
 import '../patterns/titulo_eleitor_pattern.dart';
-import '../validators/bank_code_validator.dart';
 import '../validators/boleto_validator.dart';
+import '../validators/chave_pix_validator.dart';
+import '../validators/codigo_banco_validator.dart';
 import '../validators/ddd_validator.dart';
-import '../validators/pix_key_validator.dart';
-import '../validators/state_validator.dart';
+import '../validators/uf_validator.dart';
 
 /// Atalhos de validadores brasileiros em cima de [VString].
 ///
@@ -29,11 +29,11 @@ import '../validators/state_validator.dart';
 /// V.string().cep();
 /// V.string().postalCode(patterns: [const CepPattern()]);
 ///
-/// V.string().plate();
-/// V.string().licensePlate(patterns: [const BrPlatePattern()]);
+/// V.string().placa();
+/// V.string().licensePlate(patterns: [const PlacaPattern()]);
 ///
-/// V.string().phoneBr(mobileOnly: true);
-/// V.string().phone(patterns: [const BrPhonePattern(mobileOnly: true)]);
+/// V.string().telefone(apenasCelular: true);
+/// V.string().phone(patterns: [const TelefonePattern(apenasCelular: true)]);
 /// ```
 extension VStringBr on VString {
   /// Valida que a string é um CPF válido (11 dígitos com dois DVs).
@@ -156,14 +156,14 @@ extension VStringBr on VString {
   /// Executa na fase de validação.
   ///
   /// ```dart
-  /// V.string().plate().validate('ABC-1234');  // true (antiga)
-  /// V.string().plate().validate('ABC1D23');   // true (Mercosul)
+  /// V.string().placa().validate('ABC-1234');  // true (antiga)
+  /// V.string().placa().validate('ABC1D23');   // true (Mercosul)
   ///
-  /// V.string().toUpperCase().plate().validate('abc-1234');  // true
+  /// V.string().toUpperCase().placa().validate('abc-1234');  // true
   /// ```
-  VString plate({ValidationMode mode = ValidationMode.any, String? message}) {
+  VString placa({ValidationMode mode = ValidationMode.any, String? message}) {
     return licensePlate(
-      patterns: [BrPlatePattern(mode: mode)],
+      patterns: [PlacaPattern(mode: mode)],
       message: message,
     );
   }
@@ -176,28 +176,28 @@ extension VStringBr on VString {
   /// Executa na fase de validação.
   ///
   /// ```dart
-  /// V.string().phoneBr().validate('(11) 98765-4321');  // true
-  /// V.string().phoneBr().validate('11987654321');      // true
+  /// V.string().telefone().validate('(11) 98765-4321');  // true
+  /// V.string().telefone().validate('11987654321');      // true
   ///
-  /// V.string().phoneBr(
-  ///   countryCode: CountryCodeFormat.required,
-  ///   areaCode: AreaCodeFormat.required,
-  ///   mobileOnly: true,
-  /// ).validate('+55 (11) 98765-4321');                 // true
+  /// V.string().telefone(
+  ///   pais: CountryCodeFormat.required,
+  ///   ddd: FormatoDdd.required,
+  ///   apenasCelular: true,
+  /// ).validate('+55 (11) 98765-4321');                  // true
   /// ```
-  VString phoneBr({
-    AreaCodeFormat areaCode = AreaCodeFormat.optional,
-    CountryCodeFormat countryCode = CountryCodeFormat.optional,
-    bool mobileOnly = false,
+  VString telefone({
+    FormatoDdd ddd = FormatoDdd.optional,
+    CountryCodeFormat pais = CountryCodeFormat.optional,
+    bool apenasCelular = false,
     ValidationMode mode = ValidationMode.any,
     String? message,
   }) {
     return phone(
       patterns: [
-        BrPhonePattern(
-          areaCode: areaCode,
-          countryCode: countryCode,
-          mobileOnly: mobileOnly,
+        TelefonePattern(
+          ddd: ddd,
+          pais: pais,
+          apenasCelular: apenasCelular,
           mode: mode,
         ),
       ],
@@ -209,35 +209,38 @@ extension VStringBr on VString {
   ///
   /// Por padrão aceita as cinco chaves do DICT — CPF, CNPJ, e-mail,
   /// telefone (`+55…`) e UUID v4 (chave aleatória). Inclua
-  /// [PixKeyType.brCode] em [allow] para também aceitar o payload
-  /// EMVCo de QR Code PIX ("copia e cola"). A validação do BR Code é
-  /// estrita — exige estrutura TLV, CRC16 batendo e campos
+  /// [TipoChavePix.brCode] em [allow] para também aceitar o payload
+  /// EMVCo de QR Code PIX ("copia e cola"). A validação do BR Code
+  /// é estrita — exige estrutura TLV, CRC16 batendo e campos
   /// obrigatórios do Bacen (padrão de mercado).
   ///
   /// Executa na fase de validação.
   ///
   /// ```dart
-  /// V.string().pixKey().validate('12345678909');            // true (CPF)
-  /// V.string().pixKey().validate('user@example.com');       // true (e-mail)
-  /// V.string().pixKey().validate('+5511987654321');         // true (telefone)
-  /// V.string().pixKey()
-  ///   .validate('123e4567-e89b-12d3-a456-426614174000');    // true (UUID)
+  /// V.string().chavePix().validate('12345678909');            // true (CPF)
+  /// V.string().chavePix().validate('user@example.com');       // true (e-mail)
+  /// V.string().chavePix().validate('+5511987654321');         // true (telefone)
+  /// V.string().chavePix()
+  ///   .validate('123e4567-e89b-12d3-a456-426614174000');      // true (UUID)
   ///
   /// // Restringe a tipos específicos:
-  /// V.string().pixKey(allow: const [PixKeyType.email, PixKeyType.phone]);
+  /// V.string().chavePix(
+  ///   allow: const [TipoChavePix.email, TipoChavePix.telefone],
+  /// );
   ///
   /// // Aceita tudo, inclusive BR Code:
-  /// V.string().pixKey(allow: PixKeyType.values);
+  /// V.string().chavePix(allow: TipoChavePix.values);
   /// ```
-  VString pixKey({
-    List<PixKeyType> allow = PixKeyValidator.defaultAllow,
+  VString chavePix({
+    List<TipoChavePix> allow = ChavePixValidator.defaultAllow,
     String? message,
   }) {
-    return add(PixKeyValidator(allow: allow), message: message);
+    return add(ChavePixValidator(allow: allow), message: message);
   }
 
-  /// Valida que a string é uma sigla de unidade federativa brasileira
-  /// válida — uma das 27 UFs em caixa alta (`AC`, `AL`, ..., `TO`).
+  /// Valida que a string é uma sigla de UF brasileira válida — uma
+  /// das 27 unidades federativas em caixa alta (`AC`, `AL`, ...,
+  /// `TO`).
   ///
   /// Letras devem estar em caixa alta. Encadeie
   /// `V.string().toUpperCase()` para aceitar lowercase.
@@ -245,13 +248,13 @@ extension VStringBr on VString {
   /// Executa na fase de validação.
   ///
   /// ```dart
-  /// V.string().state().validate('SP'); // true
-  /// V.string().state().validate('XY'); // false
+  /// V.string().uf().validate('SP'); // true
+  /// V.string().uf().validate('XY'); // false
   ///
-  /// V.string().toUpperCase().state().validate('rj'); // true
+  /// V.string().toUpperCase().uf().validate('rj'); // true
   /// ```
-  VString state({String? message}) {
-    return add(const StateValidator(), message: message);
+  VString uf({String? message}) {
+    return add(const UfValidator(), message: message);
   }
 
   /// Valida que a string é um código de banco brasileiro válido —
@@ -263,12 +266,12 @@ extension VStringBr on VString {
   /// Executa na fase de validação.
   ///
   /// ```dart
-  /// V.string().bankCode().validate('001'); // true (Banco do Brasil)
-  /// V.string().bankCode().validate('260'); // true (Nubank)
-  /// V.string().bankCode().validate('999'); // false
+  /// V.string().codigoBanco().validate('001'); // true (Banco do Brasil)
+  /// V.string().codigoBanco().validate('260'); // true (Nubank)
+  /// V.string().codigoBanco().validate('999'); // false
   /// ```
-  VString bankCode({String? message}) {
-    return add(const BankCodeValidator(), message: message);
+  VString codigoBanco({String? message}) {
+    return add(const CodigoBancoValidator(), message: message);
   }
 
   /// Valida que a string é um DDD brasileiro válido — 2 dígitos da
@@ -276,7 +279,7 @@ extension VStringBr on VString {
   ///
   /// A entrada deve ser exatamente 2 dígitos numéricos, sem
   /// parênteses ou separadores. Para validar o telefone completo,
-  /// use [`phoneBr`].
+  /// use [`telefone`].
   ///
   /// Executa na fase de validação.
   ///
@@ -294,7 +297,7 @@ extension VStringBr on VString {
   /// dígitos). Aceita máscara — caracteres não numéricos são
   /// descartados.
   ///
-  /// Use [format] para restringir a um único tipo. `null` (default)
+  /// Use [formato] para restringir a um único tipo. `null` (default)
   /// aceita os 4 layouts.
   ///
   /// Executa na fase de validação.
@@ -304,10 +307,10 @@ extension VStringBr on VString {
   ///   '34191790010104351004791020150008291070026000',
   /// ); // true (linha digitável bancária)
   ///
-  /// V.string().boleto(format: BoletoFormat.bancario)
+  /// V.string().boleto(formato: FormatoBoleto.bancario)
   ///   .validate('xx'); // false
   /// ```
-  VString boleto({BoletoFormat? format, String? message}) {
-    return add(BoletoValidator(format: format), message: message);
+  VString boleto({FormatoBoleto? formato, String? message}) {
+    return add(BoletoValidator(formato: formato), message: message);
   }
 }

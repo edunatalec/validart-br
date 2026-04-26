@@ -18,100 +18,100 @@ const _brCodePhone =
 void main() {
   setUp(() => V.setLocale(const VLocale()));
 
-  group('PixKeyValidator — defaults (5 chaves DICT, sem BR Code)', () {
+  group('ChavePixValidator — defaults (5 chaves DICT, sem BR Code)', () {
     test('aceita CPF válido sem máscara', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('12345678909'), isTrue);
       expect(schema.validate('11144477735'), isTrue);
     });
 
     test('rejeita CPF formatado (PIX exige só dígitos)', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('123.456.789-09'), isFalse);
     });
 
     test('aceita CNPJ válido sem máscara', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('12345678000195'), isTrue);
     });
 
     test('rejeita CNPJ formatado', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('12.345.678/0001-95'), isFalse);
     });
 
     test('rejeita CNPJ alfanumérico (PIX aceita só dígitos)', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('12ABC34501DE35'), isFalse);
     });
 
     test('aceita e-mail válido', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('user@example.com'), isTrue);
       expect(schema.validate('fulano.da.silva@empresa.com.br'), isTrue);
     });
 
     test('rejeita e-mail inválido', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('invalid'), isFalse);
       expect(schema.validate('@example.com'), isFalse);
     });
 
     test('aceita telefone +55 com celular', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('+5511987654321'), isTrue);
     });
 
     test('rejeita telefone sem DDI +55', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('11987654321'), isFalse);
     });
 
     test('rejeita telefone fixo como chave PIX', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('+551133334444'), isFalse);
     });
 
     test('aceita UUID v4', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('123e4567-e89b-12d3-a456-426614174000'), isTrue);
       expect(schema.validate('f47ac10b-58cc-4372-a567-0e02b2c3d479'), isTrue);
     });
 
     test('rejeita UUID em formato errado', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate('123e4567e89b12d3a456426614174000'), isFalse);
       expect(schema.validate('not-a-uuid'), isFalse);
     });
 
     test('rejeita BR Code (brCode não está no default)', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate(_brCodeUuidComValor), isFalse);
     });
 
     test('rejeita string vazia', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       expect(schema.validate(''), isFalse);
     });
 
     test('retorna código de erro invalid_pix_key', () {
-      final schema = V.string()..add(const PixKeyValidator());
+      final schema = V.string()..add(const ChavePixValidator());
       final errors = schema.errors('not a key');
-      expect(errors!.first.code, VStringCodeBr.invalidPixKey);
+      expect(errors!.first.code, VStringCodeBr.chavePixInvalida);
     });
 
     test('mensagem em pt-BR é "Chave PIX inválida"', () {
       V.setLocale(VLocaleBr.ptBr);
-      final schema = V.string().pixKey();
+      final schema = V.string().chavePix();
       final errors = schema.errors('not a key');
       expect(errors!.first.message, 'Chave PIX inválida');
     });
   });
 
-  group('PixKeyValidator — allow restrito', () {
+  group('ChavePixValidator — allow restrito', () {
     test('allow: [email] aceita só e-mail', () {
       final schema = V.string()
-        ..add(const PixKeyValidator(allow: [PixKeyType.email]));
+        ..add(const ChavePixValidator(allow: [TipoChavePix.email]));
       expect(schema.validate('user@example.com'), isTrue);
       expect(schema.validate('12345678909'), isFalse); // CPF rejeitado
       expect(schema.validate('+5511987654321'), isFalse); // phone rejeitado
@@ -119,7 +119,9 @@ void main() {
 
     test('allow: [cpf, cnpj] aceita só documentos', () {
       final schema = V.string()
-        ..add(const PixKeyValidator(allow: [PixKeyType.cpf, PixKeyType.cnpj]));
+        ..add(
+          const ChavePixValidator(allow: [TipoChavePix.cpf, TipoChavePix.cnpj]),
+        );
       expect(schema.validate('12345678909'), isTrue);
       expect(schema.validate('12345678000195'), isTrue);
       expect(schema.validate('user@example.com'), isFalse);
@@ -127,20 +129,20 @@ void main() {
 
     test('allow: [random] aceita só UUID', () {
       final schema = V.string()
-        ..add(const PixKeyValidator(allow: [PixKeyType.random]));
+        ..add(const ChavePixValidator(allow: [TipoChavePix.aleatoria]));
       expect(schema.validate('123e4567-e89b-12d3-a456-426614174000'), isTrue);
       expect(schema.validate('12345678909'), isFalse);
     });
 
     test('allow vazia rejeita tudo', () {
-      final schema = V.string()..add(const PixKeyValidator(allow: []));
+      final schema = V.string()..add(const ChavePixValidator(allow: []));
       expect(schema.validate('user@example.com'), isFalse);
       expect(schema.validate('12345678909'), isFalse);
     });
 
-    test('atalho V.string().pixKey(allow: …) propaga o filtro', () {
-      final schema = V.string().pixKey(
-        allow: const [PixKeyType.email, PixKeyType.phone],
+    test('atalho V.string().chavePix(allow: …) propaga o filtro', () {
+      final schema = V.string().chavePix(
+        allow: const [TipoChavePix.email, TipoChavePix.telefone],
       );
       expect(schema.validate('user@example.com'), isTrue);
       expect(schema.validate('+5511987654321'), isTrue);
@@ -148,8 +150,8 @@ void main() {
     });
   });
 
-  group('PixKeyValidator — BR Code (allow inclui brCode)', () {
-    const validator = PixKeyValidator(allow: [PixKeyType.brCode]);
+  group('ChavePixValidator — BR Code (allow inclui brCode)', () {
+    const validator = ChavePixValidator(allow: [TipoChavePix.brCode]);
 
     test('aceita BR Code estático com UUID e valor', () {
       final schema = V.string()..add(validator);
@@ -221,15 +223,15 @@ void main() {
 
     test('mensagem em pt-BR para BR Code inválido é "Chave PIX inválida"', () {
       V.setLocale(VLocaleBr.ptBr);
-      final schema = V.string().pixKey(allow: const [PixKeyType.brCode]);
+      final schema = V.string().chavePix(allow: const [TipoChavePix.brCode]);
       final errors = schema.errors('not a br code');
       expect(errors!.first.message, 'Chave PIX inválida');
     });
   });
 
-  group('PixKeyValidator — união de chaves DICT + BR Code', () {
-    test('allow: PixKeyType.values aceita chave e BR Code', () {
-      final schema = V.string().pixKey(allow: PixKeyType.values);
+  group('ChavePixValidator — união de chaves DICT + BR Code', () {
+    test('allow: TipoChavePix.values aceita chave e BR Code', () {
+      final schema = V.string().chavePix(allow: TipoChavePix.values);
       expect(schema.validate('user@example.com'), isTrue); // chave
       expect(schema.validate(_brCodeUuidComValor), isTrue); // BR Code
       expect(schema.validate('not-a-key'), isFalse);

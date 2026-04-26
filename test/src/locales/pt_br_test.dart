@@ -37,11 +37,14 @@ void main() {
     });
 
     test('traduz códigos específicos do validart_br', () {
-      expect(V.t(VStringCodeBr.invalidPixKey), 'Chave PIX inválida');
-      expect(V.t(VStringCodeBr.invalidState), 'UF inválida');
-      expect(V.t(VStringCodeBr.invalidBankCode), 'Código de banco inválido');
-      expect(V.t(VStringCodeBr.invalidDdd), 'DDD inválido');
-      expect(V.t(VStringCodeBr.invalidBoleto), 'Boleto inválido');
+      expect(V.t(VStringCodeBr.chavePixInvalida), 'Chave PIX inválida');
+      expect(V.t(VStringCodeBr.ufInvalida), 'UF inválida');
+      expect(
+        V.t(VStringCodeBr.codigoBancoInvalido),
+        'Código de banco inválido',
+      );
+      expect(V.t(VStringCodeBr.dddInvalido), 'DDD inválido');
+      expect(V.t(VStringCodeBr.boletoInvalido), 'Boleto inválido');
     });
 
     test('traduz fields_not_equal de VObject (novo em validart 2.0.0)', () {
@@ -62,7 +65,7 @@ void main() {
     });
 
     test('placa usa feminino (inválida)', () {
-      final schema = V.string().plate();
+      final schema = V.string().placa();
       final errors = schema.errors('xxx');
       expect(errors!.first.message, 'Placa inválida');
     });
@@ -91,17 +94,17 @@ void main() {
 
     test('brMessages cobre só os codes específicos do validart_br', () {
       expect(
-        VLocaleBr.brMessages[VStringCodeBr.invalidPixKey],
+        VLocaleBr.brMessages[VStringCodeBr.chavePixInvalida],
         'Chave PIX inválida',
       );
-      expect(VLocaleBr.brMessages[VStringCodeBr.invalidState], 'UF inválida');
+      expect(VLocaleBr.brMessages[VStringCodeBr.ufInvalida], 'UF inválida');
       expect(
-        VLocaleBr.brMessages[VStringCodeBr.invalidBankCode],
+        VLocaleBr.brMessages[VStringCodeBr.codigoBancoInvalido],
         'Código de banco inválido',
       );
-      expect(VLocaleBr.brMessages[VStringCodeBr.invalidDdd], 'DDD inválido');
+      expect(VLocaleBr.brMessages[VStringCodeBr.dddInvalido], 'DDD inválido');
       expect(
-        VLocaleBr.brMessages[VStringCodeBr.invalidBoleto],
+        VLocaleBr.brMessages[VStringCodeBr.boletoInvalido],
         'Boleto inválido',
       );
       expect(VLocaleBr.brMessages.length, 5);
@@ -114,7 +117,7 @@ void main() {
       );
       expect(VLocaleBr.messages[VCode.required], 'Campo obrigatório');
       expect(
-        VLocaleBr.messages[VStringCodeBr.invalidPixKey],
+        VLocaleBr.messages[VStringCodeBr.chavePixInvalida],
         'Chave PIX inválida',
       );
     });

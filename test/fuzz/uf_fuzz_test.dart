@@ -10,9 +10,9 @@ import 'package:validart_br/validart_br.dart';
 import 'fuzz_helpers.dart';
 
 void main() {
-  group('StateValidator fuzz', () {
-    final schema = V.string().state();
-    const validator = StateValidator();
+  group('UfValidator fuzz', () {
+    final schema = V.string().uf();
+    const validator = UfValidator();
 
     test('nunca lança com input adversarial', () {
       fuzz('bool out on adversarial', (rng, _) {
@@ -34,8 +34,8 @@ void main() {
 
     test('letras minúsculas (mesmo siglas válidas) nunca passam', () {
       fuzz('lowercase rejects', (rng, _) {
-        final uf = StateValidator.states.elementAt(
-          rng.nextInt(StateValidator.states.length),
+        final uf = UfValidator.ufs.elementAt(
+          rng.nextInt(UfValidator.ufs.length),
         );
 
         expect(validator.validate(uf.toLowerCase()), isNotNull, reason: uf);
@@ -43,10 +43,10 @@ void main() {
     });
 
     test('toUpperCase + state aceita as 27 UFs em qualquer caixa', () {
-      final schema = V.string().toUpperCase().state();
+      final schema = V.string().toUpperCase().uf();
       fuzz('uppercase normalization always accepts', (rng, _) {
-        final uf = StateValidator.states.elementAt(
-          rng.nextInt(StateValidator.states.length),
+        final uf = UfValidator.ufs.elementAt(
+          rng.nextInt(UfValidator.ufs.length),
         );
         final mixed = _randomCase(rng, uf);
 

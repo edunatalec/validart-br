@@ -1,5 +1,5 @@
 /// Validação do payload EMVCo de QR Code PIX ("BR Code" / "copia e
-/// cola"). Uso interno pelo `PixKeyValidator`.
+/// cola"). Uso interno pelo `ChavePixValidator`.
 ///
 /// A validação é **estrita** (padrão de mercado): estrutura TLV
 /// completa, CRC16-CCITT-FALSE batendo, e campos obrigatórios do Bacen

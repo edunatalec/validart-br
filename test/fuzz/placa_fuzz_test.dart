@@ -8,9 +8,9 @@ import 'package:validart_br/validart_br.dart';
 import 'fuzz_helpers.dart';
 
 void main() {
-  group('BrPlatePattern fuzz', () {
-    final schema = V.string().plate();
-    const pattern = BrPlatePattern();
+  group('PlacaPattern fuzz', () {
+    final schema = V.string().placa();
+    const pattern = PlacaPattern();
 
     test('nunca lança com input adversarial', () {
       fuzz('bool out on adversarial', (rng, _) {

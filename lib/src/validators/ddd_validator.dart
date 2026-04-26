@@ -6,13 +6,13 @@ import '../v_code_br.dart';
 /// lista oficial publicada pela Anatel.
 ///
 /// O DDD é apenas a área de discagem (sem o número do assinante).
-/// Para validar o telefone completo, use [`V.string().phoneBr()`].
+/// Para validar o telefone completo, use [`V.string().telefone()`].
 ///
 /// A entrada deve conter exatamente 2 dígitos numéricos, sem
 /// parênteses, espaços ou outros separadores. Aplique `.preprocess`
 /// ou `.replaceAll` antes se o input puder vir mascarado.
 ///
-/// Emite [VStringCodeBr.invalidDdd] em caso de falha.
+/// Emite [VStringCodeBr.dddInvalido] em caso de falha.
 ///
 /// Executa na fase de validação.
 ///
@@ -61,7 +61,7 @@ class DddValidator extends Validator<String> {
   const DddValidator();
 
   @override
-  String get code => VStringCodeBr.invalidDdd;
+  String get code => VStringCodeBr.dddInvalido;
 
   @override
   Map<String, dynamic>? validate(String value) {

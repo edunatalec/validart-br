@@ -25,10 +25,10 @@ void main() {
     });
 
     test('phoneBr com flags combinadas', () {
-      final schema = V.string().phoneBr(
-        areaCode: AreaCodeFormat.required,
-        countryCode: CountryCodeFormat.required,
-        mobileOnly: true,
+      final schema = V.string().telefone(
+        ddd: FormatoDdd.required,
+        pais: CountryCodeFormat.required,
+        apenasCelular: true,
       );
       expect(schema.validate('+55 (11) 98765-4321'), isTrue);
       expect(schema.validate('11987654321'), isFalse);
@@ -42,7 +42,7 @@ void main() {
     });
 
     test('pixKey aceita CPF, e-mail, telefone ou UUID', () {
-      final schema = V.string().pixKey();
+      final schema = V.string().chavePix();
       expect(schema.validate('12345678909'), isTrue);
       expect(schema.validate('user@example.com'), isTrue);
       expect(schema.validate('+5511987654321'), isTrue);
@@ -50,16 +50,16 @@ void main() {
     });
 
     test('plate encadeia com toUpperCase', () {
-      final schema = V.string().toUpperCase().plate();
+      final schema = V.string().toUpperCase().placa();
       expect(schema.validate('abc-1234'), isTrue);
       expect(schema.validate('abc1d23'), isTrue);
     });
 
     test('state / bankCode / ddd', () {
-      expect(V.string().state().validate('SP'), isTrue);
-      expect(V.string().state().validate('XY'), isFalse);
-      expect(V.string().bankCode().validate('001'), isTrue);
-      expect(V.string().bankCode().validate('999'), isFalse);
+      expect(V.string().uf().validate('SP'), isTrue);
+      expect(V.string().uf().validate('XY'), isFalse);
+      expect(V.string().codigoBanco().validate('001'), isTrue);
+      expect(V.string().codigoBanco().validate('999'), isFalse);
       expect(V.string().ddd().validate('11'), isTrue);
       expect(V.string().ddd().validate('20'), isFalse);
     });
@@ -78,7 +78,7 @@ void main() {
     });
 
     test('boleto restringido por format', () {
-      final schema = V.string().boleto(format: BoletoFormat.bancario);
+      final schema = V.string().boleto(formato: FormatoBoleto.bancario);
       expect(
         schema.validate('23793381286000782713695000063305975520000370000'),
         isTrue,
@@ -107,27 +107,27 @@ void main() {
     });
 
     test('plate', () {
-      final schema = V.string().plate(message: 'Placa fora do padrão');
+      final schema = V.string().placa(message: 'Placa fora do padrão');
       expect(schema.errors('xyz')!.first.message, 'Placa fora do padrão');
     });
 
     test('phoneBr', () {
-      final schema = V.string().phoneBr(message: 'Telefone BR inválido');
+      final schema = V.string().telefone(message: 'Telefone BR inválido');
       expect(schema.errors('abc')!.first.message, 'Telefone BR inválido');
     });
 
     test('pixKey', () {
-      final schema = V.string().pixKey(message: 'Chave PIX ruim');
+      final schema = V.string().chavePix(message: 'Chave PIX ruim');
       expect(schema.errors('nope')!.first.message, 'Chave PIX ruim');
     });
 
     test('state', () {
-      final schema = V.string().state(message: 'UF não reconhecida');
+      final schema = V.string().uf(message: 'UF não reconhecida');
       expect(schema.errors('XY')!.first.message, 'UF não reconhecida');
     });
 
     test('bankCode', () {
-      final schema = V.string().bankCode(message: 'Banco não autorizado');
+      final schema = V.string().codigoBanco(message: 'Banco não autorizado');
       expect(schema.errors('999')!.first.message, 'Banco não autorizado');
     });
 
@@ -148,11 +148,11 @@ void main() {
         V.string().cpf().nullable(),
         V.string().cnpj().nullable(),
         V.string().cep().nullable(),
-        V.string().plate().nullable(),
-        V.string().phoneBr().nullable(),
-        V.string().pixKey().nullable(),
-        V.string().state().nullable(),
-        V.string().bankCode().nullable(),
+        V.string().placa().nullable(),
+        V.string().telefone().nullable(),
+        V.string().chavePix().nullable(),
+        V.string().uf().nullable(),
+        V.string().codigoBanco().nullable(),
         V.string().ddd().nullable(),
         V.string().boleto().nullable(),
       ];
@@ -178,9 +178,9 @@ void main() {
         'cpf': V.string().cpf(),
         'cnpj': V.string().cnpj(),
         'cep': V.string().cep(),
-        'placa': V.string().plate(),
-        'uf': V.string().state(),
-        'banco': V.string().bankCode(),
+        'placa': V.string().placa(),
+        'uf': V.string().uf(),
+        'banco': V.string().codigoBanco(),
         'ddd': V.string().ddd(),
         'boleto': V.string().boleto(),
       });

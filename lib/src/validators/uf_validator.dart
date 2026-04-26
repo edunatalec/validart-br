@@ -10,19 +10,19 @@ import '../v_code_br.dart';
 /// Letras devem estar em caixa alta — encadeie
 /// `V.string().toUpperCase()` quando o input pode vir minúsculo.
 ///
-/// Emite [VStringCodeBr.invalidState] em caso de falha.
+/// Emite [VStringCodeBr.ufInvalida] em caso de falha.
 ///
 /// Executa na fase de validação.
 ///
 /// ```dart
-/// V.string().state().validate('SP'); // true
-/// V.string().state().validate('XY'); // false
+/// V.string().uf().validate('SP'); // true
+/// V.string().uf().validate('XY'); // false
 ///
-/// V.string().toUpperCase().state().validate('rj'); // true
+/// V.string().toUpperCase().uf().validate('rj'); // true
 /// ```
-class StateValidator extends Validator<String> {
+class UfValidator extends Validator<String> {
   /// Conjunto das 27 siglas de UF brasileiras.
-  static const Set<String> states = <String>{
+  static const Set<String> ufs = <String>{
     'AC',
     'AL',
     'AP',
@@ -52,15 +52,15 @@ class StateValidator extends Validator<String> {
     'TO',
   };
 
-  /// Cria um [StateValidator].
-  const StateValidator();
+  /// Cria um [UfValidator].
+  const UfValidator();
 
   @override
-  String get code => VStringCodeBr.invalidState;
+  String get code => VStringCodeBr.ufInvalida;
 
   @override
   Map<String, dynamic>? validate(String value) {
-    if (states.contains(value)) return null;
+    if (ufs.contains(value)) return null;
     return {};
   }
 }

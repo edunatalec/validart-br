@@ -16,20 +16,20 @@ import '../v_code_br.dart';
 /// `guibranco/BancosBrasileiros`. Atualizar conforme novas autorizações
 /// (ou desligamentos) publicadas pelo Bacen.
 ///
-/// Emite [VStringCodeBr.invalidBankCode] em caso de falha.
+/// Emite [VStringCodeBr.codigoBancoInvalido] em caso de falha.
 ///
 /// Executa na fase de validação.
 ///
 /// ```dart
-/// V.string().bankCode().validate('001'); // true (Banco do Brasil)
-/// V.string().bankCode().validate('033'); // true (Santander)
-/// V.string().bankCode().validate('260'); // true (Nubank)
-/// V.string().bankCode().validate('999'); // false (não atribuído)
+/// V.string().codigoBanco().validate('001'); // true (Banco do Brasil)
+/// V.string().codigoBanco().validate('033'); // true (Santander)
+/// V.string().codigoBanco().validate('260'); // true (Nubank)
+/// V.string().codigoBanco().validate('999'); // false (não atribuído)
 /// ```
-class BankCodeValidator extends Validator<String> {
+class CodigoBancoValidator extends Validator<String> {
   /// Conjunto dos códigos COMPE de bancos brasileiros (497 entradas
   /// na publicação atual).
-  static const Set<String> codes = <String>{
+  static const Set<String> codigos = <String>{
     '001',
     '003',
     '004',
@@ -529,15 +529,15 @@ class BankCodeValidator extends Validator<String> {
     '792',
   };
 
-  /// Cria um [BankCodeValidator].
-  const BankCodeValidator();
+  /// Cria um [CodigoBancoValidator].
+  const CodigoBancoValidator();
 
   @override
-  String get code => VStringCodeBr.invalidBankCode;
+  String get code => VStringCodeBr.codigoBancoInvalido;
 
   @override
   Map<String, dynamic>? validate(String value) {
-    if (codes.contains(value)) return null;
+    if (codigos.contains(value)) return null;
     return {};
   }
 }

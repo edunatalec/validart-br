@@ -20,11 +20,13 @@ void runLocaleExamples() {
   // Patterns BR (interpolação de {name}).
   print(V.string().cpf().errors('xxx')!.first.message); // 'CPF inválido'
   print(V.string().cnpj().errors('xxx')!.first.message); // 'CNPJ inválido'
-  print(V.string().plate().errors('xxx')!.first.message); // 'Placa inválida'
+  print(V.string().placa().errors('xxx')!.first.message); // 'Placa inválida'
 
   // Códigos exclusivos do validart_br.
-  print(V.string().pixKey().errors('x')!.first.message); // 'Chave PIX inválida'
-  print(V.string().state().errors('XY')!.first.message); // 'UF inválida'
+  print(
+    V.string().chavePix().errors('x')!.first.message,
+  ); // 'Chave PIX inválida'
+  print(V.string().uf().errors('XY')!.first.message); // 'UF inválida'
   print(V.string().boleto().errors('x')!.first.message); // 'Boleto inválido'
 
   section('VLocaleBr.ptBrWith — overrides pontuais');

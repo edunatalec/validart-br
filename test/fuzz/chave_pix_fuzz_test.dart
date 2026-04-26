@@ -8,9 +8,9 @@ import 'package:validart_br/validart_br.dart';
 import 'fuzz_helpers.dart';
 
 void main() {
-  group('PixKeyValidator fuzz', () {
-    final schemaDict = V.string().pixKey();
-    final schemaAll = V.string().pixKey(allow: PixKeyType.values);
+  group('ChavePixValidator fuzz', () {
+    final schemaDict = V.string().chavePix();
+    final schemaAll = V.string().chavePix(allow: TipoChavePix.values);
 
     test('nunca lança com input adversarial (default)', () {
       fuzz('bool out on adversarial', (rng, _) {
@@ -41,7 +41,7 @@ void main() {
     });
 
     test('allow vazio rejeita qualquer input', () {
-      final schemaNone = V.string()..add(const PixKeyValidator(allow: []));
+      final schemaNone = V.string()..add(const ChavePixValidator(allow: []));
       fuzz('empty allow rejects all', (rng, _) {
         final choice = rng.nextInt(5);
         final String input = switch (choice) {
@@ -56,7 +56,7 @@ void main() {
     });
 
     test('allow: [email] nunca aceita CPF/CNPJ/UUID válidos', () {
-      final emailOnly = V.string().pixKey(allow: const [PixKeyType.email]);
+      final emailOnly = V.string().chavePix(allow: const [TipoChavePix.email]);
       const validos = [
         '12345678909', // CPF
         '12345678000195', // CNPJ

@@ -106,7 +106,7 @@ void main() {
     });
 
     test('format=bancario rejeita arrecadação válida', () {
-      const validator = BoletoValidator(format: BoletoFormat.bancario);
+      const validator = BoletoValidator(formato: FormatoBoleto.bancario);
       const arrecadacoes = [
         '836200000005667800481000180975657313001589636081',
         '848900000002404201622015806051904292586034111220',

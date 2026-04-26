@@ -85,7 +85,7 @@ void main() {
     test('código de erro é invalid_ddd', () {
       final schema = V.string().ddd();
       final errors = schema.errors('00');
-      expect(errors!.first.code, VStringCodeBr.invalidDdd);
+      expect(errors!.first.code, VStringCodeBr.dddInvalido);
     });
 
     test('respeita message customizada', () {

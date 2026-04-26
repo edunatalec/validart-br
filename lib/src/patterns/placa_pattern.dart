@@ -9,13 +9,13 @@ import 'package:validart/validart.dart';
 /// independente de [mode].
 ///
 /// ```dart
-/// V.string().licensePlate(patterns: [const BrPlatePattern()]);
-/// V.string().plate(); // atalho
+/// V.string().licensePlate(patterns: [const PlacaPattern()]);
+/// V.string().placa(); // atalho
 ///
-/// V.string().toUpperCase().plate()
+/// V.string().toUpperCase().placa()
 ///   .validate('abc-1234'); // true
 /// ```
-class BrPlatePattern extends LicensePlatePattern {
+class PlacaPattern extends LicensePlatePattern {
   static final _oldWithDash = RegExp(r'^[A-Z]{3}-\d{4}$');
   static final _oldNoDash = RegExp(r'^[A-Z]{3}\d{4}$');
   static final _mercosul = RegExp(r'^[A-Z]{3}\d[A-Z]\d{2}$');
@@ -25,8 +25,8 @@ class BrPlatePattern extends LicensePlatePattern {
   /// [ValidationMode.any].
   final ValidationMode mode;
 
-  /// Cria um [BrPlatePattern].
-  const BrPlatePattern({this.mode = ValidationMode.any});
+  /// Cria um [PlacaPattern].
+  const PlacaPattern({this.mode = ValidationMode.any});
 
   @override
   String get name => 'Placa';

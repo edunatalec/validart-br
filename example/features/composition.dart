@@ -15,10 +15,10 @@ void runCompositionExamples() {
     'nome': V.string().min(3).max(120),
     'cpf': V.string().cpf(),
     'email': V.string().email(),
-    'celular': V.string().phoneBr(mobileOnly: true),
+    'celular': V.string().telefone(apenasCelular: true),
     'cep': V.string().cep(),
-    'uf': V.string().toUpperCase().state(),
-    'banco': V.string().bankCode(),
+    'uf': V.string().toUpperCase().uf(),
+    'banco': V.string().codigoBanco(),
   });
 
   final result = usuario.safeParse({

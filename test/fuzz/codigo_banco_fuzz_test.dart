@@ -8,9 +8,9 @@ import 'package:validart_br/validart_br.dart';
 import 'fuzz_helpers.dart';
 
 void main() {
-  group('BankCodeValidator fuzz', () {
-    final schema = V.string().bankCode();
-    const validator = BankCodeValidator();
+  group('CodigoBancoValidator fuzz', () {
+    final schema = V.string().codigoBanco();
+    const validator = CodigoBancoValidator();
 
     test('nunca lança com input adversarial', () {
       fuzz('bool out on adversarial', (rng, _) {
@@ -32,8 +32,8 @@ void main() {
 
     test('formato com DV (4 dígitos com hífen) nunca passa', () {
       fuzz('with check digit format rejects', (rng, _) {
-        final code = BankCodeValidator.codes.elementAt(
-          rng.nextInt(BankCodeValidator.codes.length),
+        final code = CodigoBancoValidator.codigos.elementAt(
+          rng.nextInt(CodigoBancoValidator.codigos.length),
         );
         final dv = rng.nextInt(10);
 
@@ -43,8 +43,8 @@ void main() {
 
     test('todos os 497 códigos da lista são aceitos', () {
       fuzz('every listed code accepted', (rng, _) {
-        final code = BankCodeValidator.codes.elementAt(
-          rng.nextInt(BankCodeValidator.codes.length),
+        final code = CodigoBancoValidator.codigos.elementAt(
+          rng.nextInt(CodigoBancoValidator.codigos.length),
         );
 
         expect(validator.validate(code), isNull, reason: code);
@@ -69,7 +69,7 @@ void main() {
         final input = randomDigits(rng, 3);
         final ok = validator.validate(input) == null;
 
-        expect(ok, BankCodeValidator.codes.contains(input), reason: input);
+        expect(ok, CodigoBancoValidator.codigos.contains(input), reason: input);
       });
     });
   });

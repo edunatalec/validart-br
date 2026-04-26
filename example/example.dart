@@ -12,19 +12,19 @@
 import 'features/composition.dart';
 import 'features/locale.dart';
 import 'features/patterns.dart';
-import 'validators/bank_code.dart';
+import 'validators/codigo_banco.dart';
 import 'validators/boleto.dart';
 import 'validators/cep.dart';
 import 'validators/cnh.dart';
 import 'validators/cnpj.dart';
 import 'validators/cpf.dart';
 import 'validators/ddd.dart';
-import 'validators/phone_br.dart';
+import 'validators/telefone.dart';
 import 'validators/pis.dart';
-import 'validators/pix_key.dart';
-import 'validators/plate.dart';
+import 'validators/chave_pix.dart';
+import 'validators/placa.dart';
 import 'validators/renavam.dart';
-import 'validators/state.dart';
+import 'validators/uf.dart';
 import 'validators/titulo_eleitor.dart';
 
 void main() {
@@ -36,11 +36,11 @@ void main() {
   runTituloEleitorExamples();
   runCnhExamples();
   runRenavamExamples();
-  runPhoneBrExamples();
-  runPlateExamples();
-  runPixKeyExamples();
-  runStateExamples();
-  runBankCodeExamples();
+  runTelefoneExamples();
+  runPlacaExamples();
+  runChavePixExamples();
+  runUfExamples();
+  runCodigoBancoExamples();
   runDddExamples();
   runBoletoExamples();
 

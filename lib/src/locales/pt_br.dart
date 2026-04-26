@@ -103,11 +103,11 @@ const Map<String, String> _kValidartPtBrMessages = <String, String>{
 
 /// Mensagens em pt-BR dos códigos específicos do `validart_br`.
 const Map<String, String> _kValidartBrMessages = <String, String>{
-  VStringCodeBr.invalidPixKey: 'Chave PIX inválida',
-  VStringCodeBr.invalidState: 'UF inválida',
-  VStringCodeBr.invalidBankCode: 'Código de banco inválido',
-  VStringCodeBr.invalidDdd: 'DDD inválido',
-  VStringCodeBr.invalidBoleto: 'Boleto inválido',
+  VStringCodeBr.chavePixInvalida: 'Chave PIX inválida',
+  VStringCodeBr.ufInvalida: 'UF inválida',
+  VStringCodeBr.codigoBancoInvalido: 'Código de banco inválido',
+  VStringCodeBr.dddInvalido: 'DDD inválido',
+  VStringCodeBr.boletoInvalido: 'Boleto inválido',
 };
 
 /// Locale em português do Brasil para o validart.
