@@ -92,7 +92,7 @@ const Map<String, String> _kValidartPtBrMessages = <String, String>{
   VMapCode.unrecognizedKey: 'Chave não reconhecida "{key}"',
   VMapCode.fieldsNotEqual: '{field} deve ser igual a {other}',
 
-  // Object — novo em validart 2.0.0 (V.object<T>().equalFields()).
+  // Object
   VObjectCode.fieldsNotEqual: '{field} deve ser igual a {other}',
 
   // Composite
