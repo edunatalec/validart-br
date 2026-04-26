@@ -38,5 +38,11 @@ export 'src/patterns/renavam_pattern.dart' show RenavamPattern;
 export 'src/patterns/br_plate_pattern.dart' show BrPlatePattern;
 export 'src/patterns/br_phone_pattern.dart' show BrPhonePattern;
 
-// Validador composto — chave PIX não cabe num único pattern.
+// Validators standalone — formatos que validam contra listas oficiais
+// finitas (UF, COMPE, DDD), agregam múltiplos checksums (boleto) ou
+// que são uniões heterogêneas de formatos (chave PIX).
 export 'src/validators/pix_key_validator.dart' show PixKeyValidator;
+export 'src/validators/state_validator.dart' show StateValidator;
+export 'src/validators/bank_code_validator.dart' show BankCodeValidator;
+export 'src/validators/ddd_validator.dart' show DddValidator;
+export 'src/validators/boleto_validator.dart' show BoletoValidator;

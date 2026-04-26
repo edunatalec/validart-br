@@ -64,6 +64,36 @@ void main() {
   print('Placa antiga:   ${placa.validate('abc-1234')}'); // true
   print('Placa Mercosul: ${placa.validate('abc1d23')}'); // true
 
+  // UF (sigla de estado em caixa alta)
+  print('UF SP: ${V.string().state().validate('SP')}'); // true
+  print('UF XY: ${V.string().state().validate('XY')}'); // false
+
+  // Código de banco (COMPE — 3 dígitos da tabela do Bacen)
+  print('Banco 001:  ${V.string().bankCode().validate('001')}'); // true (BB)
+  print(
+    'Banco 260:  ${V.string().bankCode().validate('260')}',
+  ); // true (Nubank)
+  print('Banco 999:  ${V.string().bankCode().validate('999')}'); // false
+
+  // DDD (lista oficial Anatel — 67 códigos)
+  print('DDD 11: ${V.string().ddd().validate('11')}'); // true
+  print('DDD 20: ${V.string().ddd().validate('20')}'); // false
+
+  // Boleto — bancário ou arrecadação, linha digitável ou código de barras
+  final boleto = V.string().boleto();
+  print(
+    'Boleto bancário linha: '
+    '${boleto.validate('23793381286000782713695000063305975520000370000')}',
+  ); // true
+  print(
+    'Boleto arrecadação linha: '
+    '${boleto.validate('836200000005667800481000180975657313001589636081')}',
+  ); // true
+  print(
+    'Só bancário: '
+    '${V.string().boleto(format: BoletoFormat.bancario).validate('836200000005667800481000180975657313001589636081')}',
+  ); // false
+
   // Schema de cadastro
   final usuario = V.map({
     'nome': V.string().min(3).max(120),

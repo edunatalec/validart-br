@@ -10,7 +10,11 @@ import '../patterns/cpf_pattern.dart';
 import '../patterns/pis_pattern.dart';
 import '../patterns/renavam_pattern.dart';
 import '../patterns/titulo_eleitor_pattern.dart';
+import '../validators/bank_code_validator.dart';
+import '../validators/boleto_validator.dart';
+import '../validators/ddd_validator.dart';
 import '../validators/pix_key_validator.dart';
+import '../validators/state_validator.dart';
 
 /// Atalhos de validadores brasileiros em cima de [VString].
 ///
@@ -230,5 +234,80 @@ extension VStringBr on VString {
     String? message,
   }) {
     return add(PixKeyValidator(allow: allow), message: message);
+  }
+
+  /// Valida que a string é uma sigla de unidade federativa brasileira
+  /// válida — uma das 27 UFs em caixa alta (`AC`, `AL`, ..., `TO`).
+  ///
+  /// Letras devem estar em caixa alta. Encadeie
+  /// `V.string().toUpperCase()` para aceitar lowercase.
+  ///
+  /// Executa na fase de validação.
+  ///
+  /// ```dart
+  /// V.string().state().validate('SP'); // true
+  /// V.string().state().validate('XY'); // false
+  ///
+  /// V.string().toUpperCase().state().validate('rj'); // true
+  /// ```
+  VString state({String? message}) {
+    return add(const StateValidator(), message: message);
+  }
+
+  /// Valida que a string é um código de banco brasileiro válido —
+  /// 3 dígitos da tabela COMPE do Banco Central.
+  ///
+  /// A entrada deve ser exatamente 3 dígitos numéricos com zero à
+  /// esquerda quando aplicável. Não aceita formato com DV (`'001-9'`).
+  ///
+  /// Executa na fase de validação.
+  ///
+  /// ```dart
+  /// V.string().bankCode().validate('001'); // true (Banco do Brasil)
+  /// V.string().bankCode().validate('260'); // true (Nubank)
+  /// V.string().bankCode().validate('999'); // false
+  /// ```
+  VString bankCode({String? message}) {
+    return add(const BankCodeValidator(), message: message);
+  }
+
+  /// Valida que a string é um DDD brasileiro válido — 2 dígitos da
+  /// lista oficial Anatel.
+  ///
+  /// A entrada deve ser exatamente 2 dígitos numéricos, sem
+  /// parênteses ou separadores. Para validar o telefone completo,
+  /// use [`phoneBr`].
+  ///
+  /// Executa na fase de validação.
+  ///
+  /// ```dart
+  /// V.string().ddd().validate('11'); // true (São Paulo)
+  /// V.string().ddd().validate('20'); // false (não atribuído)
+  /// ```
+  VString ddd({String? message}) {
+    return add(const DddValidator(), message: message);
+  }
+
+  /// Valida boletos brasileiros — bancário (cobrança) ou de
+  /// arrecadação (concessionárias e tributos), tanto na forma de
+  /// linha digitável (47/48 dígitos) quanto código de barras (44
+  /// dígitos). Aceita máscara — caracteres não numéricos são
+  /// descartados.
+  ///
+  /// Use [format] para restringir a um único tipo. `null` (default)
+  /// aceita os 4 layouts.
+  ///
+  /// Executa na fase de validação.
+  ///
+  /// ```dart
+  /// V.string().boleto().validate(
+  ///   '34191790010104351004791020150008291070026000',
+  /// ); // true (linha digitável bancária)
+  ///
+  /// V.string().boleto(format: BoletoFormat.bancario)
+  ///   .validate('xx'); // false
+  /// ```
+  VString boleto({BoletoFormat? format, String? message}) {
+    return add(BoletoValidator(format: format), message: message);
   }
 }

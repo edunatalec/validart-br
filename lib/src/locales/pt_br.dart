@@ -92,6 +92,9 @@ const Map<String, String> _kValidartPtBrMessages = <String, String>{
   VMapCode.unrecognizedKey: 'Chave não reconhecida "{key}"',
   VMapCode.fieldsNotEqual: '{field} deve ser igual a {other}',
 
+  // Object — novo em validart 2.0.0 (V.object<T>().equalFields()).
+  VObjectCode.fieldsNotEqual: '{field} deve ser igual a {other}',
+
   // Composite
   VEnumCode.invalid: 'Valor inválido. Esperado um de: {values}',
   VLiteralCode.invalid: 'Esperado "{expected}", recebido "{received}"',
@@ -101,6 +104,10 @@ const Map<String, String> _kValidartPtBrMessages = <String, String>{
 /// Mensagens em pt-BR dos códigos específicos do `validart_br`.
 const Map<String, String> _kValidartBrMessages = <String, String>{
   VStringCodeBr.invalidPixKey: 'Chave PIX inválida',
+  VStringCodeBr.invalidState: 'UF inválida',
+  VStringCodeBr.invalidBankCode: 'Código de banco inválido',
+  VStringCodeBr.invalidDdd: 'DDD inválido',
+  VStringCodeBr.invalidBoleto: 'Boleto inválido',
 };
 
 /// Locale em português do Brasil para o validart.

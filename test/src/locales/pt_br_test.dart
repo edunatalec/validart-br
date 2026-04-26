@@ -38,6 +38,17 @@ void main() {
 
     test('traduz códigos específicos do validart_br', () {
       expect(V.t(VStringCodeBr.invalidPixKey), 'Chave PIX inválida');
+      expect(V.t(VStringCodeBr.invalidState), 'UF inválida');
+      expect(V.t(VStringCodeBr.invalidBankCode), 'Código de banco inválido');
+      expect(V.t(VStringCodeBr.invalidDdd), 'DDD inválido');
+      expect(V.t(VStringCodeBr.invalidBoleto), 'Boleto inválido');
+    });
+
+    test('traduz fields_not_equal de VObject (novo em validart 2.0.0)', () {
+      expect(
+        V.t(VObjectCode.fieldsNotEqual, {'field': 'p1', 'other': 'p2'}),
+        'p1 deve ser igual a p2',
+      );
     });
 
     test('telefone BR usa o code do core (invalid_phone)', () {
@@ -54,6 +65,17 @@ void main() {
       final schema = V.string().plate();
       final errors = schema.errors('xxx');
       expect(errors!.first.message, 'Placa inválida');
+    });
+
+    test('V.object<T>().equalFields() emite mensagem em pt-BR (pin do gap '
+        'do validart 2.0.0 — VObjectCode.fieldsNotEqual)', () {
+      final schema = V
+          .object<_Pwd>()
+          .field('p1', (x) => x.p1, V.string())
+          .field('p2', (x) => x.p2, V.string())
+          .equalFields('p1', 'p2');
+      final errors = schema.errors(_Pwd('a', 'b'));
+      expect(errors!.first.message, 'p1 deve ser igual a p2');
     });
   });
 
@@ -72,7 +94,17 @@ void main() {
         VLocaleBr.brMessages[VStringCodeBr.invalidPixKey],
         'Chave PIX inválida',
       );
-      expect(VLocaleBr.brMessages.length, 1);
+      expect(VLocaleBr.brMessages[VStringCodeBr.invalidState], 'UF inválida');
+      expect(
+        VLocaleBr.brMessages[VStringCodeBr.invalidBankCode],
+        'Código de banco inválido',
+      );
+      expect(VLocaleBr.brMessages[VStringCodeBr.invalidDdd], 'DDD inválido');
+      expect(
+        VLocaleBr.brMessages[VStringCodeBr.invalidBoleto],
+        'Boleto inválido',
+      );
+      expect(VLocaleBr.brMessages.length, 5);
     });
 
     test('messages é a união de core + br', () {
@@ -108,4 +140,10 @@ void main() {
       expect(errors!.first.message, 'CPF fora do padrão');
     });
   });
+}
+
+class _Pwd {
+  final String p1;
+  final String p2;
+  _Pwd(this.p1, this.p2);
 }
