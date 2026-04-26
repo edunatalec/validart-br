@@ -10,7 +10,7 @@ import 'fuzz_helpers.dart';
 void main() {
   group('ChavePixValidator fuzz', () {
     final VString schemaDict = V.string().chavePix();
-    final VString schemaAll = V.string().chavePix(allow: TipoChavePix.values);
+    final VString schemaAll = V.string().chavePix(tipos: TipoChavePix.values);
 
     test('nunca lança com input adversarial (default)', () {
       fuzz('bool out on adversarial', (rng, _) {
@@ -40,10 +40,10 @@ void main() {
       });
     });
 
-    test('allow vazio rejeita qualquer input', () {
+    test('tipos vazio rejeita qualquer input', () {
       final VString schemaNone = V.string()
         ..add(const ChavePixValidator(allow: []));
-      fuzz('empty allow rejects all', (rng, _) {
+      fuzz('empty tipos rejects all', (rng, _) {
         final int choice = rng.nextInt(5);
         final String input = switch (choice) {
           0 => '12345678909', // CPF válido
@@ -56,9 +56,9 @@ void main() {
       });
     });
 
-    test('allow: [email] nunca aceita CPF/CNPJ/UUID válidos', () {
+    test('tipos: [email] nunca aceita CPF/CNPJ/UUID válidos', () {
       final VString emailOnly = V.string().chavePix(
-        allow: const [TipoChavePix.email],
+        tipos: const [TipoChavePix.email],
       );
       const validos = [
         '12345678909', // CPF

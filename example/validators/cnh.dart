@@ -14,7 +14,7 @@ void runCnhExamples() {
   // Override do gênero gramatical da mensagem default ("CNH inválido"
   // → "CNH inválida"):
   V.setLocale(VLocaleBr.ptBr);
-  final VString schema = V.string().cnh(message: 'CNH inválida');
+  final VString schema = V.string().cnh(mensagem: 'CNH inválida');
   print(schema.errors('00000000000')!.first.message); // 'CNH inválida'
   V.setLocale(const VLocale());
 }

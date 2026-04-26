@@ -33,7 +33,7 @@ void main() {
 
     test('DDDs inexistentes (00, 10, 20, 23, etc.) são sempre rejeitados', () {
       final VString mobileSchema = V.string().telefone(
-        ddd: FormatoDdd.required,
+        ddd: FormatoDdd.obrigatorio,
         apenasCelular: true,
       );
       const dddInvalidos = [0, 10, 20, 23, 25, 26, 29, 30, 36, 39, 40, 50, 52];
@@ -47,7 +47,7 @@ void main() {
 
     test('celular sem dígito "9" inicial é rejeitado em mobileOnly', () {
       final VString mobileSchema = V.string().telefone(
-        ddd: FormatoDdd.required,
+        ddd: FormatoDdd.obrigatorio,
         apenasCelular: true,
       );
       fuzz('no leading 9 rejects', (rng, _) {

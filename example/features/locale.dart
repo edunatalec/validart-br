@@ -48,7 +48,7 @@ void runLocaleExamples() {
   V.setLocale(VLocaleBr.ptBr);
   // "CNH inválido" (default masculino) → "CNH inválida" (feminino).
   print(
-    V.string().cnh(message: 'CNH inválida').errors('x')!.first.message,
+    V.string().cnh(mensagem: 'CNH inválida').errors('x')!.first.message,
   ); // 'CNH inválida'
 
   V.setLocale(const VLocale());

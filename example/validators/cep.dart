@@ -13,7 +13,7 @@ void runCepExamples() {
   print(V.string().cep().validate('0100100')); // false (7 dígitos)
 
   print(
-    V.string().cep(mode: ValidationMode.formatted).validate('01001000'),
+    V.string().cep(modo: ModoValidacao.comMascara).validate('01001000'),
   ); // false
 }
 

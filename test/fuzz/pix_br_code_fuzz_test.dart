@@ -15,7 +15,7 @@ const _brCodeValido =
 void main() {
   group('PixBrCode fuzz', () {
     final VString schema = V.string().chavePix(
-      allow: const [TipoChavePix.brCode],
+      tipos: const [TipoChavePix.brCode],
     );
 
     test('nunca lança com input adversarial', () {

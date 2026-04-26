@@ -72,7 +72,9 @@ void main() {
     });
 
     test('respeita message customizada', () {
-      final VString schema = V.string().uf(message: 'Estado fora da Federação');
+      final VString schema = V.string().uf(
+        mensagem: 'Estado fora da Federação',
+      );
       expect(schema.errors('XX')!.first.message, 'Estado fora da Federação');
     });
   });

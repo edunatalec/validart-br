@@ -11,11 +11,15 @@ import 'pix_br_code.dart';
 /// CNPJ, e-mail, telefone `+55…`, UUID v4) e/ou BR Code (payload
 /// EMVCo do QR Code PIX).
 ///
-/// O parâmetro [allow] controla quais tipos são aceitos — por padrão
-/// apenas as cinco chaves do DICT (sem BR Code). Cada formato é
-/// verificado no modo estrito exigido pelo PIX: CPF/CNPJ só com
+/// O parâmetro [allow] controla quais formatos são aceitos — por
+/// padrão apenas as cinco chaves do DICT (sem BR Code). Cada formato
+/// é verificado no modo estrito exigido pelo PIX: CPF/CNPJ só com
 /// dígitos, telefone em E.164 com DDI `+55`, BR Code com CRC16
 /// batendo e campos obrigatórios do Bacen.
+///
+/// O nome do campo segue a convenção do core (em inglês). A API
+/// pública pt-BR é exposta via `V.string().chavePix(tipos: ...)`,
+/// que faz o depara `tipos` → `allow` internamente.
 ///
 /// Emite [VStringCodeBr.chavePixInvalida] em caso de falha.
 ///
@@ -29,15 +33,16 @@ import 'pix_br_code.dart';
 ///   .validate('123e4567-e89b-12d3-a456-426614174000');       // true (UUID)
 ///
 /// // Só aceita BR Code:
-/// V.string().chavePix(allow: const [TipoChavePix.brCode])
+/// V.string().chavePix(tipos: const [TipoChavePix.brCode])
 ///   .validate('00020126...6304ABCD');                        // true/false
 ///
 /// // Aceita tudo (5 chaves + BR Code):
-/// V.string().chavePix(allow: TipoChavePix.values);
+/// V.string().chavePix(tipos: TipoChavePix.values);
 /// ```
 class ChavePixValidator extends Validator<String> {
   /// Conjunto padrão de tipos aceitos — apenas as cinco chaves PIX
-  /// do DICT. BR Code precisa ser habilitado explicitamente em [allow].
+  /// do DICT. BR Code precisa ser habilitado explicitamente em
+  /// [allow].
   static const List<TipoChavePix> defaultAllow = <TipoChavePix>[
     TipoChavePix.cpf,
     TipoChavePix.cnpj,
@@ -46,11 +51,14 @@ class ChavePixValidator extends Validator<String> {
     TipoChavePix.aleatoria,
   ];
 
-  /// Tipos de identificador PIX aceitos. Uma lista vazia rejeita
-  /// qualquer entrada (nenhum formato casa).
+  /// Tipos de identificador PIX que serão aceitos pela validação. A
+  /// validação passa quando o input casa com **pelo menos um** dos
+  /// tipos listados. Uma lista vazia rejeita qualquer entrada
+  /// (nenhum formato casa).
   final List<TipoChavePix> allow;
 
-  /// Cria um [ChavePixValidator] que aceita os tipos listados em [allow].
+  /// Cria um [ChavePixValidator] que aceita os formatos listados em
+  /// [allow]. Default: [defaultAllow].
   const ChavePixValidator({this.allow = defaultAllow});
 
   static const _cpf = CpfPattern(mode: ValidationMode.unformatted);
@@ -59,9 +67,9 @@ class ChavePixValidator extends Validator<String> {
     alphanumeric: false,
   );
   static const _telefone = TelefonePattern(
-    pais: CountryCodeFormat.required,
-    ddd: FormatoDdd.required,
-    apenasCelular: true,
+    countryCode: CountryCodeFormat.required,
+    areaCode: FormatoDdd.obrigatorio,
+    mobileOnly: true,
     mode: ValidationMode.unformatted,
   );
 

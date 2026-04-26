@@ -78,7 +78,7 @@ void main() {
 
     test('respeita message customizada', () {
       final VString schema = V.string().codigoBanco(
-        message: 'Banco não autorizado',
+        mensagem: 'Banco não autorizado',
       );
       expect(schema.errors('999')!.first.message, 'Banco não autorizado');
     });

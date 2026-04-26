@@ -15,10 +15,10 @@ void runCpfExamples() {
 
   // Mode pinning.
   print(
-    V.string().cpf(mode: ValidationMode.formatted).validate('12345678909'),
+    V.string().cpf(modo: ModoValidacao.comMascara).validate('12345678909'),
   ); // false
   print(
-    V.string().cpf(mode: ValidationMode.unformatted).validate('123.456.789-09'),
+    V.string().cpf(modo: ModoValidacao.semMascara).validate('123.456.789-09'),
   ); // false
 
   section('CPF — equivalência atalho ↔ pattern');

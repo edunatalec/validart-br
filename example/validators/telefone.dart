@@ -17,10 +17,10 @@ void runTelefoneExamples() {
   section('Telefone BR — restrito');
 
   final VString schema = V.string().telefone(
-    pais: CountryCodeFormat.required,
-    ddd: FormatoDdd.required,
+    pais: FormatoPais.obrigatorio,
+    ddd: FormatoDdd.obrigatorio,
     apenasCelular: true,
-    mode: ValidationMode.formatted,
+    modo: ModoValidacao.comMascara,
   );
   print(schema.validate('+55 (11) 98765-4321')); // true
   print(schema.validate('+5511987654321')); // false (sem máscara)

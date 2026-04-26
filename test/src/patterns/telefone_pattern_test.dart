@@ -78,14 +78,18 @@ void main() {
     group('pais: required', () {
       test('aceita com +55', () {
         final VString schema = V.string().phone(
-          patterns: [const TelefonePattern(pais: CountryCodeFormat.required)],
+          patterns: [
+            const TelefonePattern(countryCode: CountryCodeFormat.required),
+          ],
         );
         expect(schema.validate('+55 11 98765-4321'), isTrue);
       });
 
       test('rejeita sem +55', () {
         final VString schema = V.string().phone(
-          patterns: [const TelefonePattern(pais: CountryCodeFormat.required)],
+          patterns: [
+            const TelefonePattern(countryCode: CountryCodeFormat.required),
+          ],
         );
         expect(schema.validate('(11) 98765-4321'), isFalse);
       });
@@ -94,14 +98,18 @@ void main() {
     group('pais: none', () {
       test('rejeita com +55', () {
         final VString schema = V.string().phone(
-          patterns: [const TelefonePattern(pais: CountryCodeFormat.none)],
+          patterns: [
+            const TelefonePattern(countryCode: CountryCodeFormat.none),
+          ],
         );
         expect(schema.validate('+55 11 98765-4321'), isFalse);
       });
 
       test('aceita sem +55', () {
         final VString schema = V.string().phone(
-          patterns: [const TelefonePattern(pais: CountryCodeFormat.none)],
+          patterns: [
+            const TelefonePattern(countryCode: CountryCodeFormat.none),
+          ],
         );
         expect(schema.validate('(11) 98765-4321'), isTrue);
       });
@@ -110,14 +118,14 @@ void main() {
     group('ddd: required', () {
       test('aceita com DDD', () {
         final VString schema = V.string().phone(
-          patterns: [const TelefonePattern(ddd: FormatoDdd.required)],
+          patterns: [const TelefonePattern(areaCode: FormatoDdd.obrigatorio)],
         );
         expect(schema.validate('11987654321'), isTrue);
       });
 
       test('rejeita sem DDD', () {
         final VString schema = V.string().phone(
-          patterns: [const TelefonePattern(ddd: FormatoDdd.required)],
+          patterns: [const TelefonePattern(areaCode: FormatoDdd.obrigatorio)],
         );
         expect(schema.validate('987654321'), isFalse);
         expect(schema.validate('98765-4321'), isFalse);
@@ -127,14 +135,14 @@ void main() {
     group('ddd: none', () {
       test('rejeita com DDD', () {
         final VString schema = V.string().phone(
-          patterns: [const TelefonePattern(ddd: FormatoDdd.none)],
+          patterns: [const TelefonePattern(areaCode: FormatoDdd.nenhum)],
         );
         expect(schema.validate('(11) 98765-4321'), isFalse);
       });
 
       test('aceita sem DDD', () {
         final VString schema = V.string().phone(
-          patterns: [const TelefonePattern(ddd: FormatoDdd.none)],
+          patterns: [const TelefonePattern(areaCode: FormatoDdd.nenhum)],
         );
         expect(schema.validate('98765-4321'), isTrue);
       });
@@ -143,14 +151,14 @@ void main() {
     group('mobileOnly', () {
       test('aceita celular', () {
         final VString schema = V.string().phone(
-          patterns: [const TelefonePattern(apenasCelular: true)],
+          patterns: [const TelefonePattern(mobileOnly: true)],
         );
         expect(schema.validate('11987654321'), isTrue);
       });
 
       test('rejeita fixo', () {
         final VString schema = V.string().phone(
-          patterns: [const TelefonePattern(apenasCelular: true)],
+          patterns: [const TelefonePattern(mobileOnly: true)],
         );
         expect(schema.validate('1133334444'), isFalse);
         expect(schema.validate('(11) 3333-4444'), isFalse);
@@ -194,9 +202,9 @@ void main() {
       final VString schema = V.string().phone(
         patterns: [
           const TelefonePattern(
-            pais: CountryCodeFormat.required,
-            ddd: FormatoDdd.required,
-            apenasCelular: true,
+            countryCode: CountryCodeFormat.required,
+            areaCode: FormatoDdd.obrigatorio,
+            mobileOnly: true,
           ),
         ],
       );

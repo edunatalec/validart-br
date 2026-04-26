@@ -89,7 +89,7 @@ void main() {
     });
 
     test('respeita message customizada', () {
-      final VString schema = V.string().ddd(message: 'DDD fora da Anatel');
+      final VString schema = V.string().ddd(mensagem: 'DDD fora da Anatel');
       expect(schema.errors('00')!.first.message, 'DDD fora da Anatel');
     });
   });

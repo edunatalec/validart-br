@@ -97,14 +97,14 @@ void main() {
         expect(V.string().cnpj().validate('12ABC34501DE35'), isTrue);
       });
 
-      test('atalho V.string().cnpj(alphanumeric: false)', () {
-        final VString schema = V.string().cnpj(alphanumeric: false);
+      test('atalho V.string().cnpj(alfanumerico: false)', () {
+        final VString schema = V.string().cnpj(alfanumerico: false);
         expect(schema.validate('12345678000195'), isTrue);
         expect(schema.validate('12ABC34501DE35'), isFalse);
       });
 
       test('message customizada', () {
-        final VString schema = V.string().cnpj(message: 'CNPJ incorreto');
+        final VString schema = V.string().cnpj(mensagem: 'CNPJ incorreto');
         final List<VError>? errors = schema.errors('00.000.000/0000-00');
         expect(errors!.first.message, 'CNPJ incorreto');
       });

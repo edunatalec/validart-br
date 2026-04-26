@@ -1,18 +1,68 @@
-/// Controla se o DDD é obrigatório, opcional ou proibido num
+/// Controla se a máscara é obrigatória, opcional ou proibida num
+/// validador que aceita máscaras (como CPF, CNPJ, CEP, placa, etc.).
+///
+/// É o pareamento pt-BR de `ValidationMode` do core — a camada de
+/// atalhos (`V.string().cpf(modo: ...)`, etc.) faz o depara
+/// internamente.
+///
+/// ```dart
+/// V.string().cpf(modo: ModoValidacao.comMascara);
+///   // exige '123.456.789-09', rejeita '12345678909'
+///
+/// V.string().cep(modo: ModoValidacao.semMascara);
+///   // exige '01001000', rejeita '01001-000'
+/// ```
+enum ModoValidacao {
+  /// Aceita o input com ou sem máscara (default).
+  qualquer,
+
+  /// Exige a máscara — ex.: CPF `123.456.789-09`, CEP `01001-000`.
+  comMascara,
+
+  /// Rejeita a máscara — ex.: CPF só dígitos, CEP só dígitos.
+  semMascara,
+}
+
+/// Controla se o DDD é obrigatório, opcional ou ausente num
 /// telefone brasileiro.
 ///
 /// ```dart
-/// V.string().telefone(ddd: FormatoDdd.required);
+/// V.string().telefone(ddd: FormatoDdd.obrigatorio);
 /// ```
 enum FormatoDdd {
   /// DDD deve estar presente — ex.: `(11) 98765-4321`.
-  required,
+  obrigatorio,
 
   /// DDD é aceito quando presente, mas não é obrigatório.
-  optional,
+  opcional,
 
-  /// DDD deve estar ausente — ex.: `98765-4321`.
-  none,
+  /// DDD não deve estar presente — ex.: `98765-4321`.
+  nenhum,
+}
+
+/// Controla se o DDI (`+55`) é obrigatório, opcional ou ausente num
+/// telefone brasileiro.
+///
+/// É o pareamento pt-BR de `CountryCodeFormat` do core — a camada
+/// de atalhos (`V.string().telefone(pais: ...)`) faz o depara
+/// internamente.
+///
+/// ```dart
+/// V.string().telefone(pais: FormatoPais.obrigatorio);
+///   // exige '+55 11 98765-4321'
+///
+/// V.string().telefone(pais: FormatoPais.nenhum);
+///   // exige '11 98765-4321' (sem +55)
+/// ```
+enum FormatoPais {
+  /// DDI deve estar presente — ex.: `+55 11 98765-4321`.
+  obrigatorio,
+
+  /// DDI é aceito quando presente, mas não é obrigatório (default).
+  opcional,
+
+  /// DDI não deve estar presente — ex.: `(11) 98765-4321`.
+  nenhum,
 }
 
 /// Tipos de identificador aceitos por `V.string().chavePix(...)`.
@@ -21,8 +71,8 @@ enum FormatoDdd {
 /// payload EMVCo do QR Code ("copia e cola").
 ///
 /// ```dart
-/// V.string().chavePix(allow: const [TipoChavePix.email, TipoChavePix.telefone]);
-/// V.string().chavePix(allow: TipoChavePix.values); // tudo, inclusive BR Code
+/// V.string().chavePix(tipos: const [TipoChavePix.email, TipoChavePix.telefone]);
+/// V.string().chavePix(tipos: TipoChavePix.values); // tudo, inclusive BR Code
 /// ```
 enum TipoChavePix {
   /// CPF em 11 dígitos sem máscara.

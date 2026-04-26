@@ -116,14 +116,14 @@ void main() {
 
   group('BoletoValidator — restrição via [format]', () {
     test('format: bancario rejeita arrecadação', () {
-      const validator = BoletoValidator(formato: FormatoBoleto.bancario);
+      const validator = BoletoValidator(format: FormatoBoleto.bancario);
       expect(validator.validate(_bancarioLinhaSemMascara), isNull);
       expect(validator.validate(_arrecadacaoLinhaMod10), isNotNull);
       expect(validator.validate(_arrecadacaoBarrasMod11), isNotNull);
     });
 
     test('format: arrecadacao rejeita bancário', () {
-      const validator = BoletoValidator(formato: FormatoBoleto.arrecadacao);
+      const validator = BoletoValidator(format: FormatoBoleto.arrecadacao);
       expect(validator.validate(_arrecadacaoLinhaMod10), isNull);
       expect(validator.validate(_bancarioLinhaSemMascara), isNotNull);
       expect(validator.validate(_bancarioBarras), isNotNull);
@@ -156,7 +156,7 @@ void main() {
 
     test('respeita message customizada', () {
       final VString schema = V.string().boleto(
-        message: 'Boleto fora do padrão',
+        mensagem: 'Boleto fora do padrão',
       );
       expect(schema.errors('xxx')!.first.message, 'Boleto fora do padrão');
     });

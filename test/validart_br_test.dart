@@ -13,7 +13,7 @@ void main() {
     });
 
     test('cnpj respeita mode', () {
-      final VString schema = V.string().cnpj(mode: ValidationMode.unformatted);
+      final VString schema = V.string().cnpj(modo: ModoValidacao.semMascara);
       expect(schema.validate('12345678000195'), isTrue);
       expect(schema.validate('12.345.678/0001-95'), isFalse);
     });
@@ -24,14 +24,20 @@ void main() {
       expect(schema.validate('01001000'), isTrue);
     });
 
-    test('phoneBr com flags combinadas', () {
+    test('telefone com flags combinadas', () {
       final VString schema = V.string().telefone(
-        ddd: FormatoDdd.required,
-        pais: CountryCodeFormat.required,
+        ddd: FormatoDdd.obrigatorio,
+        pais: FormatoPais.obrigatorio,
         apenasCelular: true,
       );
       expect(schema.validate('+55 (11) 98765-4321'), isTrue);
       expect(schema.validate('11987654321'), isFalse);
+    });
+
+    test('telefone com pais: nenhum rejeita +55', () {
+      final VString schema = V.string().telefone(pais: FormatoPais.nenhum);
+      expect(schema.validate('(11) 98765-4321'), isTrue);
+      expect(schema.validate('+55 11 98765-4321'), isFalse);
     });
 
     test('pis / tituloEleitor / cnh / renavam', () {
@@ -92,57 +98,57 @@ void main() {
 
   group('VStringBr — mensagem customizada', () {
     test('cpf', () {
-      final VString schema = V.string().cpf(message: 'CPF obrigatório!');
+      final VString schema = V.string().cpf(mensagem: 'CPF obrigatório!');
       expect(schema.errors('xxxx')!.first.message, 'CPF obrigatório!');
     });
 
     test('cnpj', () {
-      final VString schema = V.string().cnpj(message: 'CNPJ incorreto');
+      final VString schema = V.string().cnpj(mensagem: 'CNPJ incorreto');
       expect(schema.errors('xx')!.first.message, 'CNPJ incorreto');
     });
 
     test('cnh usa feminino explícito', () {
-      final VString schema = V.string().cnh(message: 'CNH inválida');
+      final VString schema = V.string().cnh(mensagem: 'CNH inválida');
       expect(schema.errors('00000000000')!.first.message, 'CNH inválida');
     });
 
     test('plate', () {
-      final VString schema = V.string().placa(message: 'Placa fora do padrão');
+      final VString schema = V.string().placa(mensagem: 'Placa fora do padrão');
       expect(schema.errors('xyz')!.first.message, 'Placa fora do padrão');
     });
 
     test('phoneBr', () {
       final VString schema = V.string().telefone(
-        message: 'Telefone BR inválido',
+        mensagem: 'Telefone BR inválido',
       );
       expect(schema.errors('abc')!.first.message, 'Telefone BR inválido');
     });
 
     test('pixKey', () {
-      final VString schema = V.string().chavePix(message: 'Chave PIX ruim');
+      final VString schema = V.string().chavePix(mensagem: 'Chave PIX ruim');
       expect(schema.errors('nope')!.first.message, 'Chave PIX ruim');
     });
 
     test('state', () {
-      final VString schema = V.string().uf(message: 'UF não reconhecida');
+      final VString schema = V.string().uf(mensagem: 'UF não reconhecida');
       expect(schema.errors('XY')!.first.message, 'UF não reconhecida');
     });
 
     test('bankCode', () {
       final VString schema = V.string().codigoBanco(
-        message: 'Banco não autorizado',
+        mensagem: 'Banco não autorizado',
       );
       expect(schema.errors('999')!.first.message, 'Banco não autorizado');
     });
 
     test('ddd', () {
-      final VString schema = V.string().ddd(message: 'DDD fora da Anatel');
+      final VString schema = V.string().ddd(mensagem: 'DDD fora da Anatel');
       expect(schema.errors('00')!.first.message, 'DDD fora da Anatel');
     });
 
     test('boleto', () {
       final VString schema = V.string().boleto(
-        message: 'Boleto fora do padrão',
+        mensagem: 'Boleto fora do padrão',
       );
       expect(schema.errors('xxx')!.first.message, 'Boleto fora do padrão');
     });

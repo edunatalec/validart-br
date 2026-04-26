@@ -88,14 +88,14 @@ void main() {
       });
 
       test('respeita mode', () {
-        final VString schema = V.string().cpf(mode: ValidationMode.unformatted);
+        final VString schema = V.string().cpf(modo: ModoValidacao.semMascara);
         expect(schema.validate('12345678909'), isTrue);
         expect(schema.validate('123.456.789-09'), isFalse);
       });
 
       test('respeita message customizada', () {
         final VString schema = V.string().cpf(
-          message: 'CPF inválido, meu caro',
+          mensagem: 'CPF inválido, meu caro',
         );
         final List<VError>? errors = schema.errors('000.000.000-00');
         expect(errors!.first.message, 'CPF inválido, meu caro');

@@ -16,10 +16,10 @@ void runCnpjExamples() {
   section('CNPJ — restrito a numérico');
 
   print(
-    V.string().cnpj(alphanumeric: false).validate('12345678000195'),
+    V.string().cnpj(alfanumerico: false).validate('12345678000195'),
   ); // true
   print(
-    V.string().cnpj(alphanumeric: false).validate('12.ABC.345/01DE-35'),
+    V.string().cnpj(alfanumerico: false).validate('12.ABC.345/01DE-35'),
   ); // false
 
   section('CNPJ — caixa alta obrigatória, encadeie .toUpperCase()');

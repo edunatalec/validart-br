@@ -6,18 +6,23 @@ import '../enums.dart';
 ///
 /// Aceita celular (9 dígitos iniciando com `9`) e fixo (8 dígitos).
 /// O DDI (`+55`), o DDD e a presença de separadores (parênteses,
-/// traços, espaços) são controlados por [pais], [ddd] e [mode].
-/// Quando [apenasCelular] é `true`, só celular é aceito.
+/// traços, espaços) são controlados por [countryCode], [areaCode] e
+/// [mode]. Quando [mobileOnly] é `true`, só celular é aceito.
+///
+/// Os nomes dos campos seguem a convenção do core (em inglês). A
+/// API pública pt-BR é exposta via `V.string().telefone(...)`, que
+/// usa nomes pt-BR (`ddd`, `pais`, `apenasCelular`, `modo`) e faz
+/// o depara pra cá internamente.
 ///
 /// ```dart
 /// V.string().phone(patterns: [const TelefonePattern()]);
-/// V.string().telefone(); // atalho
+/// V.string().telefone(); // atalho pt-BR
 ///
 /// V.string().phone(patterns: [
 ///   const TelefonePattern(
-///     pais: CountryCodeFormat.required,
-///     ddd: FormatoDdd.required,
-///     apenasCelular: true,
+///     countryCode: CountryCodeFormat.required,
+///     areaCode: FormatoDdd.obrigatorio,
+///     mobileOnly: true,
 ///   ),
 /// ]);
 /// ```
@@ -32,7 +37,7 @@ class TelefonePattern extends PhonePattern {
     r'$',
   );
 
-  static const _validDdds = <int>{
+  static const _validAreaCodes = <int>{
     11,
     12,
     13,
@@ -103,16 +108,16 @@ class TelefonePattern extends PhonePattern {
   };
 
   /// Controla se o DDD é obrigatório, proibido ou opcional.
-  /// Padrão: [FormatoDdd.optional].
-  final FormatoDdd ddd;
+  /// Padrão: [FormatoDdd.opcional].
+  final FormatoDdd areaCode;
 
   /// Controla se o DDI (`+55`) é obrigatório, proibido ou opcional.
   /// Padrão: [CountryCodeFormat.optional].
-  final CountryCodeFormat pais;
+  final CountryCodeFormat countryCode;
 
   /// Quando `true`, só aceita celular (9 dígitos iniciando com `9`).
   /// Padrão: `false`.
-  final bool apenasCelular;
+  final bool mobileOnly;
 
   /// Controla se separadores (espaços, traços, parênteses) são
   /// obrigatórios, proibidos ou opcionais.
@@ -121,9 +126,9 @@ class TelefonePattern extends PhonePattern {
 
   /// Cria um [TelefonePattern].
   const TelefonePattern({
-    this.ddd = FormatoDdd.optional,
-    this.pais = CountryCodeFormat.optional,
-    this.apenasCelular = false,
+    this.areaCode = FormatoDdd.opcional,
+    this.countryCode = CountryCodeFormat.optional,
+    this.mobileOnly = false,
     this.mode = ValidationMode.any,
   });
 
@@ -136,30 +141,35 @@ class TelefonePattern extends PhonePattern {
     if (match == null) return {};
 
     final bool hasCountryCode = match.group(1) != null;
-    final String? dddRaw = match.group(2);
+    final String? areaCodeRaw = match.group(2);
     final String first = match.group(3)!;
-    final bool hasAreaCode = dddRaw != null;
+    final bool hasAreaCode = areaCodeRaw != null;
 
-    if (hasCountryCode && pais == CountryCodeFormat.none) return {};
-    if (!hasCountryCode && pais == CountryCodeFormat.required) return {};
+    if (hasCountryCode && countryCode == CountryCodeFormat.none) return {};
+    if (!hasCountryCode && countryCode == CountryCodeFormat.required) {
+      return {};
+    }
 
-    if (hasAreaCode && ddd == FormatoDdd.none) return {};
-    if (!hasAreaCode && ddd == FormatoDdd.required) return {};
+    if (hasAreaCode && areaCode == FormatoDdd.nenhum) return {};
+    if (!hasAreaCode && areaCode == FormatoDdd.obrigatorio) return {};
 
     if (hasCountryCode && !hasAreaCode) return {};
 
     if (hasAreaCode) {
-      final String dddDigits = dddRaw.replaceAll(RegExp(r'[^\d]'), '');
-      final int dddInt = int.parse(dddDigits);
+      final String areaCodeDigits = areaCodeRaw.replaceAll(
+        RegExp(r'[^\d]'),
+        '',
+      );
+      final int areaCodeInt = int.parse(areaCodeDigits);
 
-      if (!_validDdds.contains(dddInt)) return {};
+      if (!_validAreaCodes.contains(areaCodeInt)) return {};
     }
 
     final bool isMobile = first.length == 5 && first.startsWith('9');
     final bool isLandline = first.length == 4;
 
     if (!isMobile && !isLandline) return {};
-    if (apenasCelular && !isMobile) return {};
+    if (mobileOnly && !isMobile) return {};
 
     final bool hasSeparators = _containsSeparator(value);
 
