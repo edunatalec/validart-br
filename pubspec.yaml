@@ -1,6 +1,6 @@
 name: validart_br
 description: Extensão do validart com validadores brasileiros (CPF, CNPJ, PIX, telefone e mais) e tradução pt-BR completa.
-version: 0.1.0
+version: 1.0.0
 homepage: https://github.com/edunatalec/validart-br
 repository: https://github.com/edunatalec/validart-br
 issue_tracker: https://github.com/edunatalec/validart-br/issues
