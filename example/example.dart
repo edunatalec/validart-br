@@ -1,123 +1,51 @@
-import 'package:validart/validart.dart';
-import 'package:validart_br/validart_br.dart';
+// Aggregator entry-point — roda cada arquivo de `validators/` e
+// `features/` em sequência. Cada arquivo é também runnable standalone
+// (todos têm seu próprio `main()`), então este aggregator é só uma
+// conveniência para `dart run example/example.dart`.
+//
+// Layout:
+//   example/validators/<documento>.dart  — um arquivo por validador BR
+//   example/features/<feature>.dart      — locale, composition, patterns
+//   example/shared/fixtures.dart         — boletos válidos, BR Codes,
+//                                          helper section()
+
+import 'features/composition.dart';
+import 'features/locale.dart';
+import 'features/patterns.dart';
+import 'validators/bank_code.dart';
+import 'validators/boleto.dart';
+import 'validators/cep.dart';
+import 'validators/cnh.dart';
+import 'validators/cnpj.dart';
+import 'validators/cpf.dart';
+import 'validators/ddd.dart';
+import 'validators/phone_br.dart';
+import 'validators/pis.dart';
+import 'validators/pix_key.dart';
+import 'validators/plate.dart';
+import 'validators/renavam.dart';
+import 'validators/state.dart';
+import 'validators/titulo_eleitor.dart';
 
 void main() {
-  // Aplica as traduções pt-BR do core e dos validadores BR.
-  V.setLocale(VLocaleBr.ptBr);
+  print('=== Validadores ===');
+  runCpfExamples();
+  runCnpjExamples();
+  runCepExamples();
+  runPisExamples();
+  runTituloEleitorExamples();
+  runCnhExamples();
+  runRenavamExamples();
+  runPhoneBrExamples();
+  runPlateExamples();
+  runPixKeyExamples();
+  runStateExamples();
+  runBankCodeExamples();
+  runDddExamples();
+  runBoletoExamples();
 
-  // --- Duas formas equivalentes de uso ---
-  // 1. Atalho da extension VStringBr
-  V.string().cpf();
-  // 2. Forma explícita via pattern plugável do core
-  V.string().taxId(patterns: [const CpfPattern()]);
-
-  // CPF
-  final cpf = V.string().trim().cpf();
-  print('CPF válido?   ${cpf.validate('123.456.789-09')}'); // true
-  print('CPF inválido: ${cpf.errors('111.111.111-11')?.first.message}');
-  //                                                           -> CPF inválido
-
-  // CNPJ (default aceita novo formato alfanumérico da Receita)
-  print(
-    'CNPJ alfanum: ${V.string().cnpj().validate('12ABC34501DE35')}',
-  ); // true
-  print(
-    'CNPJ numérico: ${V.string().cnpj(alphanumeric: false).validate('12345678000195')}',
-  ); // true
-
-  // CEP
-  final cep = V.string().cep();
-  print('CEP: ${cep.validate('01001-000')}'); // true
-
-  // Telefone — atalho phoneBr() ou phone(patterns:)
-  final tel = V.string().phoneBr(
-    countryCode: CountryCodeFormat.required,
-    areaCode: AreaCodeFormat.required,
-    mobileOnly: true,
-  );
-  print('Telefone: ${tel.validate('+55 (11) 98765-4321')}'); // true
-
-  // Chave PIX — default aceita as cinco chaves do DICT
-  final pix = V.string().pixKey();
-  print('PIX CPF:    ${pix.validate('12345678909')}'); // true
-  print('PIX e-mail: ${pix.validate('user@example.com.br')}'); // true
-  print('PIX tel:    ${pix.validate('+5511987654321')}'); // true
-  print(
-    'PIX UUID:   ${pix.validate('123e4567-e89b-12d3-a456-426614174000')}',
-  ); // true
-
-  // PIX restrito: só e-mail ou telefone
-  final pixEmailOuTel = V.string().pixKey(
-    allow: const [PixKeyType.email, PixKeyType.phone],
-  );
-  print('PIX restrito aceita CPF? ${pixEmailOuTel.validate('12345678909')}');
-  // -> false
-
-  // PIX aceitando BR Code do QR Code ("copia e cola"); CRC16 obrigatório.
-  final pixCompleto = V.string().pixKey(allow: PixKeyType.values);
-  const brCode =
-      '00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-42661417400052040000530398654041.005802BR5913Fulano de Tal6009Sao Paulo62070503***63046982';
-  print('PIX BR Code: ${pixCompleto.validate(brCode)}'); // true
-
-  // Placa (antiga e Mercosul, encadeia com toUpperCase)
-  final placa = V.string().toUpperCase().plate();
-  print('Placa antiga:   ${placa.validate('abc-1234')}'); // true
-  print('Placa Mercosul: ${placa.validate('abc1d23')}'); // true
-
-  // UF (sigla de estado em caixa alta)
-  print('UF SP: ${V.string().state().validate('SP')}'); // true
-  print('UF XY: ${V.string().state().validate('XY')}'); // false
-
-  // Código de banco (COMPE — 3 dígitos da tabela do Bacen)
-  print('Banco 001:  ${V.string().bankCode().validate('001')}'); // true (BB)
-  print(
-    'Banco 260:  ${V.string().bankCode().validate('260')}',
-  ); // true (Nubank)
-  print('Banco 999:  ${V.string().bankCode().validate('999')}'); // false
-
-  // DDD (lista oficial Anatel — 67 códigos)
-  print('DDD 11: ${V.string().ddd().validate('11')}'); // true
-  print('DDD 20: ${V.string().ddd().validate('20')}'); // false
-
-  // Boleto — bancário ou arrecadação, linha digitável ou código de barras
-  final boleto = V.string().boleto();
-  print(
-    'Boleto bancário linha: '
-    '${boleto.validate('23793381286000782713695000063305975520000370000')}',
-  ); // true
-  print(
-    'Boleto arrecadação linha: '
-    '${boleto.validate('836200000005667800481000180975657313001589636081')}',
-  ); // true
-  print(
-    'Só bancário: '
-    '${V.string().boleto(format: BoletoFormat.bancario).validate('836200000005667800481000180975657313001589636081')}',
-  ); // false
-
-  // Schema de cadastro
-  final usuario = V.map({
-    'nome': V.string().min(3).max(120),
-    'cpf': V.string().cpf(),
-    'email': V.string().email(),
-    'celular': V.string().phoneBr(mobileOnly: true),
-    'cep': V.string().cep(),
-  });
-
-  final result = usuario.safeParse({
-    'nome': 'Maria',
-    'cpf': '123.456.789-09',
-    'email': 'maria@example.com',
-    'celular': '11987654321',
-    'cep': '01001-000',
-  });
-
-  switch (result) {
-    case VSuccess(:final value):
-      print('Cadastro válido: $value');
-    case VFailure(:final errors):
-      print('Erros:');
-      for (final e in errors) {
-        print('  ${e.pathString}: ${e.message}');
-      }
-  }
+  print('\n=== Features ===');
+  runLocaleExamples();
+  runPatternsExamples();
+  runCompositionExamples();
 }

@@ -54,6 +54,40 @@ void main() {
       expect(schema.validate('abc-1234'), isTrue);
       expect(schema.validate('abc1d23'), isTrue);
     });
+
+    test('state / bankCode / ddd', () {
+      expect(V.string().state().validate('SP'), isTrue);
+      expect(V.string().state().validate('XY'), isFalse);
+      expect(V.string().bankCode().validate('001'), isTrue);
+      expect(V.string().bankCode().validate('999'), isFalse);
+      expect(V.string().ddd().validate('11'), isTrue);
+      expect(V.string().ddd().validate('20'), isFalse);
+    });
+
+    test('boleto bancário e arrecadação', () {
+      final schema = V.string().boleto();
+      expect(
+        schema.validate('23793381286000782713695000063305975520000370000'),
+        isTrue,
+      );
+      expect(
+        schema.validate('836200000005667800481000180975657313001589636081'),
+        isTrue,
+      );
+      expect(schema.validate('xxxx'), isFalse);
+    });
+
+    test('boleto restringido por format', () {
+      final schema = V.string().boleto(format: BoletoFormat.bancario);
+      expect(
+        schema.validate('23793381286000782713695000063305975520000370000'),
+        isTrue,
+      );
+      expect(
+        schema.validate('836200000005667800481000180975657313001589636081'),
+        isFalse,
+      );
+    });
   });
 
   group('VStringBr — mensagem customizada', () {
@@ -86,6 +120,26 @@ void main() {
       final schema = V.string().pixKey(message: 'Chave PIX ruim');
       expect(schema.errors('nope')!.first.message, 'Chave PIX ruim');
     });
+
+    test('state', () {
+      final schema = V.string().state(message: 'UF não reconhecida');
+      expect(schema.errors('XY')!.first.message, 'UF não reconhecida');
+    });
+
+    test('bankCode', () {
+      final schema = V.string().bankCode(message: 'Banco não autorizado');
+      expect(schema.errors('999')!.first.message, 'Banco não autorizado');
+    });
+
+    test('ddd', () {
+      final schema = V.string().ddd(message: 'DDD fora da Anatel');
+      expect(schema.errors('00')!.first.message, 'DDD fora da Anatel');
+    });
+
+    test('boleto', () {
+      final schema = V.string().boleto(message: 'Boleto fora do padrão');
+      expect(schema.errors('xxx')!.first.message, 'Boleto fora do padrão');
+    });
   });
 
   group('VStringBr — integração com o core', () {
@@ -97,6 +151,10 @@ void main() {
         V.string().plate().nullable(),
         V.string().phoneBr().nullable(),
         V.string().pixKey().nullable(),
+        V.string().state().nullable(),
+        V.string().bankCode().nullable(),
+        V.string().ddd().nullable(),
+        V.string().boleto().nullable(),
       ];
       for (final schema in schemas) {
         expect(schema.validate(null), isTrue);
@@ -121,6 +179,10 @@ void main() {
         'cnpj': V.string().cnpj(),
         'cep': V.string().cep(),
         'placa': V.string().plate(),
+        'uf': V.string().state(),
+        'banco': V.string().bankCode(),
+        'ddd': V.string().ddd(),
+        'boleto': V.string().boleto(),
       });
 
       final result = schema.safeParse({
@@ -128,6 +190,10 @@ void main() {
         'cnpj': '00.000.000/0000-00',
         'cep': '00000-000',
         'placa': 'invalid',
+        'uf': 'XY',
+        'banco': '999',
+        'ddd': '00',
+        'boleto': 'xxx',
       });
 
       expect(result, isA<VFailure>());
@@ -136,6 +202,10 @@ void main() {
       expect(map['cnpj'], 'CNPJ inválido');
       expect(map['cep'], 'CEP inválido');
       expect(map['placa'], 'Placa inválida');
+      expect(map['uf'], 'UF inválida');
+      expect(map['banco'], 'Código de banco inválido');
+      expect(map['ddd'], 'DDD inválido');
+      expect(map['boleto'], 'Boleto inválido');
     });
 
     test('locale pt-BR interpola {name} dos patterns do core', () {
