@@ -14,7 +14,7 @@ import '../string_utils.dart';
 /// V.string().postalCode(patterns: [const CepPattern()]);
 /// V.string().cep(); // atalho
 ///
-/// V.string().cep(mode: ValidationMode.formatted)
+/// V.string().cep(modo: ModoValidacao.comMascara)
 ///   .validate('01001-000'); // true
 /// ```
 class CepPattern extends PostalCodePattern {

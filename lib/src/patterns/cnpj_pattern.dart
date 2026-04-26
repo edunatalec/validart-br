@@ -18,7 +18,7 @@ import '../string_utils.dart';
 /// ```dart
 /// V.string().taxId(patterns: [const CnpjPattern()]);
 /// V.string().cnpj();                        // atalho
-/// V.string().cnpj(alphanumeric: false);     // só dígitos
+/// V.string().cnpj(alfanumerico: false);     // só dígitos
 ///
 /// V.string().toUpperCase().cnpj()
 ///   .validate('12.abc.345/01de-35');        // true

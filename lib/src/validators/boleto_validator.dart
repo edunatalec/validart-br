@@ -40,7 +40,7 @@ import '../v_code_br.dart';
 ///
 /// ```dart
 /// V.string().boleto().validate(
-///   '34191790010104351004791020150008291070026000',
+///   '23793381286000782713695000063305975520000370000',
 /// ); // true (linha digitável bancária)
 ///
 /// V.string().boleto(formato: FormatoBoleto.bancario)

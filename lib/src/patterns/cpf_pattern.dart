@@ -15,7 +15,7 @@ import '../string_utils.dart';
 /// V.string().taxId(patterns: [const CpfPattern()]);
 /// V.string().cpf(); // atalho
 ///
-/// V.string().cpf(mode: ValidationMode.unformatted)
+/// V.string().cpf(modo: ModoValidacao.semMascara)
 ///   .validate('12345678909'); // true
 /// ```
 class CpfPattern extends TaxIdPattern {

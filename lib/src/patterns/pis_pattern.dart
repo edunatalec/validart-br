@@ -11,7 +11,7 @@ import '../string_utils.dart';
 /// V.string().taxId(patterns: [const PisPattern()]);
 /// V.string().pis(); // atalho
 ///
-/// V.string().pis(mode: ValidationMode.unformatted)
+/// V.string().pis(modo: ModoValidacao.semMascara)
 ///   .validate('12054789013'); // true
 /// ```
 class PisPattern extends TaxIdPattern {
