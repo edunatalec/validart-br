@@ -46,6 +46,14 @@ em código BR-only.
 dart pub add validart validart_br
 ```
 
+Ou no `pubspec.yaml`:
+
+```yaml
+dependencies:
+  validart: ^2.1.0
+  validart_br: ^1.1.0
+```
+
 ```dart
 import 'package:validart/validart.dart';
 import 'package:validart_br/validart_br.dart';
