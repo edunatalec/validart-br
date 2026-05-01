@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.1.0] - 2026-05-01
+
+### Adicionado
+
+- **Tradução pt-BR de `VStringCode.domain`** (novo em validart 2.1.0)
+  → `'Domínio inválido'`. Sem essa entrada, `V.string().domain()` com
+  `VLocaleBr.ptBr` aplicado caía no template inglês `'Invalid domain'`
+  do core. Pinning em `test/src/locales/pt_br_test.dart`.
+- **README ganhou o snippet `pubspec.yaml`** na seção `## Instalação`,
+  pinando explicitamente `validart` e `validart_br` na versão atual —
+  é o que o script de release verifica.
+
+### Alterado
+
+- Bump da dependência `validart` de `^2.0.0` para `^2.1.0`. Sem breaking
+  changes — 2.1.0 é minor (novos `domain()`, `distinct(by:)`, `partial()`
+  em `VObject`, `whenMatches`, `applyIf`, scheme-optional `url()`). O
+  `validart_br` apenas absorve o novo código de erro.
+
 ## [1.0.0] - 2026-04-26
 
 ### Adicionado
@@ -49,27 +68,27 @@ convenção do core.
 
 **Atalhos de `VStringBr` renomeados:**
 
-| Antes (v0.x)                | Agora (v1.0.0)                |
-| --------------------------- | ----------------------------- |
-| `V.string().plate(...)`     | `V.string().placa(...)`       |
-| `V.string().phoneBr(...)`   | `V.string().telefone(...)`    |
-| `V.string().pixKey(...)`    | `V.string().chavePix(...)`    |
+| Antes (v0.x)              | Agora (v1.0.0)             |
+| ------------------------- | -------------------------- |
+| `V.string().plate(...)`   | `V.string().placa(...)`    |
+| `V.string().phoneBr(...)` | `V.string().telefone(...)` |
+| `V.string().pixKey(...)`  | `V.string().chavePix(...)` |
 
 Mantidos sem mudança: `cpf`, `cnpj`, `cep`, `pis`, `tituloEleitor`,
 `cnh`, `renavam` (já estavam em pt-BR ou são siglas universais).
 
 **Parâmetros dos atalhos renomeados (todos os 14 atalhos):**
 
-| Antes              | Agora            | Aplica em                                    |
-| ------------------ | ---------------- | -------------------------------------------- |
-| `mode:`            | `modo:`          | `cpf`, `cnpj`, `cep`, `pis`, `placa`, `telefone` |
-| `message:`         | `mensagem:`      | todos os 14 atalhos                          |
-| `alphanumeric:`    | `alfanumerico:`  | `cnpj`                                       |
-| `format:`          | `formato:`       | `boleto`                                     |
-| `allow:`           | `tipos:`         | `chavePix`                                   |
-| `areaCode:`        | `ddd:`           | `telefone`                                   |
-| `countryCode:`     | `pais:`          | `telefone`                                   |
-| `mobileOnly:`      | `apenasCelular:` | `telefone`                                   |
+| Antes           | Agora            | Aplica em                                        |
+| --------------- | ---------------- | ------------------------------------------------ |
+| `mode:`         | `modo:`          | `cpf`, `cnpj`, `cep`, `pis`, `placa`, `telefone` |
+| `message:`      | `mensagem:`      | todos os 14 atalhos                              |
+| `alphanumeric:` | `alfanumerico:`  | `cnpj`                                           |
+| `format:`       | `formato:`       | `boleto`                                         |
+| `allow:`        | `tipos:`         | `chavePix`                                       |
+| `areaCode:`     | `ddd:`           | `telefone`                                       |
+| `countryCode:`  | `pais:`          | `telefone`                                       |
+| `mobileOnly:`   | `apenasCelular:` | `telefone`                                       |
 
 **Valores de `ValidationMode` traduzidos via `ModoValidacao`:**
 
@@ -84,11 +103,11 @@ continua aceitando os nomes do core.
 
 **Classes renomeadas:**
 
-| Antes               | Agora                  |
-| ------------------- | ---------------------- |
-| `BrPlatePattern`    | `PlacaPattern`         |
-| `BrPhonePattern`    | `TelefonePattern`      |
-| `PixKeyValidator`   | `ChavePixValidator`    |
+| Antes             | Agora               |
+| ----------------- | ------------------- |
+| `BrPlatePattern`  | `PlacaPattern`      |
+| `BrPhonePattern`  | `TelefonePattern`   |
+| `PixKeyValidator` | `ChavePixValidator` |
 
 Patterns que são siglas (`CpfPattern`, `CnpjPattern`, `CepPattern`,
 `PisPattern`, `CnhPattern`, `RenavamPattern`, `TituloEleitorPattern`)
@@ -96,10 +115,10 @@ mantêm o nome.
 
 **Enums renomeados:**
 
-| Antes                | Agora            |
-| -------------------- | ---------------- |
-| `AreaCodeFormat`     | `FormatoDdd`     |
-| `PixKeyType`         | `TipoChavePix`   |
+| Antes            | Agora          |
+| ---------------- | -------------- |
+| `AreaCodeFormat` | `FormatoDdd`   |
+| `PixKeyType`     | `TipoChavePix` |
 
 Variantes de `TipoChavePix`: `phone` → `telefone`, `random` →
 `aleatoria`. Demais (`cpf`, `cnpj`, `email`, `brCode`, `values`)
@@ -107,9 +126,9 @@ inalteradas.
 
 **Códigos de erro em `VStringCodeBr`:**
 
-| Antes              | Agora                                                |
-| ------------------ | ---------------------------------------------------- |
-| `invalidPixKey`    | `chavePixInvalida` (= `'chave_pix_invalida'`)        |
+| Antes           | Agora                                         |
+| --------------- | --------------------------------------------- |
+| `invalidPixKey` | `chavePixInvalida` (= `'chave_pix_invalida'`) |
 
 As **strings** dos códigos também mudaram (não só os identificadores
 Dart). Quem havia customizado o locale via `VLocaleBr.ptBrWith({...})`
@@ -146,7 +165,7 @@ internos diretos (uso não recomendado) precisam ser ajustados.
   `V.object<T>().equalFields()` (separado do `'map.fields_not_equal'`
   já existente), mas o `pt_br.dart` só mapeava a versão `Map`,
   fazendo a mensagem cair no default em inglês `'{field} must be
-  equal to {other}'`. Agora o `VObjectCode.fieldsNotEqual` traduz
+equal to {other}'`. Agora o `VObjectCode.fieldsNotEqual` traduz
   para `'{field} deve ser igual a {other}'`. Pinning em
   `test/src/locales/pt_br_test.dart`.
 
@@ -154,7 +173,7 @@ internos diretos (uso não recomendado) precisam ser ajustados.
 
 - **Estilo de código padronizado em todo o pacote**: tipo explícito
   em variáveis locais quando o tipo é simples e estável (`final bool
-  matched = ...`, `final String digits = ...`, `final Random rng = ...`)
+matched = ...`, `final String digits = ...`, `final Random rng = ...`)
   e respiro (linhas em branco) entre blocos lógicos de funções.
   Aplicado em `lib/`, `test/` e `example/` — não afeta API pública.
 - Cobertura de teste em **100%** (412/412 linhas), 300/300 testes
