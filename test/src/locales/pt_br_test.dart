@@ -15,6 +15,10 @@ void main() {
       expect(V.t(VNumberCode.positive), 'Deve ser positivo');
     });
 
+    test('traduz domain (novo em validart 2.1.0)', () {
+      expect(V.t(VStringCode.domain), 'Domínio inválido');
+    });
+
     test('traduz mensagens com interpolação', () {
       expect(
         V.t(VStringCode.tooSmall, {'min': 3}),

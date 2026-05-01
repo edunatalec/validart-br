@@ -19,6 +19,7 @@ const Map<String, String> _kValidartPtBrMessages = <String, String>{
   VStringCode.numeric: 'Deve ser um número válido',
   VStringCode.email: 'E-mail inválido',
   VStringCode.url: 'URL inválida',
+  VStringCode.domain: 'Domínio inválido',
   VStringCode.uuid: 'UUID inválido',
   VStringCode.ip: 'Endereço IP inválido',
   VStringCode.format: 'Formato inválido',
