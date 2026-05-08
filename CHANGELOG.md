@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.1.1] - 2026-05-08
+
+### Alterado
+
+- Bump da dependência `validart` de `^2.1.0` para `^2.2.0`.
+
 ## [1.1.0] - 2026-05-01
 
 ### Adicionado
