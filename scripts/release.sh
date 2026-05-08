@@ -12,23 +12,6 @@ step() {
 step "Installing dependencies"
 dart pub get
 
-step "Running tests"
-dart test
-
-step "Running example"
-dart run example/example.dart
-
-step "Validating package (dry-run)"
-dart pub publish --dry-run
-
-step "Running pana (pub.dev score)"
-PANA_OUT=$(pana --no-warning . | tee /dev/stderr)
-if ! grep -q "Points: 160/160" <<<"$PANA_OUT"; then
-  echo
-  echo "❌ Aborting release: pana score is below 160/160. Fix the issues above."
-  exit 1
-fi
-
 VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')
 VALIDART_VERSION=$(grep -E '^\s+validart: \^' pubspec.yaml | head -n1 | sed -E 's/.*\^([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
 
@@ -63,6 +46,23 @@ if [ "$README_CORE_VERSION" != "$VALIDART_VERSION" ]; then
 fi
 
 echo "README pinned at validart ^${README_CORE_VERSION}, validart_br ^${README_BR_VERSION} ✓"
+
+step "Running tests"
+dart test
+
+step "Running example"
+dart run example/example.dart
+
+step "Validating package (dry-run)"
+dart pub publish --dry-run
+
+step "Running pana (pub.dev score)"
+PANA_OUT=$(pana --no-warning . | tee /dev/stderr)
+if ! grep -q "Points: 160/160" <<<"$PANA_OUT"; then
+  echo
+  echo "❌ Aborting release: pana score is below 160/160. Fix the issues above."
+  exit 1
+fi
 
 step "Creating tag v$VERSION"
 if git rev-parse "v$VERSION" >/dev/null 2>&1; then
