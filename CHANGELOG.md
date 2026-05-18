@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.2.0] - 2026-05-18
+
+### Adicionado
+
+- **Tradução pt-BR de `VObjectCode.unrecognizedKey`** (novo em validart
+  3.0.0, código `'object.unrecognized_key'`) →
+  `'Chave não reconhecida "{key}"'`. Emitido por `V.object<T>().strict()`
+  ao usar `safeParseRaw` com chaves não declaradas. Espelha o template
+  já existente para `VMapCode.unrecognizedKey`.
+- **Tradução pt-BR dos calendar helpers de `VDateCode`** (novos em
+  validart 3.0.0): `isToday` → `'Deve ser hoje'`, `sameDay` →
+  `'Deve ser no mesmo dia que {date}'`, `afterToday` →
+  `'Deve ser depois de hoje'`, `beforeToday` →
+  `'Deve ser antes de hoje'`. Pinning em
+  `test/src/locales/pt_br_test.dart`.
+
+### Alterado
+
+- Bump da dependência `validart` de `^2.2.0` para `^3.0.0`. Apesar de
+  ser bump major no core, o `validart_br` não usa as APIs que mudaram
+  (`refineFieldRaw` renomeado para `refineField(stage: pre)`, novo
+  `dependsOn` mais restrito em `whenMatches` / `refineField`). As
+  novidades do 3.0.0 que o pacote precisa absorver são puramente
+  códigos de erro novos — todos cobertos pelas traduções acima.
+
 ## [1.1.1] - 2026-05-08
 
 ### Alterado
