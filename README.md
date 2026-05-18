@@ -50,8 +50,8 @@ Ou no `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  validart: ^2.2.0
-  validart_br: ^1.1.1
+  validart: ^3.0.0
+  validart_br: ^1.2.0
 ```
 
 ```dart
