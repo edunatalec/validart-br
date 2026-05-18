@@ -82,6 +82,10 @@ const Map<String, String> _kValidartPtBrMessages = <String, String>{
   VDateCode.weekday: 'Deve ser um dia útil',
   VDateCode.weekend: 'Deve ser um fim de semana',
   VDateCode.age: 'Idade fora da faixa permitida',
+  VDateCode.isToday: 'Deve ser hoje',
+  VDateCode.sameDay: 'Deve ser no mesmo dia que {date}',
+  VDateCode.afterToday: 'Deve ser depois de hoje',
+  VDateCode.beforeToday: 'Deve ser antes de hoje',
 
   // Array
   VArrayCode.tooSmall: 'Deve ter no mínimo {min} itens',
@@ -95,6 +99,7 @@ const Map<String, String> _kValidartPtBrMessages = <String, String>{
 
   // Object
   VObjectCode.fieldsNotEqual: '{field} deve ser igual a {other}',
+  VObjectCode.unrecognizedKey: 'Chave não reconhecida "{key}"',
 
   // Composite
   VEnumCode.invalid: 'Valor inválido. Esperado um de: {values}',

@@ -65,7 +65,7 @@ void main() {
       expect(schema.validate('rj'), isTrue);
     });
 
-    test('código de erro é invalid_state', () {
+    test('código de erro é uf_invalida', () {
       final VString schema = V.string().uf();
       final List<VError>? errors = schema.errors('XX');
       expect(errors!.first.code, VStringCodeBr.ufInvalida);

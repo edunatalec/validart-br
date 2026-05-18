@@ -58,6 +58,23 @@ void main() {
       );
     });
 
+    test('traduz unrecognized_key de VObject (novo em validart 3.0.0)', () {
+      expect(
+        V.t(VObjectCode.unrecognizedKey, {'key': 'extra'}),
+        'Chave não reconhecida "extra"',
+      );
+    });
+
+    test('traduz date helpers de calendário (novos em validart 3.0.0)', () {
+      expect(V.t(VDateCode.isToday), 'Deve ser hoje');
+      expect(V.t(VDateCode.afterToday), 'Deve ser depois de hoje');
+      expect(V.t(VDateCode.beforeToday), 'Deve ser antes de hoje');
+      expect(
+        V.t(VDateCode.sameDay, {'date': DateTime(2026, 5, 17)}),
+        'Deve ser no mesmo dia que 2026-05-17 00:00:00.000',
+      );
+    });
+
     test('telefone BR usa o code do core (invalid_phone)', () {
       expect(V.t(VStringCode.phone), 'Telefone inválido');
     });
