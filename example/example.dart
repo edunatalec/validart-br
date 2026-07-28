@@ -12,20 +12,20 @@
 import 'features/composition.dart';
 import 'features/locale.dart';
 import 'features/patterns.dart';
-import 'validators/codigo_banco.dart';
 import 'validators/boleto.dart';
 import 'validators/cep.dart';
+import 'validators/chave_pix.dart';
 import 'validators/cnh.dart';
 import 'validators/cnpj.dart';
+import 'validators/codigo_banco.dart';
 import 'validators/cpf.dart';
 import 'validators/ddd.dart';
-import 'validators/telefone.dart';
 import 'validators/pis.dart';
-import 'validators/chave_pix.dart';
 import 'validators/placa.dart';
 import 'validators/renavam.dart';
-import 'validators/uf.dart';
+import 'validators/telefone.dart';
 import 'validators/titulo_eleitor.dart';
+import 'validators/uf.dart';
 
 void main() {
   print('=== Validadores ===');

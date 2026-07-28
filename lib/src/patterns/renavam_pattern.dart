@@ -10,11 +10,11 @@ import '../string_utils.dart';
 /// V.string().renavam(); // atalho
 /// ```
 class RenavamPattern extends TaxIdPattern {
-  static final _regex = RegExp(r'^\d{11}$');
-  static const _weights = <int>[3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-
   /// Cria um [RenavamPattern].
   const RenavamPattern();
+
+  static final _regex = RegExp(r'^\d{11}$');
+  static const _weights = <int>[3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
 
   @override
   String get name => 'Renavam';

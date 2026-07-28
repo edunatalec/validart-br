@@ -160,6 +160,7 @@ void main() {
       V.setLocale(
         VLocaleBr.ptBrWith({VStringCode.taxId: '{name} fora do padrão'}),
       );
+
       final List<VError>? errors = V.string().cpf().errors('111.111.111-11');
       expect(errors!.first.message, 'CPF fora do padrão');
     });
@@ -167,7 +168,7 @@ void main() {
 }
 
 class _Pwd {
+  _Pwd(this.p1, this.p2);
   final String p1;
   final String p2;
-  _Pwd(this.p1, this.p2);
 }

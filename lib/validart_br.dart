@@ -25,26 +25,24 @@ library;
 export 'package:validart/validart.dart' show ValidationMode, CountryCodeFormat;
 
 export 'src/enums.dart';
-export 'src/v_code_br.dart';
 export 'src/extensions/vstring_br.dart';
 export 'src/locales/pt_br.dart';
-
+export 'src/patterns/cep_pattern.dart' show CepPattern;
+export 'src/patterns/cnh_pattern.dart' show CnhPattern;
+export 'src/patterns/cnpj_pattern.dart' show CnpjPattern;
 // Patterns — plugam nos validators plugáveis do core.
 export 'src/patterns/cpf_pattern.dart' show CpfPattern;
-export 'src/patterns/cnpj_pattern.dart' show CnpjPattern;
-export 'src/patterns/cep_pattern.dart' show CepPattern;
 export 'src/patterns/pis_pattern.dart' show PisPattern;
-export 'src/patterns/titulo_eleitor_pattern.dart' show TituloEleitorPattern;
-export 'src/patterns/cnh_pattern.dart' show CnhPattern;
-export 'src/patterns/renavam_pattern.dart' show RenavamPattern;
 export 'src/patterns/placa_pattern.dart' show PlacaPattern;
+export 'src/patterns/renavam_pattern.dart' show RenavamPattern;
 export 'src/patterns/telefone_pattern.dart' show TelefonePattern;
-
+export 'src/patterns/titulo_eleitor_pattern.dart' show TituloEleitorPattern;
+export 'src/v_code_br.dart';
+export 'src/validators/boleto_validator.dart' show BoletoValidator;
 // Validators standalone — formatos que validam contra listas oficiais
 // finitas (UF, COMPE, DDD), agregam múltiplos checksums (boleto) ou
 // que são uniões heterogêneas de formatos (chave PIX).
 export 'src/validators/chave_pix_validator.dart' show ChavePixValidator;
-export 'src/validators/uf_validator.dart' show UfValidator;
 export 'src/validators/codigo_banco_validator.dart' show CodigoBancoValidator;
 export 'src/validators/ddd_validator.dart' show DddValidator;
-export 'src/validators/boleto_validator.dart' show BoletoValidator;
+export 'src/validators/uf_validator.dart' show UfValidator;

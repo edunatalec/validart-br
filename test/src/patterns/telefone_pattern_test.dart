@@ -187,6 +187,7 @@ void main() {
       final VString schema = V.string().phone(
         patterns: [const TelefonePattern()],
       );
+
       final List<VError>? errors = schema.errors('not-a-phone');
       expect(errors!.first.code, VStringCode.phone);
     });

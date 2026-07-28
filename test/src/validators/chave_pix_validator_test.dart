@@ -227,6 +227,7 @@ void main() {
       final VString schema = V.string().chavePix(
         tipos: const [TipoChavePix.brCode],
       );
+
       final List<VError>? errors = schema.errors('not a br code');
       expect(errors!.first.message, 'Chave PIX inválida');
     });

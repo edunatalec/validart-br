@@ -36,6 +36,7 @@ void main() {
         ddd: FormatoDdd.obrigatorio,
         apenasCelular: true,
       );
+
       const dddInvalidos = [0, 10, 20, 23, 25, 26, 29, 30, 36, 39, 40, 50, 52];
       fuzz('invalid ddd rejects', (rng, _) {
         final int ddd = dddInvalidos[rng.nextInt(dddInvalidos.length)];

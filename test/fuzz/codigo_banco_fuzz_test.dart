@@ -35,6 +35,7 @@ void main() {
         final String code = CodigoBancoValidator.codigos.elementAt(
           rng.nextInt(CodigoBancoValidator.codigos.length),
         );
+
         final int dv = rng.nextInt(10);
 
         expect(validator.validate('$code-$dv'), isNotNull);

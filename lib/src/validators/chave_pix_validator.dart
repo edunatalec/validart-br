@@ -40,6 +40,10 @@ import 'pix_br_code.dart';
 /// V.string().chavePix(tipos: TipoChavePix.values);
 /// ```
 class ChavePixValidator extends Validator<String> {
+  /// Cria um [ChavePixValidator] que aceita os formatos listados em
+  /// [allow]. Default: [defaultAllow].
+  const ChavePixValidator({this.allow = defaultAllow});
+
   /// Conjunto padrão de tipos aceitos — apenas as cinco chaves PIX
   /// do DICT. BR Code precisa ser habilitado explicitamente em
   /// [allow].
@@ -57,15 +61,12 @@ class ChavePixValidator extends Validator<String> {
   /// (nenhum formato casa).
   final List<TipoChavePix> allow;
 
-  /// Cria um [ChavePixValidator] que aceita os formatos listados em
-  /// [allow]. Default: [defaultAllow].
-  const ChavePixValidator({this.allow = defaultAllow});
-
   static const _cpf = CpfPattern(mode: ValidationMode.unformatted);
   static const _cnpj = CnpjPattern(
     mode: ValidationMode.unformatted,
     alphanumeric: false,
   );
+
   static const _telefone = TelefonePattern(
     countryCode: CountryCodeFormat.required,
     areaCode: FormatoDdd.obrigatorio,

@@ -23,6 +23,9 @@ import '../v_code_br.dart';
 /// V.string().ddd().validate('99'); // true
 /// ```
 class DddValidator extends Validator<String> {
+  /// Cria um [DddValidator].
+  const DddValidator();
+
   /// Conjunto dos 67 DDDs brasileiros atualmente em uso.
   ///
   /// Mantido pela Anatel — atualizar conforme novas alocações ou
@@ -56,9 +59,6 @@ class DddValidator extends Validator<String> {
     '96', // AP
     '98', '99', // MA
   };
-
-  /// Cria um [DddValidator].
-  const DddValidator();
 
   @override
   String get code => VStringCodeBr.dddInvalido;

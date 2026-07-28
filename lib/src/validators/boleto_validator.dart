@@ -47,11 +47,11 @@ import '../v_code_br.dart';
 ///   .validate('xx'); // false
 /// ```
 class BoletoValidator extends Validator<String> {
-  /// Restringe o format aceito. `null` aceita os 4 layouts.
-  final FormatoBoleto? format;
-
   /// Cria um [BoletoValidator].
   const BoletoValidator({this.format});
+
+  /// Restringe o format aceito. `null` aceita os 4 layouts.
+  final FormatoBoleto? format;
 
   @override
   String get code => VStringCodeBr.boletoInvalido;

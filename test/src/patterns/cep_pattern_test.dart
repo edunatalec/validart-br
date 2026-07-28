@@ -53,6 +53,7 @@ void main() {
         final VString schema = V.string().postalCode(
           patterns: [const CepPattern()],
         );
+
         final List<VError>? errors = schema.errors('00000-000');
         expect(errors!.first.code, VStringCode.postalCode);
       });

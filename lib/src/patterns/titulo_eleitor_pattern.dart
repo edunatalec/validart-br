@@ -14,10 +14,10 @@ import '../string_utils.dart';
 /// V.string().tituloEleitor(); // atalho
 /// ```
 class TituloEleitorPattern extends TaxIdPattern {
-  static final _regex = RegExp(r'^\d{12}$');
-
   /// Cria um [TituloEleitorPattern].
   const TituloEleitorPattern();
+
+  static final _regex = RegExp(r'^\d{12}$');
 
   @override
   String get name => 'Título de eleitor';

@@ -21,6 +21,9 @@ import '../v_code_br.dart';
 /// V.string().toUpperCase().uf().validate('rj'); // true
 /// ```
 class UfValidator extends Validator<String> {
+  /// Cria um [UfValidator].
+  const UfValidator();
+
   /// Conjunto das 27 siglas de UF brasileiras.
   static const Set<String> ufs = <String>{
     'AC',
@@ -51,9 +54,6 @@ class UfValidator extends Validator<String> {
     'SE',
     'TO',
   };
-
-  /// Cria um [UfValidator].
-  const UfValidator();
 
   @override
   String get code => VStringCodeBr.ufInvalida;

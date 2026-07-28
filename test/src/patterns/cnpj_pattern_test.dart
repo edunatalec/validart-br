@@ -82,6 +82,7 @@ void main() {
         final VString schema = V.string().taxId(
           patterns: [const CnpjPattern()],
         );
+
         final List<VError>? errors = schema.errors('00.000.000/0000-00');
         expect(errors!.first.code, VStringCode.taxId);
       });

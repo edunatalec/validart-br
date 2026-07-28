@@ -19,15 +19,15 @@ import '../string_utils.dart';
 ///   .validate('12345678909'); // true
 /// ```
 class CpfPattern extends TaxIdPattern {
+  /// Cria um [CpfPattern].
+  const CpfPattern({this.mode = ValidationMode.any});
+
   static final _formattedRegex = RegExp(r'^\d{3}\.\d{3}\.\d{3}-\d{2}$');
   static final _unformattedRegex = RegExp(r'^\d{11}$');
 
   /// Controla se a máscara (`.` e `-`) é obrigatória, proibida ou
   /// opcional. Padrão: [ValidationMode.any].
   final ValidationMode mode;
-
-  /// Cria um [CpfPattern].
-  const CpfPattern({this.mode = ValidationMode.any});
 
   @override
   String get name => 'CPF';

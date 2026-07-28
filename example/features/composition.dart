@@ -54,7 +54,7 @@ void runCompositionExamples() {
   });
 
   if (ruim case VFailure(:final errors)) {
-    final Map<String, String> map = (ruim).toMap();
+    final Map<String, String> map = ruim.toMap();
 
     for (final MapEntry<String, String> entry in map.entries) {
       print('  ${entry.key}: ${entry.value}');

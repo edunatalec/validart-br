@@ -60,6 +60,7 @@ void main() {
       final VString emailOnly = V.string().chavePix(
         tipos: const [TipoChavePix.email],
       );
+
       const validos = [
         '12345678909', // CPF
         '12345678000195', // CNPJ

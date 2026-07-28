@@ -13,10 +13,10 @@ import '../string_utils.dart';
 /// V.string().cnh(); // atalho
 /// ```
 class CnhPattern extends TaxIdPattern {
-  static final _regex = RegExp(r'^\d{11}$');
-
   /// Cria um [CnhPattern].
   const CnhPattern();
+
+  static final _regex = RegExp(r'^\d{11}$');
 
   @override
   String get name => 'CNH';

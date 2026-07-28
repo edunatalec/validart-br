@@ -97,6 +97,7 @@ void main() {
         final VString schema = V.string().cpf(
           mensagem: 'CPF inválido, meu caro',
         );
+
         final List<VError>? errors = schema.errors('000.000.000-00');
         expect(errors!.first.message, 'CPF inválido, meu caro');
       });

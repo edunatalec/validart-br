@@ -27,6 +27,14 @@ import '../enums.dart';
 /// ]);
 /// ```
 class TelefonePattern extends PhonePattern {
+  /// Cria um [TelefonePattern].
+  const TelefonePattern({
+    this.areaCode = FormatoDdd.opcional,
+    this.countryCode = CountryCodeFormat.optional,
+    this.mobileOnly = false,
+    this.mode = ValidationMode.any,
+  });
+
   static final _regex = RegExp(
     r'^'
     r'(\+55\s?)?'
@@ -124,14 +132,6 @@ class TelefonePattern extends PhonePattern {
   /// Padrão: [ValidationMode.any].
   final ValidationMode mode;
 
-  /// Cria um [TelefonePattern].
-  const TelefonePattern({
-    this.areaCode = FormatoDdd.opcional,
-    this.countryCode = CountryCodeFormat.optional,
-    this.mobileOnly = false,
-    this.mode = ValidationMode.any,
-  });
-
   @override
   String get code => VStringCode.phone;
 
@@ -160,6 +160,7 @@ class TelefonePattern extends PhonePattern {
         RegExp(r'[^\d]'),
         '',
       );
+
       final int areaCodeInt = int.parse(areaCodeDigits);
 
       if (!_validAreaCodes.contains(areaCodeInt)) return {};

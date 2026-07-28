@@ -52,6 +52,7 @@ void main() {
         final VString schema = V.string().licensePlate(
           patterns: [const PlacaPattern()],
         );
+
         final List<VError>? errors = schema.errors('invalid');
         expect(errors!.first.code, VStringCode.licensePlate);
       });

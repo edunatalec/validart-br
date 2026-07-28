@@ -102,6 +102,7 @@ void main() {
           2,
           '0',
         );
+
         final String input = '00$fakeLen${randomAscii(rng, 10)}6304ABCD';
 
         expect(schema.validate(input), isA<bool>());

@@ -24,14 +24,19 @@ import '../string_utils.dart';
 ///   .validate('12.abc.345/01de-35');        // true
 /// ```
 class CnpjPattern extends TaxIdPattern {
+  /// Cria um [CnpjPattern].
+  const CnpjPattern({this.mode = ValidationMode.any, this.alphanumeric = true});
+
   static final _formattedAlphaRegex = RegExp(
     r'^[0-9A-Z]{2}\.[0-9A-Z]{3}\.[0-9A-Z]{3}/[0-9A-Z]{4}-\d{2}$',
   );
+
   static final _unformattedAlphaRegex = RegExp(r'^[0-9A-Z]{12}\d{2}$');
 
   static final _formattedNumericRegex = RegExp(
     r'^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$',
   );
+
   static final _unformattedNumericRegex = RegExp(r'^\d{14}$');
 
   static const _weights1 = <int>[5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
@@ -44,9 +49,6 @@ class CnpjPattern extends TaxIdPattern {
   /// Quando `true` (padrão) aceita o novo formato alfanumérico da
   /// Receita Federal. Quando `false`, exige apenas dígitos.
   final bool alphanumeric;
-
-  /// Cria um [CnpjPattern].
-  const CnpjPattern({this.mode = ValidationMode.any, this.alphanumeric = true});
 
   @override
   String get name => 'CNPJ';

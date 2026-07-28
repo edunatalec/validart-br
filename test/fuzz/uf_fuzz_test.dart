@@ -48,6 +48,7 @@ void main() {
         final String uf = UfValidator.ufs.elementAt(
           rng.nextInt(UfValidator.ufs.length),
         );
+
         final String mixed = _randomCase(rng, uf);
 
         expect(schema.validate(mixed), isTrue, reason: mixed);

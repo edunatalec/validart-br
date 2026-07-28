@@ -35,6 +35,7 @@ void main() {
         final String ddd = DddValidator.ddds.elementAt(
           rng.nextInt(DddValidator.ddds.length),
         );
+
         final List<String> formats = [
           '($ddd)',
           ' $ddd ',

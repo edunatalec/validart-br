@@ -15,6 +15,9 @@ import '../string_utils.dart';
 ///   .validate('12054789013'); // true
 /// ```
 class PisPattern extends TaxIdPattern {
+  /// Cria um [PisPattern].
+  const PisPattern({this.mode = ValidationMode.any});
+
   static final _formattedRegex = RegExp(r'^\d{3}\.\d{5}\.\d{2}-\d$');
   static final _unformattedRegex = RegExp(r'^\d{11}$');
 
@@ -23,9 +26,6 @@ class PisPattern extends TaxIdPattern {
   /// Controla se a máscara (`.` e `-`) é obrigatória, proibida ou
   /// opcional. Padrão: [ValidationMode.any].
   final ValidationMode mode;
-
-  /// Cria um [PisPattern].
-  const PisPattern({this.mode = ValidationMode.any});
 
   @override
   String get name => 'PIS/PASEP';

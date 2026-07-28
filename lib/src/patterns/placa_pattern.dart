@@ -16,6 +16,9 @@ import 'package:validart/validart.dart';
 ///   .validate('abc-1234'); // true
 /// ```
 class PlacaPattern extends LicensePlatePattern {
+  /// Cria um [PlacaPattern].
+  const PlacaPattern({this.mode = ValidationMode.any});
+
   static final _oldWithDash = RegExp(r'^[A-Z]{3}-\d{4}$');
   static final _oldNoDash = RegExp(r'^[A-Z]{3}\d{4}$');
   static final _mercosul = RegExp(r'^[A-Z]{3}\d[A-Z]\d{2}$');
@@ -24,9 +27,6 @@ class PlacaPattern extends LicensePlatePattern {
   /// opcional. Placas Mercosul não são afetadas. Padrão:
   /// [ValidationMode.any].
   final ValidationMode mode;
-
-  /// Cria um [PlacaPattern].
-  const PlacaPattern({this.mode = ValidationMode.any});
 
   @override
   String get name => 'Placa';

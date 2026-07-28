@@ -18,15 +18,15 @@ import '../string_utils.dart';
 ///   .validate('01001-000'); // true
 /// ```
 class CepPattern extends PostalCodePattern {
+  /// Cria um [CepPattern].
+  const CepPattern({this.mode = ValidationMode.any});
+
   static final _formattedRegex = RegExp(r'^\d{5}-\d{3}$');
   static final _unformattedRegex = RegExp(r'^\d{8}$');
 
   /// Controla se o hífen é obrigatório, proibido ou opcional.
   /// Padrão: [ValidationMode.any].
   final ValidationMode mode;
-
-  /// Cria um [CepPattern].
-  const CepPattern({this.mode = ValidationMode.any});
 
   @override
   String get name => 'CEP';

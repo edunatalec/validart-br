@@ -27,6 +27,9 @@ import '../v_code_br.dart';
 /// V.string().codigoBanco().validate('999'); // false (não atribuído)
 /// ```
 class CodigoBancoValidator extends Validator<String> {
+  /// Cria um [CodigoBancoValidator].
+  const CodigoBancoValidator();
+
   /// Conjunto dos códigos COMPE de bancos brasileiros (497 entradas
   /// na publicação atual).
   static const Set<String> codigos = <String>{
@@ -528,9 +531,6 @@ class CodigoBancoValidator extends Validator<String> {
     '791',
     '792',
   };
-
-  /// Cria um [CodigoBancoValidator].
-  const CodigoBancoValidator();
 
   @override
   String get code => VStringCodeBr.codigoBancoInvalido;
