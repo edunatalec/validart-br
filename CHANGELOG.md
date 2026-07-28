@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1] - 2026-07-28
+
+### Alterado
+
+- SDK mínimo reduzido de Dart `^3.11.0` para `^3.8.0` — nenhum recurso de linguagem acima do 3.8 é usado, então o pacote passa a instalar em toolchains desde meados de 2025.
+- Adotadas as analysis options compartilhadas mais estritas (strict casts + lints de async, imports, imutabilidade e padrões propensos a bug); código ajustado às novas regras — sem mudança de comportamento.
+- Constraint mínima do `validart` elevada para `^3.0.1`.
+
 ## [1.2.0] - 2026-05-18
 
 ### Adicionado
