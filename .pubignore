@@ -28,7 +28,6 @@ CLAUDE.md
 scripts/
 analysis_options.yaml
 dart_test.yaml
-CONTRIBUTING.md
 .github/
 .fvm/
 .fvmrc
