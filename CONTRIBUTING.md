@@ -12,9 +12,9 @@ Um comando precisa estar verde:
 ```
 
 É o mesmo script que o release roda, menos tag, push e publish: dependências, os dois pins
-de versão do README, analyze, testes, `example/example.dart`, os exemplos dentro dos `///`,
-`dart doc` com zero warnings, o dry-run do publish e um score pana de 160/160. Se passa
-local, passa no CI — o CI roda esse arquivo e mais nada.
+de versão do README, a entrada do CHANGELOG, analyze, testes, `example/example.dart`, os
+exemplos dentro dos `///`, `dart doc` com zero warnings, o dry-run do publish e um score
+pana de 160/160. Se passa local, passa no CI — o CI roda esse arquivo e mais nada.
 
 Ele precisa de rede (pergunta ao pub.dev qual versão da pana usar) e de um Dart igual ou
 acima do floor declarado no `pubspec.yaml`. Rodá-lo troca a sua pana ativada globalmente —
@@ -93,4 +93,6 @@ São ausências por decisão, não por esquecimento.
 ## Release
 
 Releases são cortados pelo mantenedor, a partir de `master`, com `./scripts/release.sh`.
+Ele se recusa a rodar fora da `master` ou com a árvore suja — o `pub publish` empacota os
+arquivos em disco, não o commit — e só então roda o `verify.sh` inteiro antes de taggear.
 Nada publica a partir do CI.
