@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.2.2] - 2026-08-01
+
+### Corrigido
+
+- Exemplo do `///` de `VLocaleBr` não compilava: o mapa passado a `VLocale` era `const` e repetia uma chave já vinda dos spreads de `coreMessages`/`brMessages`. Quem copiava o bloco recebia `equal_keys_in_const_map`.
+
+### Alterado
+
+- Referências cruzadas na API reference: os símbolos citados em prosa viraram links, cada tipo público ganhou um bloco `See also:` e a página da library passou a listar os pontos de entrada.
+- README segue o esqueleto compartilhado pelos pacotes publicados: o `Sumário` lista só o que vem depois dele, entrou a seção `## Por que o validart_br`, os Requisitos trazem o comando que confere o SDK e o `## Exemplo` mostra como rodar.
+
 ## [1.2.1] - 2026-07-28
 
 ### Alterado
