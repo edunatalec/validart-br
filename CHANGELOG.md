@@ -2,6 +2,10 @@
 
 ## [1.2.2] - 2026-08-01
 
+### Adicionado
+
+- O `CONTRIBUTING.md` passa a ir no arquivo publicado, que é o que faz o pub.dev exibir o link "Contributing" na barra lateral do pacote.
+
 ### Corrigido
 
 - Exemplo do `///` de `VLocaleBr` não compilava: o mapa passado a `VLocale` era `const` e repetia uma chave já vinda dos spreads de `coreMessages`/`brMessages`. Quem copiava o bloco recebia `equal_keys_in_const_map`.
@@ -11,6 +15,7 @@
 - Referências cruzadas na API reference: os símbolos citados em prosa viraram links, cada tipo público ganhou um bloco `See also:` e a página da library passou a listar os pontos de entrada.
 - API reference agrupada em Atalhos, Patterns, Validadores, Mensagens e Opções, cada uma com sua própria página — os tipos públicos deixam de ser uma lista alfabética única.
 - README segue o esqueleto compartilhado pelos pacotes publicados: o `Sumário` lista só o que vem depois dele, entrou a seção `## Por que o validart_br`, os Requisitos trazem o comando que confere o SDK e o `## Exemplo` mostra como rodar.
+- O README ganhou a seção `## Contribuindo`, e os links para arquivos do repositório agora são absolutos. Um link relativo é reescrito para o GitHub na página do pacote, mas fica intocado na API reference gerada, onde resolvia para 404.
 
 ## [1.2.1] - 2026-07-28
 

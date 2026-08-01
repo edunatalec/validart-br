@@ -72,6 +72,7 @@ if (result case VFailure(:final errors)) {
 - [Locale pt-BR](#locale-pt-br)
 - [Extensibilidade](#extensibilidade)
 - [Exemplo](#exemplo)
+- [Contribuindo](#contribuindo)
 - [Licença](#licença)
 
 ## Por que o validart_br
@@ -496,12 +497,16 @@ V.string().taxId(patterns: [
 ## Exemplo
 
 Um passeio rodável pela API pública vive em
-[`example/example.dart`](example/example.dart). Para rodar:
+[`example/example.dart`](https://github.com/edunatalec/validart-br/blob/master/example/example.dart). Para rodar:
 
 ```sh
 dart run example/example.dart
 ```
 
+## Contribuindo
+
+O [CONTRIBUTING.md](https://github.com/edunatalec/validart-br/blob/master/CONTRIBUTING.md) é o contrato de quem escreve código aqui: o comando que precisa estar verde antes de um PR, o que os dois jobs do CI verificam, as convenções e as decisões que um PR não deve tentar "corrigir".
+
 ## Licença
 
-MIT — veja [LICENSE](LICENSE).
+MIT — veja [LICENSE](https://github.com/edunatalec/validart-br/blob/master/LICENSE).
