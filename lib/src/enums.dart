@@ -1,8 +1,12 @@
+/// @docImport 'package:validart/validart.dart';
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 /// Controla se a máscara é obrigatória, opcional ou proibida num
 /// validador que aceita máscaras (como CPF, CNPJ, CEP, placa, etc.).
 ///
-/// É o pareamento pt-BR de `ValidationMode` do core — a camada de
-/// atalhos (`V.string().cpf(modo: ...)`, etc.) faz o depara
+/// É o pareamento pt-BR de [ValidationMode] do core — a camada de
+/// atalhos ([VStringBr.cpf], [VStringBr.cep], etc.) faz o depara
 /// internamente.
 ///
 /// ```dart
@@ -12,6 +16,13 @@
 /// V.string().cep(modo: ModoValidacao.semMascara);
 ///   // exige '01001000', rejeita '01001-000'
 /// ```
+///
+/// See also:
+///
+///  * [ValidationMode], o equivalente do core, usado pela forma
+///    explícita via pattern.
+///  * [FormatoDdd] e [FormatoPais], que controlam as outras duas
+///    dimensões da forma de um telefone.
 enum ModoValidacao {
   /// Aceita o input com ou sem máscara (default).
   qualquer,
@@ -29,6 +40,12 @@ enum ModoValidacao {
 /// ```dart
 /// V.string().telefone(ddd: FormatoDdd.obrigatorio);
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.telefone], o atalho que recebe este enum.
+///  * [FormatoPais], que faz o mesmo para o DDI `+55`.
+///  * [TelefonePattern], onde o valor chega como `areaCode`.
 enum FormatoDdd {
   /// DDD deve estar presente — ex.: `(11) 98765-4321`.
   obrigatorio,
@@ -43,9 +60,8 @@ enum FormatoDdd {
 /// Controla se o DDI (`+55`) é obrigatório, opcional ou ausente num
 /// telefone brasileiro.
 ///
-/// É o pareamento pt-BR de `CountryCodeFormat` do core — a camada
-/// de atalhos (`V.string().telefone(pais: ...)`) faz o depara
-/// internamente.
+/// É o pareamento pt-BR de [CountryCodeFormat] do core — a camada
+/// de atalhos ([VStringBr.telefone]) faz o depara internamente.
 ///
 /// ```dart
 /// V.string().telefone(pais: FormatoPais.obrigatorio);
@@ -54,6 +70,12 @@ enum FormatoDdd {
 /// V.string().telefone(pais: FormatoPais.nenhum);
 ///   // exige '11 98765-4321' (sem +55)
 /// ```
+///
+/// See also:
+///
+///  * [CountryCodeFormat], o equivalente do core, usado pela forma
+///    explícita via pattern.
+///  * [FormatoDdd], que faz o mesmo para o DDD.
 enum FormatoPais {
   /// DDI deve estar presente — ex.: `+55 11 98765-4321`.
   obrigatorio,
@@ -65,7 +87,7 @@ enum FormatoPais {
   nenhum,
 }
 
-/// Tipos de identificador aceitos por `V.string().chavePix(...)`.
+/// Tipos de identificador aceitos por [VStringBr.chavePix].
 ///
 /// Os cinco primeiros são as chaves PIX do DICT; [brCode] é o
 /// payload EMVCo do QR Code ("copia e cola").
@@ -74,6 +96,11 @@ enum FormatoPais {
 /// V.string().chavePix(tipos: const [TipoChavePix.email, TipoChavePix.telefone]);
 /// V.string().chavePix(tipos: TipoChavePix.values); // tudo, inclusive BR Code
 /// ```
+///
+/// See also:
+///
+///  * [ChavePixValidator], que faz a validação de fato.
+///  * [VStringBr.chavePix], o atalho que recebe esta lista.
 enum TipoChavePix {
   /// CPF em 11 dígitos sem máscara.
   cpf,
@@ -95,7 +122,7 @@ enum TipoChavePix {
   brCode,
 }
 
-/// Restringe a forma aceita por `V.string().boleto(...)`.
+/// Restringe a forma aceita por [VStringBr.boleto].
 ///
 /// - [bancario]: cobrança bancária. Linha digitável de 47 dígitos
 ///   (`bbbmA AAAAd BBBBB BBBBBd CCCCC CCCCCd D EEEE FFFFFFFFFF`) ou
@@ -107,14 +134,19 @@ enum TipoChavePix {
 ///   dígito do código de barras determina mod-10 (`6`/`7`) ou
 ///   mod-11 (`8`/`9`).
 ///
-/// Sem restringir formato, `V.string().boleto()` aceita qualquer um
-/// dos quatro layouts.
+/// Sem restringir formato, [VStringBr.boleto] aceita qualquer um dos
+/// quatro layouts.
 ///
 /// ```dart
 /// V.string().boleto(); // qualquer formato
 /// V.string().boleto(formato: FormatoBoleto.bancario); // só bancário
 /// V.string().boleto(formato: FormatoBoleto.arrecadacao); // só arrecadação
 /// ```
+///
+/// See also:
+///
+///  * [BoletoValidator], que implementa os checksums de cada layout.
+///  * [VStringBr.boleto], o atalho que recebe este enum.
 enum FormatoBoleto {
   /// Boleto de cobrança bancária — linha digitável 47 ou código de
   /// barras 44, primeiro dígito ≠ `8`.

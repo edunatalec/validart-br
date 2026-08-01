@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../string_utils.dart';
@@ -18,6 +21,12 @@ import '../string_utils.dart';
 /// V.string().cpf(modo: ModoValidacao.semMascara)
 ///   .validate('12345678909'); // true
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.cpf], o atalho pt-BR equivalente.
+///  * [CnpjPattern], o documento correspondente da pessoa jurídica.
+///  * [ChavePixValidator], que aceita um CPF como chave PIX.
 class CpfPattern extends TaxIdPattern {
   /// Cria um [CpfPattern].
   const CpfPattern({this.mode = ValidationMode.any});

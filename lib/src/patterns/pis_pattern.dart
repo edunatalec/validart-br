@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../string_utils.dart';
@@ -14,6 +17,11 @@ import '../string_utils.dart';
 /// V.string().pis(modo: ModoValidacao.semMascara)
 ///   .validate('12054789013'); // true
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.pis], o atalho pt-BR equivalente.
+///  * [CpfPattern], o outro documento de 11 dígitos da pessoa física.
 class PisPattern extends TaxIdPattern {
   /// Cria um [PisPattern].
   const PisPattern({this.mode = ValidationMode.any});

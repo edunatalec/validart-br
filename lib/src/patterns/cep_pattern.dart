@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../string_utils.dart';
@@ -17,6 +20,11 @@ import '../string_utils.dart';
 /// V.string().cep(modo: ModoValidacao.comMascara)
 ///   .validate('01001-000'); // true
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.cep], o atalho pt-BR equivalente.
+///  * [ModoValidacao], o enum pt-BR que o atalho recebe em `modo`.
 class CepPattern extends PostalCodePattern {
   /// Cria um [CepPattern].
   const CepPattern({this.mode = ValidationMode.any});

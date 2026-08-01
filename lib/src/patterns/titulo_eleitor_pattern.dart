@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../string_utils.dart';
@@ -13,6 +16,12 @@ import '../string_utils.dart';
 /// V.string().taxId(patterns: [const TituloEleitorPattern()]);
 /// V.string().tituloEleitor(); // atalho
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.tituloEleitor], o atalho pt-BR equivalente.
+///  * [UfValidator], que valida a sigla da UF que os dígitos `01..28`
+///    codificam.
 class TituloEleitorPattern extends TaxIdPattern {
   /// Cria um [TituloEleitorPattern].
   const TituloEleitorPattern();

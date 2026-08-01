@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../string_utils.dart';
@@ -9,6 +12,12 @@ import '../string_utils.dart';
 /// V.string().taxId(patterns: [const RenavamPattern()]);
 /// V.string().renavam(); // atalho
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.renavam], o atalho pt-BR equivalente.
+///  * [PlacaPattern] e [CnhPattern], os outros documentos de trânsito
+///    cobertos aqui.
 class RenavamPattern extends TaxIdPattern {
   /// Cria um [RenavamPattern].
   const RenavamPattern();

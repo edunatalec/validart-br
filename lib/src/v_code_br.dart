@@ -1,13 +1,17 @@
+/// @docImport 'package:validart/validart.dart';
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 /// Códigos de erro específicos do `validart_br` — usados apenas por
 /// validadores que não se encaixam nos patterns genéricos do core.
 ///
 /// CPF, CNPJ, PIS, título de eleitor, CNH e Renavam emitem
-/// `VStringCode.taxId`. CEP emite `VStringCode.postalCode`. Placa
-/// emite `VStringCode.licensePlate`. Telefone BR emite
-/// `VStringCode.phone`. Os códigos BR abaixo existem para
-/// validadores que validam contra listas oficiais finitas (UF,
-/// COMPE, DDD), agregam múltiplos checksums (boleto) ou que são
-/// uniões heterogêneas de formatos (chave PIX).
+/// [VStringCode.taxId]. CEP emite [VStringCode.postalCode]. Placa
+/// emite [VStringCode.licensePlate]. Telefone BR emite
+/// [VStringCode.phone]. Os códigos abaixo existem para validadores
+/// que validam contra listas oficiais finitas (UF, COMPE, DDD),
+/// agregam múltiplos checksums (boleto) ou que são uniões
+/// heterogêneas de formatos (chave PIX).
 ///
 /// ```dart
 /// V.setLocale(const VLocale({
@@ -15,6 +19,11 @@
 ///   VStringCodeBr.ufInvalida: 'UF inválida',
 /// }));
 /// ```
+///
+/// See also:
+///
+///  * [VLocaleBr], que já traduz todos estes códigos para pt-BR.
+///  * [VStringCode], os códigos do core que os patterns BR reaproveitam.
 sealed class VStringCodeBr {
   /// A string não é uma chave PIX válida (CPF, CNPJ, e-mail,
   /// telefone BR ou UUID v4).

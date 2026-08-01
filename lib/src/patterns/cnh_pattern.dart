@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../string_utils.dart';
@@ -12,6 +15,12 @@ import '../string_utils.dart';
 /// V.string().taxId(patterns: [const CnhPattern()]);
 /// V.string().cnh(); // atalho
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.cnh], o atalho pt-BR equivalente.
+///  * [RenavamPattern] e [PlacaPattern], os outros documentos de
+///    trânsito cobertos aqui.
 class CnhPattern extends TaxIdPattern {
   /// Cria um [CnhPattern].
   const CnhPattern();

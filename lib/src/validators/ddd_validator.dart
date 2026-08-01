@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../v_code_br.dart';
@@ -6,7 +9,7 @@ import '../v_code_br.dart';
 /// lista oficial publicada pela Anatel.
 ///
 /// O DDD é apenas a área de discagem (sem o número do assinante).
-/// Para validar o telefone completo, use [`V.string().telefone()`].
+/// Para validar o telefone completo, use [VStringBr.telefone].
 ///
 /// A entrada deve conter exatamente 2 dígitos numéricos, sem
 /// parênteses, espaços ou outros separadores. Aplique `.preprocess`
@@ -22,6 +25,12 @@ import '../v_code_br.dart';
 /// V.string().ddd().validate('20'); // false (não atribuído)
 /// V.string().ddd().validate('99'); // true
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.ddd], o atalho pt-BR equivalente.
+///  * [VStringCodeBr.dddInvalido], o código emitido na falha.
+///  * [TelefonePattern], que valida DDD e número juntos.
 class DddValidator extends Validator<String> {
   /// Cria um [DddValidator].
   const DddValidator();

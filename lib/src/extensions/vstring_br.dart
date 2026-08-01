@@ -37,6 +37,14 @@ import '../validators/uf_validator.dart';
 /// V.string().telefone(apenasCelular: true);
 /// V.string().phone(patterns: [const TelefonePattern(mobileOnly: true)]);
 /// ```
+///
+/// See also:
+///
+///  * [VLocaleBr], que traduz para pt-BR as mensagens de erro que estes
+///    atalhos emitem.
+///  * [ModoValidacao], [FormatoDdd], [FormatoPais], [TipoChavePix] e
+///    [FormatoBoleto], os enums pt-BR que os atalhos recebem.
+///  * [CpfPattern] e os demais patterns, para a forma explícita.
 extension VStringBr on VString {
   /// Valida que a string é um CPF válido (11 dígitos com dois DVs).
   ///
@@ -292,7 +300,7 @@ extension VStringBr on VString {
   ///
   /// A entrada deve ser exatamente 2 dígitos numéricos, sem
   /// parênteses ou separadores. Para validar o telefone completo,
-  /// use [`telefone`].
+  /// use [telefone].
   ///
   /// Executa na fase de validação.
   ///

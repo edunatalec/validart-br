@@ -132,12 +132,17 @@ const Map<String, String> _kValidartBrMessages = <String, String>{
 ///
 /// // 3. Acesso direto aos mapas, quando for preciso compor com outras
 /// //    fontes:
-/// V.setLocale(const VLocale({
+/// V.setLocale(VLocale({
 ///   ...VLocaleBr.coreMessages,
 ///   ...VLocaleBr.brMessages,
 ///   VCode.required: 'Obrigatório',
 /// }));
 /// ```
+///
+/// See also:
+///
+///  * [VStringCodeBr], os códigos que [brMessages] traduz.
+///  * [VLocale], o tipo do core que recebe o mapa de mensagens.
 sealed class VLocaleBr {
   /// Mensagens dos códigos do core do validart em pt-BR.
   static const Map<String, String> coreMessages = _kValidartPtBrMessages;

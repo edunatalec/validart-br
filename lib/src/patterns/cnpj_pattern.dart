@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../string_utils.dart';
@@ -23,6 +26,12 @@ import '../string_utils.dart';
 /// V.string().toUpperCase().cnpj()
 ///   .validate('12.abc.345/01de-35');        // true
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.cnpj], o atalho pt-BR equivalente.
+///  * [CpfPattern], o documento correspondente da pessoa física.
+///  * [ChavePixValidator], que aceita um CNPJ numérico como chave PIX.
 class CnpjPattern extends TaxIdPattern {
   /// Cria um [CnpjPattern].
   const CnpjPattern({this.mode = ValidationMode.any, this.alphanumeric = true});

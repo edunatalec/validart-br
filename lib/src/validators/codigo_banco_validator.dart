@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../v_code_br.dart';
@@ -26,6 +29,13 @@ import '../v_code_br.dart';
 /// V.string().codigoBanco().validate('260'); // true (Nubank)
 /// V.string().codigoBanco().validate('999'); // false (não atribuído)
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.codigoBanco], o atalho pt-BR equivalente.
+///  * [VStringCodeBr.codigoBancoInvalido], o código emitido na falha.
+///  * [BoletoValidator], para a linha digitável emitida por essas
+///    instituições.
 class CodigoBancoValidator extends Validator<String> {
   /// Cria um [CodigoBancoValidator].
   const CodigoBancoValidator();

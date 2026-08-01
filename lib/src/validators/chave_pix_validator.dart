@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../enums.dart';
@@ -39,6 +42,14 @@ import 'pix_br_code.dart';
 /// // Aceita tudo (5 chaves + BR Code):
 /// V.string().chavePix(tipos: TipoChavePix.values);
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.chavePix], o atalho pt-BR equivalente.
+///  * [TipoChavePix], o enum que enumera os formatos aceitos.
+///  * [VStringCodeBr.chavePixInvalida], o código emitido na falha.
+///  * [CpfPattern], [CnpjPattern] e [TelefonePattern], os formatos que
+///    esta classe reaproveita.
 class ChavePixValidator extends Validator<String> {
   /// Cria um [ChavePixValidator] que aceita os formatos listados em
   /// [allow]. Default: [defaultAllow].

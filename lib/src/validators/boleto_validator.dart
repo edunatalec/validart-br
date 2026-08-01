@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../enums.dart';
@@ -46,6 +49,14 @@ import '../v_code_br.dart';
 /// V.string().boleto(formato: FormatoBoleto.bancario)
 ///   .validate('xx'); // false
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.boleto], o atalho pt-BR equivalente.
+///  * [FormatoBoleto], o enum que restringe o layout aceito.
+///  * [VStringCodeBr.boletoInvalido], o código emitido na falha.
+///  * [CodigoBancoValidator], para o código COMPE da instituição
+///    emissora.
 class BoletoValidator extends Validator<String> {
   /// Cria um [BoletoValidator].
   const BoletoValidator({this.format});

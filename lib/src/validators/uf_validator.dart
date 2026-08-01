@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../v_code_br.dart';
@@ -20,6 +23,12 @@ import '../v_code_br.dart';
 ///
 /// V.string().toUpperCase().uf().validate('rj'); // true
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.uf], o atalho pt-BR equivalente.
+///  * [VStringCodeBr.ufInvalida], o código emitido na falha.
+///  * [DddValidator], o outro lookup contra lista oficial finita.
 class UfValidator extends Validator<String> {
   /// Cria um [UfValidator].
   const UfValidator();

@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 /// Valida placas de veículos brasileiras — formato antigo
@@ -15,6 +18,12 @@ import 'package:validart/validart.dart';
 /// V.string().toUpperCase().placa()
 ///   .validate('abc-1234'); // true
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.placa], o atalho pt-BR equivalente.
+///  * [RenavamPattern] e [CnhPattern], os outros documentos de trânsito
+///    cobertos aqui.
 class PlacaPattern extends LicensePlatePattern {
   /// Cria um [PlacaPattern].
   const PlacaPattern({this.mode = ValidationMode.any});

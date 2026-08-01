@@ -1,3 +1,6 @@
+/// @docImport 'package:validart_br/validart_br.dart';
+library;
+
 import 'package:validart/validart.dart';
 
 import '../enums.dart';
@@ -26,6 +29,12 @@ import '../enums.dart';
 ///   ),
 /// ]);
 /// ```
+///
+/// See also:
+///
+///  * [VStringBr.telefone], o atalho pt-BR equivalente.
+///  * [FormatoDdd] e [FormatoPais], os enums pt-BR que o atalho recebe.
+///  * [DddValidator], para validar só a área de discagem.
 class TelefonePattern extends PhonePattern {
   /// Cria um [TelefonePattern].
   const TelefonePattern({
