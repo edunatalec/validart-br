@@ -1,44 +1,25 @@
-# Validart BR
-
 [![pub package](https://img.shields.io/pub/v/validart_br.svg)](https://pub.dev/packages/validart_br)
 [![package publisher](https://img.shields.io/pub/publisher/validart_br.svg)](https://pub.dev/packages/validart_br/publisher)
 
 Extensão do [validart](https://pub.dev/packages/validart) com validadores brasileiros
 e locale `pt-BR`.
 
-Validadores implementados como **patterns** dos pontos de extensão do core — mesma
-API que qualquer outro país. Traz também um `VLocale` pt-BR completo (cobre todas
-as mensagens do core + as deste pacote) e métodos de atalho para reduzir o verbosismo
-em código BR-only.
+Cada validador é um **pattern** plugado num ponto de extensão do core — a mesma API
+que qualquer outro país, então CPF e SSN convivem na mesma validação. Traz também um
+`VLocale` pt-BR completo (cobre todas as mensagens do core mais as deste pacote) e
+métodos de atalho para encurtar o código BR-only.
 
-## Sumário
+Não substitui o `validart`: os dois pacotes entram no `pubspec.yaml`.
 
-- [Instalação](#instalação)
-- [Uso básico](#uso-básico)
-- [Validadores](#validadores)
-  - [CPF](#cpf)
-  - [CNPJ](#cnpj)
-  - [CEP](#cep)
-  - [PIS/PASEP](#pispasep)
-  - [Título de eleitor](#título-de-eleitor)
-  - [CNH](#cnh)
-  - [Renavam](#renavam)
-  - [Telefone brasileiro](#telefone-brasileiro)
-  - [Placa](#placa)
-  - [Chave PIX](#chave-pix)
-  - [UF (estado)](#uf-estado)
-  - [Código de banco (COMPE)](#código-de-banco-compe)
-  - [DDD](#ddd)
-  - [Boleto](#boleto)
-- [Duas formas equivalentes](#duas-formas-equivalentes)
-- [`ModoValidacao`](#modovalidacao)
-- [Locale pt-BR](#locale-pt-br)
-  - [Override de mensagens](#override-de-mensagens)
-  - [Códigos de erro](#códigos-de-erro)
-- [Extensibilidade](#extensibilidade)
-  - [Escrevendo um pattern novo](#escrevendo-um-pattern-novo)
-- [Exemplo completo](#exemplo-completo)
-- [Licença](#licença)
+## Requisitos
+
+Dart 3.8 ou superior — ou Flutter 3.32.0 e acima:
+
+```sh
+dart --version
+```
+
+- `validart: ^3.0.1`
 
 ## Instalação
 
@@ -81,6 +62,25 @@ if (result case VFailure(:final errors)) {
   print(errors.first.message); // 'CPF inválido'
 }
 ```
+
+## Sumário
+
+- [Por que o validart_br](#por-que-o-validart_br)
+- [Validadores](#validadores)
+- [Duas formas equivalentes](#duas-formas-equivalentes)
+- [`ModoValidacao`](#modovalidacao)
+- [Locale pt-BR](#locale-pt-br)
+- [Extensibilidade](#extensibilidade)
+- [Exemplo](#exemplo)
+- [Licença](#licença)
+
+## Por que o validart_br
+
+- **Catorze validadores brasileiros prontos** — CPF, CNPJ, CEP, PIS/PASEP, título de eleitor, CNH, Renavam, telefone, placa, chave PIX, UF, código de banco, DDD e boleto, cada um com o dígito verificador conferido.
+- **Plugado no core, não paralelo a ele.** Cada validador é um pattern num ponto de extensão do `validart`, então CPF e SSN convivem na mesma validação e a API é a mesma de qualquer outro país.
+- **Locale pt-BR completo.** Cobre as mensagens do core mais as deste pacote — nada de montar mapa de tradução na mão.
+- **Duas formas equivalentes.** O atalho BR-only (`V.string().cpf()`) e a forma explícita via pattern do core produzem o mesmo resultado; a escolha é de estilo.
+- **Uma dependência só.** `validart` — nada além disso.
 
 ## Validadores
 
@@ -128,7 +128,7 @@ V.string().cnpj(alfanumerico: false)
 ```
 
 Letras devem vir em caixa alta. Se o input pode vir com minúsculas,
-encadeie `.toUpperCase()` antes (mesma regra para `plate()`):
+encadeie `.toUpperCase()` antes (mesma regra para `placa()`):
 
 ```dart
 V.string().toUpperCase().cnpj();
@@ -493,9 +493,10 @@ V.string().taxId(patterns: [
 ]);
 ```
 
-## Exemplo completo
+## Exemplo
 
-Veja `example/example.dart`. Para rodar:
+Um passeio rodável pela API pública vive em
+[`example/example.dart`](example/example.dart). Para rodar:
 
 ```sh
 dart run example/example.dart
@@ -503,4 +504,4 @@ dart run example/example.dart
 
 ## Licença
 
-Veja [LICENSE](LICENSE) para detalhes.
+MIT — veja [LICENSE](LICENSE).
