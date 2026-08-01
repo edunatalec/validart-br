@@ -7,7 +7,7 @@ environment:
   sdk: ^3.8.0
 
 dependencies:
-  validart: ^3.0.1
+  validart: ^3.0.2
 
 dev_dependencies:
   lints: ^6.1.0

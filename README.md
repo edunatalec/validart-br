@@ -19,7 +19,7 @@ Dart 3.8 ou superior — ou Flutter 3.32.0 e acima:
 dart --version
 ```
 
-- `validart: ^3.0.1`
+- `validart: ^3.0.2`
 
 ## Instalação
 
@@ -31,7 +31,7 @@ Ou no `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  validart: ^3.0.1
+  validart: ^3.0.2
   validart_br: ^1.2.2
 ```
 
