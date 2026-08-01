@@ -8,6 +8,8 @@ import '../string_utils.dart';
 /// Valida CPFs brasileiros (Cadastro de Pessoas Físicas — 11 dígitos
 /// com dois dígitos verificadores).
 ///
+/// {@category Patterns}
+///
 /// Rejeita CPFs com todos os dígitos iguais (`000.000.000-00`, …) e
 /// aqueles cujo checksum oficial não confere. [mode] controla a forma
 /// aceita: [ValidationMode.any] (padrão) aceita com ou sem máscara,

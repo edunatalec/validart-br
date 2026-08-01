@@ -9,6 +9,8 @@ import '../v_code_br.dart';
 /// dígitos da tabela COMPE (Conta de Pagamento) mantida pelo Banco
 /// Central do Brasil.
 ///
+/// {@category Validadores}
+///
 /// A entrada deve conter exatamente 3 dígitos numéricos com zero à
 /// esquerda quando aplicável (`'001'` para Banco do Brasil, `'033'`
 /// para Santander). Não aceita o formato com dígito verificador

@@ -10,6 +10,8 @@ import '../v_code_br.dart';
 /// arrecadação (concessionárias e tributos), em qualquer das quatro
 /// formas:
 ///
+/// {@category Validadores}
+///
 /// - **Linha digitável bancária** (47 dígitos);
 /// - **Código de barras bancário** (44 dígitos), primeiro dígito ≠ `8`;
 /// - **Linha digitável de arrecadação** (48 dígitos);

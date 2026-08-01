@@ -18,6 +18,8 @@ import '../validators/uf_validator.dart';
 
 /// Atalhos de validadores brasileiros em cima de [VString].
 ///
+/// {@category Atalhos}
+///
 /// Cada atalho delega ao método equivalente do core com o pattern BR
 /// plugado. Toda a API pública dos atalhos é em pt-BR (`modo`,
 /// `mensagem`, `alfanumerico`, etc.) — internamente cada atalho faz

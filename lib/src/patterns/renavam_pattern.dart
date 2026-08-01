@@ -8,6 +8,8 @@ import '../string_utils.dart';
 /// Valida Renavams brasileiros (Registro Nacional de Veículos
 /// Automotores — 11 dígitos com um dígito verificador).
 ///
+/// {@category Patterns}
+///
 /// ```dart
 /// V.string().taxId(patterns: [const RenavamPattern()]);
 /// V.string().renavam(); // atalho

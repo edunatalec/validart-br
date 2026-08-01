@@ -8,6 +8,8 @@ import '../v_code_br.dart';
 /// Valida que a string é um DDD brasileiro válido — 2 dígitos da
 /// lista oficial publicada pela Anatel.
 ///
+/// {@category Validadores}
+///
 /// O DDD é apenas a área de discagem (sem o número do assinante).
 /// Para validar o telefone completo, use [VStringBr.telefone].
 ///

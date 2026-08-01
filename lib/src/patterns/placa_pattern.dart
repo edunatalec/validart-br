@@ -6,6 +6,8 @@ import 'package:validart/validart.dart';
 /// Valida placas de veículos brasileiras — formato antigo
 /// (`AAA-9999` / `AAA9999`) e Mercosul (`AAA9A99`).
 ///
+/// {@category Patterns}
+///
 /// Letras devem estar em caixa alta. Encadeie
 /// `V.string().toUpperCase()` para aceitar lowercase. [mode] controla
 /// o hífen do formato antigo; placas Mercosul passam sempre,

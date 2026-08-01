@@ -5,6 +5,8 @@ library;
 /// Códigos de erro específicos do `validart_br` — usados apenas por
 /// validadores que não se encaixam nos patterns genéricos do core.
 ///
+/// {@category Mensagens}
+///
 /// CPF, CNPJ, PIS, título de eleitor, CNH e Renavam emitem
 /// [VStringCode.taxId]. CEP emite [VStringCode.postalCode]. Placa
 /// emite [VStringCode.licensePlate]. Telefone BR emite

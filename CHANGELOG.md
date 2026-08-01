@@ -9,6 +9,7 @@
 ### Alterado
 
 - Referências cruzadas na API reference: os símbolos citados em prosa viraram links, cada tipo público ganhou um bloco `See also:` e a página da library passou a listar os pontos de entrada.
+- API reference agrupada em Atalhos, Patterns, Validadores, Mensagens e Opções, cada uma com sua própria página — os tipos públicos deixam de ser uma lista alfabética única.
 - README segue o esqueleto compartilhado pelos pacotes publicados: o `Sumário` lista só o que vem depois dele, entrou a seção `## Por que o validart_br`, os Requisitos trazem o comando que confere o SDK e o `## Exemplo` mostra como rodar.
 
 ## [1.2.1] - 2026-07-28

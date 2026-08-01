@@ -8,6 +8,8 @@ import '../string_utils.dart';
 /// Valida CNPJs brasileiros (Cadastro Nacional da Pessoa Jurídica —
 /// 14 caracteres com dois dígitos verificadores).
 ///
+/// {@category Patterns}
+///
 /// Desde a resolução da Receita Federal que introduz o CNPJ
 /// alfanumérico (produção a partir de julho/2026), os 12 primeiros
 /// caracteres podem ser `[0-9A-Z]` e os 2 últimos (DVs) continuam

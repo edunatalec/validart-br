@@ -14,6 +14,8 @@ import 'pix_br_code.dart';
 /// CNPJ, e-mail, telefone `+55…`, UUID v4) e/ou BR Code (payload
 /// EMVCo do QR Code PIX).
 ///
+/// {@category Validadores}
+///
 /// O parâmetro [allow] controla quais formatos são aceitos — por
 /// padrão apenas as cinco chaves do DICT (sem BR Code). Cada formato
 /// é verificado no modo estrito exigido pelo PIX: CPF/CNPJ só com

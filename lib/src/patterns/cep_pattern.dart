@@ -7,6 +7,8 @@ import '../string_utils.dart';
 
 /// Valida CEPs brasileiros (Código de Endereçamento Postal — 8 dígitos).
 ///
+/// {@category Patterns}
+///
 /// Aceita 8 dígitos com ou sem a máscara `XXXXX-XXX`. Rejeita CEPs com
 /// todos os dígitos iguais. [mode] controla a forma aceita:
 /// [ValidationMode.any] (padrão) aceita os dois jeitos,

@@ -118,6 +118,8 @@ const Map<String, String> _kValidartBrMessages = <String, String>{
 
 /// Locale em português do Brasil para o validart.
 ///
+/// {@category Mensagens}
+///
 /// Três formas de uso, da mais simples à mais flexível:
 ///
 /// ```dart

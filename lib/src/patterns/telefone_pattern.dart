@@ -7,6 +7,8 @@ import '../enums.dart';
 
 /// [PhonePattern] para números de telefone brasileiros.
 ///
+/// {@category Patterns}
+///
 /// Aceita celular (9 dígitos iniciando com `9`) e fixo (8 dígitos).
 /// O DDI (`+55`), o DDD e a presença de separadores (parênteses,
 /// traços, espaços) são controlados por [countryCode], [areaCode] e

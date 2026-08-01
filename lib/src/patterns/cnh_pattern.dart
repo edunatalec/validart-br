@@ -8,6 +8,8 @@ import '../string_utils.dart';
 /// Valida CNHs brasileiras (Carteira Nacional de Habilitação —
 /// 11 dígitos).
 ///
+/// {@category Patterns}
+///
 /// Implementa o algoritmo oficial dos dois dígitos verificadores,
 /// incluindo a regra de decremento (`dsc = 2`) quando o DV1 ultrapassa 9.
 ///

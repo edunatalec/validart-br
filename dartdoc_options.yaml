@@ -1,0 +1,18 @@
+dartdoc:
+  categories:
+    Atalhos:
+      displayName: Atalhos
+      markdown: doc/atalhos.md
+    Patterns:
+      displayName: Patterns
+      markdown: doc/patterns.md
+    Validadores:
+      displayName: Validadores
+      markdown: doc/validadores.md
+    Mensagens:
+      displayName: Mensagens
+      markdown: doc/mensagens.md
+    Opcoes:
+      displayName: Opções
+      markdown: doc/opcoes.md
+  categoryOrder: [Atalhos, Patterns, Validadores, Mensagens, Opcoes]

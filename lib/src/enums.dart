@@ -5,6 +5,8 @@ library;
 /// Controla se a máscara é obrigatória, opcional ou proibida num
 /// validador que aceita máscaras (como CPF, CNPJ, CEP, placa, etc.).
 ///
+/// {@category Opcoes}
+///
 /// É o pareamento pt-BR de [ValidationMode] do core — a camada de
 /// atalhos ([VStringBr.cpf], [VStringBr.cep], etc.) faz o depara
 /// internamente.
@@ -37,6 +39,8 @@ enum ModoValidacao {
 /// Controla se o DDD é obrigatório, opcional ou ausente num
 /// telefone brasileiro.
 ///
+/// {@category Opcoes}
+///
 /// ```dart
 /// V.string().telefone(ddd: FormatoDdd.obrigatorio);
 /// ```
@@ -59,6 +63,8 @@ enum FormatoDdd {
 
 /// Controla se o DDI (`+55`) é obrigatório, opcional ou ausente num
 /// telefone brasileiro.
+///
+/// {@category Opcoes}
 ///
 /// É o pareamento pt-BR de [CountryCodeFormat] do core — a camada
 /// de atalhos ([VStringBr.telefone]) faz o depara internamente.
@@ -88,6 +94,8 @@ enum FormatoPais {
 }
 
 /// Tipos de identificador aceitos por [VStringBr.chavePix].
+///
+/// {@category Opcoes}
 ///
 /// Os cinco primeiros são as chaves PIX do DICT; [brCode] é o
 /// payload EMVCo do QR Code ("copia e cola").
@@ -123,6 +131,8 @@ enum TipoChavePix {
 }
 
 /// Restringe a forma aceita por [VStringBr.boleto].
+///
+/// {@category Opcoes}
 ///
 /// - [bancario]: cobrança bancária. Linha digitável de 47 dígitos
 ///   (`bbbmA AAAAd BBBBB BBBBBd CCCCC CCCCCd D EEEE FFFFFFFFFF`) ou

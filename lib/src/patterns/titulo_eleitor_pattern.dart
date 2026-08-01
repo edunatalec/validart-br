@@ -7,6 +7,8 @@ import '../string_utils.dart';
 
 /// Valida títulos de eleitor brasileiros (12 dígitos).
 ///
+/// {@category Patterns}
+///
 /// Estrutura: `NNNNNNNN UU DV1 DV2` — 8 dígitos sequenciais, 2 para a
 /// UF (`01..28`) e 2 dígitos verificadores. O checksum tem regra
 /// especial para SP (UF `01`) e MG (UF `02`), onde um DV calculado

@@ -7,6 +7,8 @@ import '../string_utils.dart';
 
 /// Valida PIS/PASEP/NIS/NIT (11 dígitos com um dígito verificador).
 ///
+/// {@category Patterns}
+///
 /// Máscara canônica: `XXX.XXXXX.XX-X` (3/5/2/1). [mode] controla se a
 /// máscara é obrigatória, proibida ou opcional.
 ///
