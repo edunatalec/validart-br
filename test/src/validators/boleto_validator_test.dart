@@ -2,11 +2,6 @@ import 'package:test/test.dart';
 import 'package:validart/validart.dart';
 import 'package:validart_br/validart_br.dart';
 
-// Fixtures reais — boletos com checksum batendo conferidos contra a
-// suite do `mcrvaz/boleto-brasileiro-validator` (Node.js, 200+ stars).
-// Não confiar em geradores online: estes foram cruzados com a
-// implementação independente de geração no script de validação que
-// vive fora do repo.
 const _bancarioLinhaSemMascara =
     '23793381286000782713695000063305975520000370000';
 const _bancarioLinhaComMascara =
